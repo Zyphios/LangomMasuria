@@ -4,6 +4,9 @@ import { prisma, createApp } from '../src/index';
 
 describe('GET /api/availability', () => {
   beforeAll(async () => {
+    // Clean up any leftover data from previous tests to ensure isolation
+    await prisma.blockedDate.deleteMany();
+    await prisma.booking.deleteMany();
     await prisma.blockedDate.create({ data: { date: new Date('2026-06-10'), reason: 'Maintenance' } });
     await prisma.booking.create({
       data: {
