@@ -1,0 +1,31 @@
+import 'dotenv/config';
+import cors from 'cors';
+import express, { type NextFunction, type Request, type Response } from 'express';
+import { PrismaClient } from '@prisma/client';
+
+export const prisma = new PrismaClient();
+
+export const createApp = () => {
+  const app = express();
+
+  app.use(cors());
+  app.use(express.json());
+
+  app.use((_req: Request, res: Response) => {
+    res.status(404).json({ message: 'Not found' });
+  });
+
+  app.use((error: Error, _req: Request, res: Response, _next: NextFunction) => {
+    res.status(500).json({ message: error.message || 'Internal server error' });
+  });
+
+  return app;
+};
+
+if (process.env.NODE_ENV !== 'test') {
+  const app = createApp();
+  const port = Number(process.env.PORT || 4000);
+  app.listen(port, () => {
+    console.log(`Backend listening on ${port}`);
+  });
+}
