@@ -1,0 +1,48 @@
+{
+  "nav": {
+    "home": "Home",
+    "house": "House",
+    "gallery": "Gallery",
+    "rates": "Rates",
+    "contact": "Contact",
+    "bookNow": "Book now"
+  },
+  "home": {
+    "hero": {
+      "title": "Your Masurian hideaway",
+      "subtitle": "A minimalist lake house surrounded by forest.",
+      "cta": "Check availability"
+    },
+    "amenities": {
+      "title": "Why Lagom Masuria",
+      "jacuzzi": "Jacuzzi under the stars",
+      "forest": "Forest at your doorstep",
+      "lake": "Lake within walking distance"
+    }
+  },
+  "booking": {
+    "step1": "Step 1: Dates",
+    "step2": "Step 2: Guest details",
+    "step3": "Step 3: Deposit",
+    "step4": "Step 4: Confirmation",
+    "dates": "Stay dates",
+    "guestDetails": "Guest details",
+    "deposit": "Deposit",
+    "confirmation": "Confirmation",
+    "next": "Next",
+    "prev": "Previous"
+  },
+  "admin": {
+    "bookings": "Bookings",
+    "calendar": "Calendar",
+    "messages": "Messages",
+    "gallery": "Gallery",
+    "pricing": "Pricing",
+    "logout": "Logout",
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled"
+    }
+  }
+}

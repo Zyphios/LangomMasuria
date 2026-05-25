@@ -1,0 +1,48 @@
+{
+  "nav": {
+    "home": "Start",
+    "house": "Dom",
+    "gallery": "Galeria",
+    "rates": "Cennik",
+    "contact": "Kontakt",
+    "bookNow": "Rezerwuj"
+  },
+  "home": {
+    "hero": {
+      "title": "Twój azyl na Mazurach",
+      "subtitle": "Minimalistyczny dom nad jeziorem i wśród lasów.",
+      "cta": "Sprawdź dostępność"
+    },
+    "amenities": {
+      "title": "Dlaczego Lagom Masuria",
+      "jacuzzi": "Jacuzzi pod gwiazdami",
+      "forest": "Las za progiem",
+      "lake": "Jezioro w spacerowej odległości"
+    }
+  },
+  "booking": {
+    "step1": "Krok 1: Daty",
+    "step2": "Krok 2: Dane gości",
+    "step3": "Krok 3: Zadatek",
+    "step4": "Krok 4: Potwierdzenie",
+    "dates": "Daty pobytu",
+    "guestDetails": "Dane gości",
+    "deposit": "Zadatek",
+    "confirmation": "Potwierdzenie",
+    "next": "Dalej",
+    "prev": "Wstecz"
+  },
+  "admin": {
+    "bookings": "Rezerwacje",
+    "calendar": "Kalendarz",
+    "messages": "Wiadomości",
+    "gallery": "Galeria",
+    "pricing": "Cennik",
+    "logout": "Wyloguj",
+    "status": {
+      "pending": "Oczekująca",
+      "confirmed": "Potwierdzona",
+      "cancelled": "Anulowana"
+    }
+  }
+}
