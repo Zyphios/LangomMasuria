@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: lagom
+      POSTGRES_USER: lagom
+      POSTGRES_PASSWORD: lagom_pass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
+  backend:
+    build: ./backend
+    ports:
+      - '4000:4000'
+    environment:
+      DATABASE_URL: postgresql://lagom:lagom_pass@db:5432/lagom
+      JWT_SECRET: change_me_in_production
+      SMTP_HOST: smtp.example.com
+      SMTP_PORT: '587'
+      SMTP_USER: ''
+      SMTP_PASS: ''
+      OWNER_EMAIL: hello@lagommasuria.pl
+      PAYU_MERCHANT_ID: stub
+      PAYU_SECRET_KEY: stub
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    ports:
+      - '3000:3000'
+    environment:
+      VITE_API_URL: http://localhost:4000
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
