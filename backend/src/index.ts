@@ -2,6 +2,7 @@ import 'dotenv/config';
 import cors from 'cors';
 import express, { type NextFunction, type Request, type Response } from 'express';
 import { PrismaClient } from '@prisma/client';
+import { availabilityRouter } from './routes/availability';
 
 export const prisma = new PrismaClient();
 
@@ -10,6 +11,7 @@ export const createApp = () => {
 
   app.use(cors());
   app.use(express.json());
+  app.use('/api/availability', availabilityRouter);
 
   app.use((_req: Request, res: Response) => {
     res.status(404).json({ message: 'Not found' });
