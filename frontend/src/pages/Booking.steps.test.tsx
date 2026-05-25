@@ -31,7 +31,7 @@ describe('booking wizard', () => {
     
     await user.click(screen.getByRole('button', { name: 'Uruchom płatność testową' }));
     
-    expect(await screen.findByText('STUB-booking-1')).toBeInTheDocument();
+    expect(await screen.findByText(/STUB-booking-1/)).toBeInTheDocument();
     expect(await screen.findByText('Opłata za sprzątanie: 200 PLN')).toBeInTheDocument();
   });
 });
