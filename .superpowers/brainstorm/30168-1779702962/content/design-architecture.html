@@ -1,0 +1,82 @@
+<h2>Architektura — Lagom Masuria</h2>
+<p class="subtitle">Sekcja 1/4 — Przegląd systemu. Zatwierdź zanim przejdziemy dalej.</p>
+
+<div class="section">
+  <h3>Docker Compose — 3 kontenery</h3>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:24px">
+
+    <div style="flex:1;min-width:200px;background:#1e293b;border:2px solid #38bdf8;border-radius:12px;padding:20px">
+      <div style="color:#38bdf8;font-weight:700;font-size:13px;letter-spacing:1px;margin-bottom:8px">FRONTEND :3000</div>
+      <div style="color:#f1f5f9;font-size:15px;font-weight:600;margin-bottom:6px">React + Vite + TS</div>
+      <ul style="color:#94a3b8;font-size:13px;margin:0;padding-left:16px;line-height:1.8">
+        <li>Tailwind CSS</li>
+        <li>react-router-dom v6</li>
+        <li>react-i18next (PL/EN)</li>
+        <li>react-query (dane z API)</li>
+        <li>Panel admina (trasa /admin)</li>
+      </ul>
+    </div>
+
+    <div style="flex:1;min-width:200px;background:#1e293b;border:2px solid #a78bfa;border-radius:12px;padding:20px">
+      <div style="color:#a78bfa;font-weight:700;font-size:13px;letter-spacing:1px;margin-bottom:8px">BACKEND :4000</div>
+      <div style="color:#f1f5f9;font-size:15px;font-weight:600;margin-bottom:6px">Express.js + TS</div>
+      <ul style="color:#94a3b8;font-size:13px;margin:0;padding-left:16px;line-height:1.8">
+        <li>Prisma ORM</li>
+        <li>REST API (/api/*)</li>
+        <li>Nodemailer (SMTP)</li>
+        <li>JWT — autentykacja admina</li>
+        <li>Zaślepka PayU (/api/payment)</li>
+        <li>Zod — walidacja danych</li>
+      </ul>
+    </div>
+
+    <div style="flex:1;min-width:200px;background:#1e293b;border:2px solid #34d399;border-radius:12px;padding:20px">
+      <div style="color:#34d399;font-weight:700;font-size:13px;letter-spacing:1px;margin-bottom:8px">DATABASE :5432</div>
+      <div style="color:#f1f5f9;font-size:15px;font-weight:600;margin-bottom:6px">PostgreSQL 16</div>
+      <ul style="color:#94a3b8;font-size:13px;margin:0;padding-left:16px;line-height:1.8">
+        <li>bookings</li>
+        <li>blocked_dates</li>
+        <li>contact_messages</li>
+        <li>gallery_images</li>
+        <li>pricing_seasons</li>
+        <li>admin_users</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="background:#0f172a;border-radius:8px;padding:16px;color:#64748b;font-size:13px;line-height:1.8">
+    <span style="color:#38bdf8">Frontend</span> → REST API (fetch) →
+    <span style="color:#a78bfa">Backend</span> → Prisma →
+    <span style="color:#34d399">PostgreSQL</span><br>
+    <span style="color:#a78bfa">Backend</span> → Nodemailer → SMTP (e-mail do właściciela)<br>
+    <span style="color:#a78bfa">Backend</span> → zaślepka PayU → (prawdziwe płatności w przyszłości)<br>
+    Panel admina: JWT token w localStorage, chronione trasy na froncie i backendzie
+  </div>
+</div>
+
+<div class="section">
+  <h3>Podstrony publiczne (z screenshotów)</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div style="background:#1e293b;padding:14px;border-radius:8px;color:#94a3b8;font-size:13px">
+      <strong style="color:#f1f5f9">/ — Strona główna</strong><br>
+      Hero, udogodnienia (jacuzzi/las/jezioro), podgląd wnętrza
+    </div>
+    <div style="background:#1e293b;padding:14px;border-radius:8px;color:#94a3b8;font-size:13px">
+      <strong style="color:#f1f5f9">/dom — Dom i Atrakcje</strong><br>
+      Opis domu (120m², 3 sypialnie, 8 osób), atrakcje w okolicy
+    </div>
+    <div style="background:#1e293b;padding:14px;border-radius:8px;color:#94a3b8;font-size:13px">
+      <strong style="color:#f1f5f9">/galeria — Galeria i Cennik</strong><br>
+      Siatka zdjęć (Unsplash), 3 sezony cenowe
+    </div>
+    <div style="background:#1e293b;padding:14px;border-radius:8px;color:#94a3b8;font-size:13px">
+      <strong style="color:#f1f5f9">/rezerwacja — Rezerwacja i Kontakt</strong><br>
+      Kreator 4-krokowy + formularz kontaktowy + mapa
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:24px;padding:16px;background:#172554;border-radius:8px;border-left:4px solid #38bdf8">
+  <strong style="color:#f1f5f9">Jak wygląda ta sekcja?</strong>
+  <p style="color:#94a3b8;margin:6px 0 0;font-size:13px">Odpowiedz w terminalu — „OK" żeby przejść do schematu bazy danych, lub napisz co zmienić.</p>
+</div>

@@ -1,0 +1,81 @@
+<h2>Wybierz architekturę aplikacji</h2>
+<p class="subtitle">3 podejścia do budowy Lagom Masuria — każde jako osobne kontenery Docker</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>React + Node/Express + PostgreSQL ⭐ Rekomendowane</h3>
+      <p>Trzy osobne kontenery Docker: <strong>React (Vite)</strong> jako frontend SPA, <strong>Express.js</strong> jako REST API backend, <strong>PostgreSQL</strong> jako baza danych. Panel admina jako osobna trasa w React.</p>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>Zalety</h4>
+          <ul>
+            <li>Czyste oddzielenie: frontend / backend / db</li>
+            <li>Idealnie pasuje do wymagania "3 kontenery"</li>
+            <li>Node.js = łatwa integracja e-mail (Nodemailer)</li>
+            <li>Duże community, wiele gotowych bibliotek</li>
+            <li>Łatwe zarządzanie i18n (react-i18next)</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Wady</h4>
+          <ul>
+            <li>SPA — słabszy SEO bez SSR (można dodać później)</li>
+            <li>Dwa osobne projekty JS do utrzymania</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Next.js (fullstack) + PostgreSQL</h3>
+      <p>Jeden kontener <strong>Next.js</strong> obsługuje zarówno frontend (SSR/SSG) jak i API routes jako backend. Drugi kontener to <strong>PostgreSQL</strong>. Opcjonalnie Nginx jako proxy.</p>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>Zalety</h4>
+          <ul>
+            <li>Jeden codebase — mniej plików konfiguracyjnych</li>
+            <li>Lepszy SEO dzięki Server-Side Rendering</li>
+            <li>Szybsza pierwsza strona (ważne dla turystów)</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Wady</h4>
+          <ul>
+            <li>Frontend i backend pomieszane w jednym projekcie</li>
+            <li>Trudniejsze skalowanie oddzielnie</li>
+            <li>Nie spełnia dosłownie wymagania "osobny backend"</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>React + FastAPI (Python) + PostgreSQL</h3>
+      <p><strong>React (Vite)</strong> frontend, <strong>FastAPI</strong> backend w Pythonie, <strong>PostgreSQL</strong> baza. Trzy kontenery Docker.</p>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>Zalety</h4>
+          <ul>
+            <li>FastAPI bardzo szybkie i z auto-dokumentacją (Swagger)</li>
+            <li>Python — łatwe dodanie AI/ML w przyszłości</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Wady</h4>
+          <ul>
+            <li>Dwa różne języki (JS + Python) — trudniejsze utrzymanie</li>
+            <li>Większy narzut konfiguracyjny</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

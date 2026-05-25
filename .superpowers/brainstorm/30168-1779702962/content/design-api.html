@@ -1,0 +1,84 @@
+<h2>API i Panel Admina — Sekcja 3/4</h2>
+<p class="subtitle">REST API endpoints + funkcje panelu admina. Zatwierdź zanim przejdziemy dalej.</p>
+
+<div class="section">
+  <h3>REST API (Express.js :4000)</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+
+    <div style="background:#1e293b;border-radius:10px;padding:16px">
+      <div style="color:#38bdf8;font-weight:700;font-size:12px;letter-spacing:1px;margin-bottom:10px">🌐 PUBLICZNE</div>
+      <table style="width:100%;font-size:12px;color:#94a3b8;border-collapse:collapse;line-height:2">
+        <tr><td style="color:#34d399;padding:2px 8px 2px 0">GET</td><td style="color:#f1f5f9">/api/availability</td><td style="padding-left:8px">?month&year → zajęte daty</td></tr>
+        <tr><td style="color:#fbbf24;padding:2px 8px 2px 0">POST</td><td style="color:#f1f5f9">/api/bookings</td><td style="padding-left:8px">Złóż rezerwację</td></tr>
+        <tr><td style="color:#fbbf24;padding:2px 8px 2px 0">POST</td><td style="color:#f1f5f9">/api/contact</td><td style="padding-left:8px">Wyślij wiadomość</td></tr>
+        <tr><td style="color:#34d399;padding:2px 8px 2px 0">GET</td><td style="color:#f1f5f9">/api/gallery</td><td style="padding-left:8px">Lista zdjęć</td></tr>
+        <tr><td style="color:#34d399;padding:2px 8px 2px 0">GET</td><td style="color:#f1f5f9">/api/pricing</td><td style="padding-left:8px">Sezony cenowe</td></tr>
+        <tr><td style="color:#fbbf24;padding:2px 8px 2px 0">POST</td><td style="color:#f1f5f9">/api/payment/init</td><td style="padding-left:8px">Zaślepka PayU</td></tr>
+        <tr><td style="color:#fbbf24;padding:2px 8px 2px 0">POST</td><td style="color:#f1f5f9">/api/payment/notify</td><td style="padding-left:8px">PayU webhook (stub)</td></tr>
+      </table>
+    </div>
+
+    <div style="background:#1e293b;border-radius:10px;padding:16px">
+      <div style="color:#fb7185;font-weight:700;font-size:12px;letter-spacing:1px;margin-bottom:10px">🔐 ADMIN (JWT wymagany)</div>
+      <table style="width:100%;font-size:12px;color:#94a3b8;border-collapse:collapse;line-height:2">
+        <tr><td style="color:#fbbf24;padding:2px 8px 2px 0">POST</td><td style="color:#f1f5f9">/api/admin/login</td><td style="padding-left:8px">Zaloguj admina</td></tr>
+        <tr><td style="color:#34d399;padding:2px 8px 2px 0">GET</td><td style="color:#f1f5f9">/api/admin/bookings</td><td style="padding-left:8px">Lista rezerwacji</td></tr>
+        <tr><td style="color:#a78bfa;padding:2px 8px 2px 0">PATCH</td><td style="color:#f1f5f9">/api/admin/bookings/:id</td><td style="padding-left:8px">Zmień status</td></tr>
+        <tr><td style="color:#f87171;padding:2px 8px 2px 0">DELETE</td><td style="color:#f1f5f9">/api/admin/bookings/:id</td><td style="padding-left:8px">Usuń rezerwację</td></tr>
+        <tr><td style="color:#34d399;padding:2px 8px 2px 0">GET</td><td style="color:#f1f5f9">/api/admin/messages</td><td style="padding-left:8px">Wiadomości kontakt.</td></tr>
+        <tr><td style="color:#a78bfa;padding:2px 8px 2px 0">PATCH</td><td style="color:#f1f5f9">/api/admin/messages/:id</td><td style="padding-left:8px">Oznacz jako przeczyt.</td></tr>
+        <tr><td style="color:#fbbf24;padding:2px 8px 2px 0">POST</td><td style="color:#f1f5f9">/api/admin/blocked-dates</td><td style="padding-left:8px">Zablokuj datę</td></tr>
+        <tr><td style="color:#f87171;padding:2px 8px 2px 0">DELETE</td><td style="color:#f1f5f9">/api/admin/blocked-dates/:id</td><td style="padding-left:8px">Odblokuj datę</td></tr>
+        <tr><td style="color:#fbbf24;padding:2px 8px 2px 0">POST</td><td style="color:#f1f5f9">/api/admin/gallery</td><td style="padding-left:8px">Dodaj zdjęcie</td></tr>
+        <tr><td style="color:#f87171;padding:2px 8px 2px 0">DELETE</td><td style="color:#f1f5f9">/api/admin/gallery/:id</td><td style="padding-left:8px">Usuń zdjęcie</td></tr>
+        <tr><td style="color:#a78bfa;padding:2px 8px 2px 0">PATCH</td><td style="color:#f1f5f9">/api/admin/pricing/:id</td><td style="padding-left:8px">Edytuj cennik</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Panel Admina (/admin) — 5 zakładek</h3>
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px">
+    <div style="background:#1e293b;border-radius:8px;padding:14px;text-align:center">
+      <div style="font-size:22px;margin-bottom:6px">📅</div>
+      <div style="color:#f1f5f9;font-size:12px;font-weight:600">Rezerwacje</div>
+      <div style="color:#64748b;font-size:11px;margin-top:4px">Lista + zmiana statusu (pending/confirmed/cancelled)</div>
+    </div>
+    <div style="background:#1e293b;border-radius:8px;padding:14px;text-align:center">
+      <div style="font-size:22px;margin-bottom:6px">🗓️</div>
+      <div style="color:#f1f5f9;font-size:12px;font-weight:600">Dostępność</div>
+      <div style="color:#64748b;font-size:11px;margin-top:4px">Kalendarz — blokuj / odblokuj daty ręcznie</div>
+    </div>
+    <div style="background:#1e293b;border-radius:8px;padding:14px;text-align:center">
+      <div style="font-size:22px;margin-bottom:6px">✉️</div>
+      <div style="color:#f1f5f9;font-size:12px;font-weight:600">Wiadomości</div>
+      <div style="color:#64748b;font-size:11px;margin-top:4px">Formularz kontaktowy — odczyt + oznacz jako przeczytane</div>
+    </div>
+    <div style="background:#1e293b;border-radius:8px;padding:14px;text-align:center">
+      <div style="font-size:22px;margin-bottom:6px">🖼️</div>
+      <div style="color:#f1f5f9;font-size:12px;font-weight:600">Galeria</div>
+      <div style="color:#64748b;font-size:11px;margin-top:4px">Dodaj URL / usuń / zmień kolejność</div>
+    </div>
+    <div style="background:#1e293b;border-radius:8px;padding:14px;text-align:center">
+      <div style="font-size:22px;margin-bottom:6px">💰</div>
+      <div style="color:#f1f5f9;font-size:12px;font-weight:600">Cennik</div>
+      <div style="color:#64748b;font-size:11px;margin-top:4px">Edytuj ceny sezonów i daty obowiązywania</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>E-mail powiadomienia (Nodemailer)</h3>
+  <div style="background:#1e293b;border-radius:8px;padding:14px;font-size:12px;color:#94a3b8;line-height:2">
+    <span style="color:#fbbf24">📧 Nowa rezerwacja</span> → e-mail do właściciela z datami, gościem, kwotą<br>
+    <span style="color:#fbbf24">📧 Nowa wiadomość</span> → e-mail do właściciela z treścią formularza<br>
+    <span style="color:#34d399">📧 Potwierdzenie</span> → e-mail do gościa po zatwierdzeniu rezerwacji przez admina<br>
+    <span style="color:#64748b">Konfiguracja przez .env: SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, OWNER_EMAIL</span>
+  </div>
+</div>
+
+<div style="margin-top:16px;padding:16px;background:#172554;border-radius:8px;border-left:4px solid #38bdf8">
+  <strong style="color:#f1f5f9">Wygląda OK?</strong>
+  <p style="color:#94a3b8;margin:6px 0 0;font-size:13px">Odpowiedz „OK" → ostatnia sekcja: struktura folderów i Docker Compose.</p>
+</div>

@@ -1,0 +1,88 @@
+<h2>Schemat bazy danych — Sekcja 2/4</h2>
+<p class="subtitle">PostgreSQL — 6 tabel. Zatwierdź zanim przejdziemy dalej.</p>
+
+<div class="section">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+
+    <div style="background:#1e293b;border-radius:10px;padding:16px;border-top:3px solid #38bdf8">
+      <div style="color:#38bdf8;font-weight:700;font-size:12px;letter-spacing:1px;margin-bottom:10px">BOOKINGS</div>
+      <table style="width:100%;font-size:12px;color:#94a3b8;border-collapse:collapse">
+        <tr><td style="padding:3px 6px;color:#f1f5f9">id</td><td style="padding:3px 6px">uuid PK</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">guest_name</td><td style="padding:3px 6px">varchar</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">guest_email</td><td style="padding:3px 6px">varchar</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">guest_phone</td><td style="padding:3px 6px">varchar</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">check_in</td><td style="padding:3px 6px">date</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">check_out</td><td style="padding:3px 6px">date</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">guests_count</td><td style="padding:3px 6px">int</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">status</td><td style="padding:3px 6px">enum: pending / confirmed / cancelled</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">total_price</td><td style="padding:3px 6px">decimal</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">notes</td><td style="padding:3px 6px">text nullable</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">created_at</td><td style="padding:3px 6px">timestamp</td></tr>
+      </table>
+    </div>
+
+    <div style="background:#1e293b;border-radius:10px;padding:16px;border-top:3px solid #f87171">
+      <div style="color:#f87171;font-weight:700;font-size:12px;letter-spacing:1px;margin-bottom:10px">BLOCKED_DATES</div>
+      <table style="width:100%;font-size:12px;color:#94a3b8;border-collapse:collapse">
+        <tr><td style="padding:3px 6px;color:#f1f5f9">id</td><td style="padding:3px 6px">uuid PK</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">date</td><td style="padding:3px 6px">date unique</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">reason</td><td style="padding:3px 6px">varchar nullable</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">created_at</td><td style="padding:3px 6px">timestamp</td></tr>
+      </table>
+      <div style="margin-top:10px;color:#64748b;font-size:11px">Daty zablokowane ręcznie przez admina + automatycznie po potwierdzeniu rezerwacji</div>
+    </div>
+
+    <div style="background:#1e293b;border-radius:10px;padding:16px;border-top:3px solid #a78bfa">
+      <div style="color:#a78bfa;font-weight:700;font-size:12px;letter-spacing:1px;margin-bottom:10px">CONTACT_MESSAGES</div>
+      <table style="width:100%;font-size:12px;color:#94a3b8;border-collapse:collapse">
+        <tr><td style="padding:3px 6px;color:#f1f5f9">id</td><td style="padding:3px 6px">uuid PK</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">name</td><td style="padding:3px 6px">varchar</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">email</td><td style="padding:3px 6px">varchar</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">message</td><td style="padding:3px 6px">text</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">is_read</td><td style="padding:3px 6px">boolean default false</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">created_at</td><td style="padding:3px 6px">timestamp</td></tr>
+      </table>
+    </div>
+
+    <div style="background:#1e293b;border-radius:10px;padding:16px;border-top:3px solid #fbbf24">
+      <div style="color:#fbbf24;font-weight:700;font-size:12px;letter-spacing:1px;margin-bottom:10px">GALLERY_IMAGES</div>
+      <table style="width:100%;font-size:12px;color:#94a3b8;border-collapse:collapse">
+        <tr><td style="padding:3px 6px;color:#f1f5f9">id</td><td style="padding:3px 6px">uuid PK</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">url</td><td style="padding:3px 6px">varchar</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">caption_pl</td><td style="padding:3px 6px">varchar nullable</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">caption_en</td><td style="padding:3px 6px">varchar nullable</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">sort_order</td><td style="padding:3px 6px">int default 0</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">created_at</td><td style="padding:3px 6px">timestamp</td></tr>
+      </table>
+    </div>
+
+    <div style="background:#1e293b;border-radius:10px;padding:16px;border-top:3px solid #34d399">
+      <div style="color:#34d399;font-weight:700;font-size:12px;letter-spacing:1px;margin-bottom:10px">PRICING_SEASONS</div>
+      <table style="width:100%;font-size:12px;color:#94a3b8;border-collapse:collapse">
+        <tr><td style="padding:3px 6px;color:#f1f5f9">id</td><td style="padding:3px 6px">uuid PK</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">name_pl</td><td style="padding:3px 6px">varchar (np. "Sezon niski")</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">name_en</td><td style="padding:3px 6px">varchar (np. "Low season")</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">price_per_night</td><td style="padding:3px 6px">decimal</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">date_from</td><td style="padding:3px 6px">date</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">date_to</td><td style="padding:3px 6px">date</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">is_featured</td><td style="padding:3px 6px">boolean (badge "POPULARNY")</td></tr>
+      </table>
+    </div>
+
+    <div style="background:#1e293b;border-radius:10px;padding:16px;border-top:3px solid #fb7185">
+      <div style="color:#fb7185;font-weight:700;font-size:12px;letter-spacing:1px;margin-bottom:10px">ADMIN_USERS</div>
+      <table style="width:100%;font-size:12px;color:#94a3b8;border-collapse:collapse">
+        <tr><td style="padding:3px 6px;color:#f1f5f9">id</td><td style="padding:3px 6px">uuid PK</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">email</td><td style="padding:3px 6px">varchar unique</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">password_hash</td><td style="padding:3px 6px">varchar (bcrypt)</td></tr>
+        <tr><td style="padding:3px 6px;color:#f1f5f9">created_at</td><td style="padding:3px 6px">timestamp</td></tr>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<div style="margin-top:20px;padding:16px;background:#172554;border-radius:8px;border-left:4px solid #38bdf8">
+  <strong style="color:#f1f5f9">Wygląda OK?</strong>
+  <p style="color:#94a3b8;margin:6px 0 0;font-size:13px">Odpowiedz „OK" → przechodzimy do API i panelu admina. Napisz co zmienić jeśli czegoś brakuje.</p>
+</div>

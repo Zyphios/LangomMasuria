@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html lang="pl"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>O Naszym Domu - Lagom Masuria</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#bbcca9",
+                        "background": "#fbf9f8",
+                        "primary": "#455538",
+                        "tertiary-fixed-dim": "#c9c6c0",
+                        "secondary-fixed": "#ffdcc5",
+                        "tertiary": "#52504c",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed": "#e6e2dc",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#fdc39a",
+                        "on-surface": "#1b1c1c",
+                        "inverse-on-surface": "#f3f0f0",
+                        "surface-tint": "#536346",
+                        "inverse-surface": "#303030",
+                        "surface-container-highest": "#e4e2e1",
+                        "secondary-fixed-dim": "#f4bb92",
+                        "surface-container-low": "#f6f3f2",
+                        "on-tertiary-fixed": "#1c1c18",
+                        "on-primary-fixed": "#121f08",
+                        "surface-bright": "#fbf9f8",
+                        "on-primary": "#ffffff",
+                        "on-background": "#1b1c1c",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#484742",
+                        "on-primary-fixed-variant": "#3c4b30",
+                        "surface-dim": "#dcd9d9",
+                        "surface-container": "#f0eded",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#dceec9",
+                        "surface-variant": "#e4e2e1",
+                        "on-tertiary-container": "#ece8e2",
+                        "error": "#ba1a1a",
+                        "primary-container": "#5d6d4f",
+                        "outline": "#75786f",
+                        "on-secondary-container": "#794e2e",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#eae8e7",
+                        "surface": "#fbf9f8",
+                        "secondary": "#805533",
+                        "on-secondary-fixed-variant": "#653d1e",
+                        "primary-fixed-dim": "#bbcca9",
+                        "primary-fixed": "#d6e8c3",
+                        "on-surface-variant": "#444840",
+                        "tertiary-container": "#6a6863",
+                        "on-secondary-fixed": "#301400",
+                        "outline-variant": "#c5c8bd"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-gap": "120px",
+                        "margin-desktop": "64px",
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "base": "8px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["DM Sans"],
+                        "label-caps": ["DM Sans"],
+                        "headline-md": ["DM Sans"],
+                        "headline-lg-mobile": ["DM Sans"],
+                        "headline-lg": ["DM Sans"],
+                        "body-md": ["DM Sans"],
+                        "headline-sm": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "headline-md": ["32px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+                        "headline-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-sm": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar JSON execution -->
+<header class="bg-surface/90 dark:bg-surface/90 backdrop-blur-md fixed top-0 w-full z-50">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-20">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed" style="font-size: 32px;">water_lux</span>
+<span class="font-headline-md text-headline-md tracking-tighter text-primary dark:text-primary-fixed">LAGOM MASURIA</span>
+</div>
+<nav class="hidden md:flex gap-8 items-center font-body-md text-body-md">
+<a class="text-primary dark:text-primary-fixed font-medium border-b border-primary hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 cursor-pointer active:opacity-70" href="#">The House</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 cursor-pointer active:opacity-70" href="#">Attractions</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 cursor-pointer active:opacity-70" href="#">Gallery</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 cursor-pointer active:opacity-70" href="#">Rates</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 cursor-pointer active:opacity-70" href="#">Contact</a>
+</nav>
+<button class="bg-primary text-on-primary font-label-caps text-label-caps uppercase px-8 py-4 rounded hover:bg-primary/90 transition-colors cursor-pointer active:opacity-70">
+                BOOK NOW
+            </button>
+</div>
+</header>
+<main class="pt-[140px] pb-section-gap">
+<!-- Hero & House Description -->
+<section class="max-w-container-max mx-auto px-margin-desktop">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center">
+<div class="md:col-span-5 flex flex-col gap-8">
+<h1 class="font-headline-lg text-headline-lg text-on-background">O Naszym Domu</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+                        Zaprojektowany z myślą o filozofii 'Lagom' – w sam raz. Nasz dom to przestrzeń, gdzie skandynawski minimalizm spotyka się z ciepłem mazurskiego krajobrazu. Oferujemy miejsce do oddechu i wyciszenia w samym sercu natury w miejscowości Stare Juchy.
+                    </p>
+<div class="grid grid-cols-3 gap-4 pt-4 border-t border-surface-dim">
+<div class="flex flex-col gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">home</span>
+<span class="font-headline-sm text-headline-sm">120 m²</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Przestrzeni</span>
+</div>
+<div class="flex flex-col gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">bed</span>
+<span class="font-headline-sm text-headline-sm">3</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Sypialnie</span>
+</div>
+<div class="flex flex-col gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">groups</span>
+<span class="font-headline-sm text-headline-sm">8</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Osób</span>
+</div>
+</div>
+</div>
+<div class="md:col-span-7 h-[600px] w-full rounded-xl overflow-hidden bg-surface-container-low">
+<img alt="Lagom Masuria House" class="w-full h-full object-cover" data-alt="A serene, high-quality architectural photograph of a modern minimalist cabin exterior clad in warm, light wood, nestled seamlessly among tall pine trees near a calm lake. The lighting is soft, natural daylight casting gentle, ambient shadows, creating a bright, breathable light-mode aesthetic. The mood is quiet, inviting, and premium, perfectly embodying the Lagom philosophy and Scandinavian functionalism blended with organic nature." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOacmyreIUsbjNDZyZRV6huBiJxA2gvM6ve7WPMu7XS9j5N8iclhVfvKshH0j9icwHG4hn4ZXLnxJCvChg_XBepNpvukBi-_0D3uiiUGw0UkoUtlm4Xn7uyMUaOSW1tnriPYMZwbXMHw8VU1VMiaTxwZhlFBp32XJHCuX164cQ25k8y-YuB_KXvaoO6_v3VPBVwYAsoP56hub9T0WUpZVcwbKwyFzk1pjbSjuvKPMw7MUoJgOsGXNptGGfbTxOa52sQSam7coN5M8B"/>
+</div>
+</div>
+</section>
+<!-- Attractions Bento Grid -->
+<section class="max-w-container-max mx-auto px-margin-desktop mt-section-gap">
+<h2 class="font-headline-md text-headline-md text-on-background mb-16 text-center">Atrakcje w okolicy</h2>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter auto-rows-[300px]">
+<!-- Main Attraction: Jezioro Garbas -->
+<div class="md:col-span-8 rounded-xl overflow-hidden relative group">
+<img alt="Jezioro Garbas" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A pristine, wide-angle landscape shot of a calm, clear lake surrounded by lush green forests under a bright, partly cloudy sky. The water reflects the soft, airy light of a warm summer day. The scene captures the essence of an untouched natural swimming spot, evoking a sense of tranquility, premium leisure, and connection with nature in a minimalist, breathable light-mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMJGu22SBCNMGUvPqJIyBCRMQfq3bzH2ZJ_86lBsCN8b0eXHCFKO54MSzaO3GNij6MYkT0D5gID2Lk02cdnnYJwhl_kPprToctyqyQaGGRbLnzHOq6_PjN9WrGdLjCp0LraUmhP3vVAsqkNZUcNMN1wePFLoXRrazwF41dbkq-OvuLOiceKSEIue0thqQcs0-lWHjie9XCh7Nw7zjyil9dp0Eqok3LVNktI1u4Adu5yt38jxluytXE92gXwxHD92QdncIvOSR0LW_L"/>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-8">
+<span class="font-label-caps text-label-caps text-on-primary uppercase tracking-widest mb-2 block">500m od domu</span>
+<h3 class="font-headline-md text-headline-md text-on-primary mb-2">Jezioro Garbas</h3>
+<p class="font-body-md text-body-md text-on-primary/90">Krystalicznie czysta woda i piaszczyste, łagodne zejście – idealne naturalne kąpielisko.</p>
+</div>
+</div>
+<!-- Kajaki i SUP -->
+<div class="md:col-span-4 rounded-xl bg-surface-container flex flex-col p-8 justify-between hover:bg-surface-container-high transition-colors">
+<div class="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-6 text-primary">
+<span class="material-symbols-outlined" style="font-size: 32px;">kayaking</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-3">Kajaki i SUP</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Eksploruj spokojne wody okolicznych jezior w swoim tempie. Sprzęt dostępny na miejscu.</p>
+</div>
+</div>
+<!-- Wycieczki rowerowe -->
+<div class="md:col-span-4 rounded-xl bg-surface-container flex flex-col p-8 justify-between hover:bg-surface-container-high transition-colors">
+<div class="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-6 text-primary">
+<span class="material-symbols-outlined" style="font-size: 32px;">pedal_bike</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-3">Wycieczki rowerowe</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Setki kilometrów leśnych ścieżek i malowniczych tras wokół Starych Juch.</p>
+</div>
+</div>
+<!-- Wędkarstwo -->
+<div class="md:col-span-4 rounded-xl bg-surface-container flex flex-col p-8 justify-between hover:bg-surface-container-high transition-colors">
+<div class="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-6 text-primary">
+<span class="material-symbols-outlined" style="font-size: 32px;">phishing</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-3">Wędkarstwo</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Cisza o poranku na jeziorze Garbas. Zapewniamy dostęp do prywatnego pomostu.</p>
+</div>
+</div>
+<!-- Lokalna kuchnia -->
+<div class="md:col-span-4 rounded-xl relative overflow-hidden group">
+<img alt="Lokalna kuchnia" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A close-up, highly textured photo of rustic, fresh artisan bread and locally sourced farm ingredients resting on a clean, light oak wooden table. The lighting is bright, soft, and natural, creating warm, tactile highlights. The composition is minimalist and organic, emphasizing quality and simplicity, aligning perfectly with a premium, unpretentious light-mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHyA7H8etxgNf9uIi5VDJa_vzCpQu2NlwYm6YMzEGfzTVHK0PgmEPqxKFlqxrc192vXusxHea-thS9zyJcExxWRiduEmvjPEG5rqPYOYUf1kWysjmu0a1ODrX4ualQ4rympIiJ8N46GdoUiOMnJn1UlW23H0IMxnmYu8Jb0aK7W6L759bptZCCniELgXu2meSd7s20XgUK4tqqdjSafUXEY4i0PSeaiStOf1DEIZgpJ79imGHfZNt9Xy2QQixfld2ZSI4G0E-TDSly"/>
+<div class="absolute inset-0 bg-inverse-surface/40 group-hover:bg-inverse-surface/50 transition-colors"></div>
+<div class="absolute inset-0 p-8 flex flex-col justify-end">
+<h3 class="font-headline-sm text-headline-sm text-on-primary mb-2">Lokalna kuchnia</h3>
+<p class="font-body-md text-body-md text-on-primary/90">Odkryj smaki regionu u zaprzyjaźnionych gospodarzy.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer JSON execution -->
+<footer class="w-full mt-section-gap bg-surface-container-low dark:bg-surface-container-highest">
+<div class="flex flex-col md:flex-row justify-between items-start gap-gutter max-w-container-max mx-auto px-margin-desktop py-16">
+<div class="flex flex-col gap-4">
+<span class="font-label-caps text-label-caps text-primary dark:text-primary-fixed uppercase tracking-widest">LAGOM MASURIA</span>
+<p class="font-body-md text-body-md text-secondary dark:text-secondary-fixed">© 2024 Lagom Masuria. Just enough. All rights reserved.</p>
+</div>
+<nav class="flex flex-col md:flex-row gap-6 md:gap-12">
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors underline-offset-4 hover:underline" href="#">The House</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors underline-offset-4 hover:underline" href="#">Attractions</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors underline-offset-4 hover:underline" href="#">Gallery</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors underline-offset-4 hover:underline" href="#">Rates</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors underline-offset-4 hover:underline" href="#">Contact</a>
+</nav>
+</div>
+</footer>
+</body></html>

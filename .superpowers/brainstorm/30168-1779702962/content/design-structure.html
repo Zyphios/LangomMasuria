@@ -1,0 +1,113 @@
+<h2>Struktura Projektu i Docker — Sekcja 4/4</h2>
+<p class="subtitle">Ostatnia sekcja — zatwierdź żeby zapisać spec i przejść do implementacji.</p>
+
+<div class="section">
+  <h3>Struktura folderów</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+
+    <div style="background:#1e293b;border-radius:10px;padding:16px;font-family:monospace;font-size:12px;line-height:1.9">
+      <div style="color:#38bdf8;font-weight:700;margin-bottom:8px">📁 frontend/</div>
+      <div style="color:#94a3b8">
+        src/<br>
+        &nbsp;&nbsp;├── <span style="color:#f1f5f9">components/</span> <span style="color:#475569"># wspólne komponenty</span><br>
+        &nbsp;&nbsp;├── <span style="color:#f1f5f9">pages/</span><br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── Home.tsx<br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── House.tsx<br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── Gallery.tsx<br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── Booking.tsx<br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── admin/<br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── Dashboard.tsx<br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── Bookings.tsx<br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── Calendar.tsx<br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── Messages.tsx<br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── Gallery.tsx<br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── Pricing.tsx<br>
+        &nbsp;&nbsp;├── <span style="color:#f1f5f9">hooks/</span> <span style="color:#475569"># custom React hooks</span><br>
+        &nbsp;&nbsp;├── <span style="color:#f1f5f9">i18n/</span> <span style="color:#475569"># pl.json, en.json</span><br>
+        &nbsp;&nbsp;├── <span style="color:#f1f5f9">api/</span> <span style="color:#475569"># funkcje fetch do backendu</span><br>
+        &nbsp;&nbsp;└── <span style="color:#f1f5f9">types/</span> <span style="color:#475569"># wspólne typy TS</span>
+      </div>
+    </div>
+
+    <div style="background:#1e293b;border-radius:10px;padding:16px;font-family:monospace;font-size:12px;line-height:1.9">
+      <div style="color:#a78bfa;font-weight:700;margin-bottom:8px">📁 backend/</div>
+      <div style="color:#94a3b8">
+        src/<br>
+        &nbsp;&nbsp;├── <span style="color:#f1f5f9">routes/</span><br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── bookings.ts<br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── contact.ts<br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── gallery.ts<br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── pricing.ts<br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── payment.ts <span style="color:#475569"># stub PayU</span><br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── admin.ts<br>
+        &nbsp;&nbsp;├── <span style="color:#f1f5f9">middleware/</span><br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── auth.ts <span style="color:#475569"># JWT verify</span><br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── validate.ts <span style="color:#475569"># Zod</span><br>
+        &nbsp;&nbsp;├── <span style="color:#f1f5f9">services/</span><br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── email.ts <span style="color:#475569"># Nodemailer</span><br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── availability.ts<br>
+        &nbsp;&nbsp;├── <span style="color:#f1f5f9">prisma/</span><br>
+        &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── schema.prisma<br>
+        &nbsp;&nbsp;└── <span style="color:#f1f5f9">types/</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>docker-compose.yml — usługi</h3>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+    <div style="background:#1e293b;border-radius:8px;padding:14px">
+      <div style="color:#38bdf8;font-weight:700;font-size:12px;margin-bottom:8px">frontend</div>
+      <div style="font-size:12px;color:#94a3b8;line-height:1.8">
+        image: node:20-alpine<br>
+        port: <span style="color:#f1f5f9">3000:3000</span><br>
+        build: ./frontend<br>
+        depends_on: backend
+      </div>
+    </div>
+    <div style="background:#1e293b;border-radius:8px;padding:14px">
+      <div style="color:#a78bfa;font-weight:700;font-size:12px;margin-bottom:8px">backend</div>
+      <div style="font-size:12px;color:#94a3b8;line-height:1.8">
+        image: node:20-alpine<br>
+        port: <span style="color:#f1f5f9">4000:4000</span><br>
+        build: ./backend<br>
+        depends_on: db<br>
+        env_file: .env
+      </div>
+    </div>
+    <div style="background:#1e293b;border-radius:8px;padding:14px">
+      <div style="color:#34d399;font-weight:700;font-size:12px;margin-bottom:8px">db</div>
+      <div style="font-size:12px;color:#94a3b8;line-height:1.8">
+        image: postgres:16<br>
+        port: <span style="color:#f1f5f9">5432:5432</span><br>
+        volume: postgres_data<br>
+        env: POSTGRES_DB/USER/PASSWORD
+      </div>
+    </div>
+  </div>
+  <div style="background:#0f172a;border-radius:8px;padding:12px;margin-top:12px;font-size:12px;color:#64748b">
+    <span style="color:#fbbf24">.env</span> — SMTP_*, DATABASE_URL, JWT_SECRET, OWNER_EMAIL, PAYU_* (zaślepka)
+  </div>
+</div>
+
+<div class="section">
+  <h3>Trasy React Router</h3>
+  <div style="background:#1e293b;border-radius:8px;padding:14px;font-size:12px;color:#94a3b8;line-height:2;font-family:monospace">
+    <span style="color:#38bdf8">/</span> → Home &nbsp;&nbsp;
+    <span style="color:#38bdf8">/house</span> → House &nbsp;&nbsp;
+    <span style="color:#38bdf8">/gallery</span> → Gallery &nbsp;&nbsp;
+    <span style="color:#38bdf8">/booking</span> → Booking<br>
+    <span style="color:#fb7185">/admin</span> → Login (redirect jeśli niezalogowany)<br>
+    <span style="color:#fb7185">/admin/bookings</span> &nbsp;
+    <span style="color:#fb7185">/admin/calendar</span> &nbsp;
+    <span style="color:#fb7185">/admin/messages</span> &nbsp;
+    <span style="color:#fb7185">/admin/gallery</span> &nbsp;
+    <span style="color:#fb7185">/admin/pricing</span>
+  </div>
+</div>
+
+<div style="margin-top:16px;padding:16px;background:#14532d;border-radius:8px;border-left:4px solid #34d399">
+  <strong style="color:#f1f5f9">✅ To ostatnia sekcja!</strong>
+  <p style="color:#94a3b8;margin:6px 0 0;font-size:13px">Odpowiedz „OK" → zapisuję dokument spec i przechodzimy do planowania implementacji.</p>
+</div>

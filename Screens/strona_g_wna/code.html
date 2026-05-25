@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html lang="pl"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Twój azyl na Mazurach - Lagom Masuria</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-primary": "#bbcca9",
+                      "background": "#fbf9f8",
+                      "primary": "#455538",
+                      "tertiary-fixed-dim": "#c9c6c0",
+                      "secondary-fixed": "#ffdcc5",
+                      "tertiary": "#52504c",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-fixed": "#e6e2dc",
+                      "on-secondary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "secondary-container": "#fdc39a",
+                      "on-surface": "#1b1c1c",
+                      "inverse-on-surface": "#f3f0f0",
+                      "surface-tint": "#536346",
+                      "inverse-surface": "#303030",
+                      "surface-container-highest": "#e4e2e1",
+                      "secondary-fixed-dim": "#f4bb92",
+                      "surface-container-low": "#f6f3f2",
+                      "on-tertiary-fixed": "#1c1c18",
+                      "on-primary-fixed": "#121f08",
+                      "surface-bright": "#fbf9f8",
+                      "on-primary": "#ffffff",
+                      "on-background": "#1b1c1c",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-fixed-variant": "#484742",
+                      "on-primary-fixed-variant": "#3c4b30",
+                      "surface-dim": "#dcd9d9",
+                      "surface-container": "#f0eded",
+                      "on-tertiary": "#ffffff",
+                      "on-primary-container": "#dceec9",
+                      "surface-variant": "#e4e2e1",
+                      "on-tertiary-container": "#ece8e2",
+                      "error": "#ba1a1a",
+                      "primary-container": "#5d6d4f",
+                      "outline": "#75786f",
+                      "on-secondary-container": "#794e2e",
+                      "on-error": "#ffffff",
+                      "surface-container-high": "#eae8e7",
+                      "surface": "#fbf9f8",
+                      "secondary": "#805533",
+                      "on-secondary-fixed-variant": "#653d1e",
+                      "primary-fixed-dim": "#bbcca9",
+                      "primary-fixed": "#d6e8c3",
+                      "on-surface-variant": "#444840",
+                      "tertiary-container": "#6a6863",
+                      "on-secondary-fixed": "#301400",
+                      "outline-variant": "#c5c8bd"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "section-gap": "120px",
+                      "margin-desktop": "64px",
+                      "container-max": "1280px",
+                      "gutter": "24px",
+                      "base": "8px",
+                      "margin-mobile": "20px"
+              },
+              "fontFamily": {
+                      "body-lg": ["DM Sans"],
+                      "label-caps": ["DM Sans"],
+                      "headline-md": ["DM Sans"],
+                      "headline-lg-mobile": ["DM Sans"],
+                      "headline-lg": ["DM Sans"],
+                      "body-md": ["DM Sans"],
+                      "headline-sm": ["DM Sans"]
+              },
+              "fontSize": {
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                      "headline-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-sm": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="bg-surface/90 dark:bg-surface/90 backdrop-blur-md text-primary dark:text-primary-fixed font-headline-sm text-headline-sm fixed top-0 w-full z-50">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="water_lux">water_lux</span>
+<span class="font-headline-md text-headline-md tracking-tighter text-primary dark:text-primary-fixed">LAGOM MASURIA</span>
+</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300" href="#">The House</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300" href="#">Attractions</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300" href="#">Gallery</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300" href="#">Rates</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300" href="#">Contact</a>
+</nav>
+<button class="hidden md:block bg-primary text-on-primary px-8 py-4 rounded-DEFAULT font-label-caps text-label-caps uppercase tracking-widest hover:bg-surface-tint transition-colors cursor-pointer active:opacity-70">
+                BOOK NOW
+            </button>
+<button class="md:hidden p-2 text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+<div class="bg-surface dark:bg-surface h-px w-full"></div>
+</header>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative h-[819px] min-h-[600px] flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img alt="Serene Masurian lake house exterior" class="w-full h-full object-cover" data-alt="A serene, high-quality architectural photograph of a modern, minimalist cabin in the Masurian forest near a lake. The cabin features dark wood cladding and large glass windows reflecting the surrounding pine trees. Soft, diffused morning light bathes the scene, highlighting the natural textures and the quietude of the environment. The color palette is dominated by deep forest greens, earthy wood tones, and the muted blues of the sky, creating a calming, premium retreat atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsReUEMb6oC-81Ma3e2mGnDVHqpBB-kCmCI359yPzDTXEi73Z3PIAT8yfWwgr_AsvkLamLeXQNV0Caw5iGsfILng6UxNk0JzHCTZCysy7y_6wQbIOXhgnTsXe95MmbMgno3qzsdk-8Esj4oi0Wt7jG9-M2uiF_Y6cp9o3yNoGdK-y0rueFb9p633RfA6GCv55zfkUbUB_C29p_N5aTN3-bE8Rk2ETN6cUJFhnFydR3uyuP1rd75ytbbBHbs-AMAqeqPM1LI7Ul2kiX"/>
+<div class="absolute inset-0 bg-black/30"></div>
+</div>
+<div class="relative z-10 max-w-container-max mx-auto px-margin-desktop text-center flex flex-col items-center">
+<h1 class="font-headline-lg text-headline-lg text-on-primary mb-6">Twój azyl na Mazurach</h1>
+<p class="font-body-lg text-body-lg text-on-primary/90 max-w-2xl mb-10">
+                    Odkryj harmonię w duchu Lagom. Minimalistyczny dom zatopiony w naturze, oferujący bliskość jeziora Garbas (500m) i spokój z dala od codzienności.
+                </p>
+<button class="bg-primary text-on-primary px-8 py-4 rounded-DEFAULT font-label-caps text-label-caps uppercase tracking-widest hover:bg-surface-tint transition-colors cursor-pointer active:opacity-70">
+                    ZAREZERWUJ TERAZ
+                </button>
+</div>
+</section>
+<!-- Features Bento Grid -->
+<section class="max-w-container-max mx-auto px-margin-desktop py-section-gap">
+<div class="text-center mb-16">
+<h2 class="font-headline-md text-headline-md text-primary mb-4">Udogodnienia</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl mx-auto">Wszystko, czego potrzebujesz do pełnego relaksu, zaprojektowane z dbałością o każdy detal.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Feature 1 -->
+<div class="bg-surface-container-low rounded-xl p-8 flex flex-col items-start gap-4 hover:bg-surface-container transition-colors duration-300">
+<div class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center mb-2">
+<span class="material-symbols-outlined" data-icon="hot_tub">hot_tub</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Jacuzzi i Bania</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Prywatna strefa relaksu na świeżym powietrzu, idealna na wieczorne odprężenie pod gwiazdami.</p>
+</div>
+<!-- Feature 2 -->
+<div class="bg-surface-container-low rounded-xl p-8 flex flex-col items-start gap-4 hover:bg-surface-container transition-colors duration-300">
+<div class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center mb-2">
+<span class="material-symbols-outlined" data-icon="forest">forest</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Otoczenie Lasu</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Zanurz się w zapachu sosnowego lasu. Nasza działka graniczy bezpośrednio z rezerwatem przyrody.</p>
+</div>
+<!-- Feature 3 -->
+<div class="bg-surface-container-low rounded-xl p-8 flex flex-col items-start gap-4 hover:bg-surface-container transition-colors duration-300">
+<div class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center mb-2">
+<span class="material-symbols-outlined" data-icon="water_drop">water_drop</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Bliskość Jeziora</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Zaledwie 500m dzieli Cię od krystalicznie czystego jeziora Garbas. Spacer idealny na letnie poranki.</p>
+</div>
+</div>
+</section>
+<!-- Interior Gallery Section -->
+<section class="bg-surface-container-lowest py-section-gap">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter items-center">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary mb-6">Wnętrze pełne światła</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8">
+                            Zaprojektowane w zgodzie z filozofią Lagom - ani za mało, ani za dużo. Przestronny salon z kominkiem, w pełni wyposażona kuchnia i sypialnie z widokiem na las zapewniają komfortowy wypoczynek dla maksymalnie 6 osób.
+                        </p>
+<button class="border border-outline text-on-surface px-8 py-4 rounded-DEFAULT font-label-caps text-label-caps uppercase tracking-widest hover:bg-surface-container transition-colors cursor-pointer">
+                            ZOBACZ GALERIĘ
+                        </button>
+</div>
+<div class="relative h-[500px] rounded-xl overflow-hidden">
+<img alt="Modern minimalist interior" class="w-full h-full object-cover" data-alt="A bright, modern living room interior shot in a minimalist Scandinavian style. The space features large windows letting in abundant natural light, light wood flooring, and a neutral color palette of whites, soft grays, and natural wood tones. A comfortable, textured sofa sits near a modern fireplace. The atmosphere is calm, clean, and inviting, reflecting the 'Lagom' philosophy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdRmJUG_HOg_5gJ4JmrDQvac6PexpNM_8YFesmj1Ai9CS_SPTEusvUfEXXv-SWFttgz57dd503xNP0DQfzq5w9jyzsIdJol1uftQVsDSQSlxSQStJEQluFqSJaW9iVt8VpHgOBXW61d8pAnmUHVobRiLW_-oglfMJgQV4lkFQOIqMG0W3FcjHq2cpkXiY22mBYsJSfQhkOtIFUxd2fT-ZRcNkO63G-ouOSou8PxLy2T8QPSAR4Ckwf3ICPIIHUBxXuFdfFIKv87otg"/>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-surface-container-highest w-full mt-section-gap border-t border-surface-container-high">
+<div class="flex flex-col md:flex-row justify-between items-start gap-gutter max-w-container-max mx-auto px-margin-desktop py-16">
+<div class="flex flex-col gap-4">
+<span class="font-label-caps text-label-caps text-primary dark:text-primary-fixed">LAGOM MASURIA</span>
+<p class="font-body-md text-body-md text-secondary dark:text-secondary-fixed max-w-xs">
+                    Twoje miejsce na ziemi, gdzie czas płynie wolniej.
+                </p>
+</div>
+<div class="flex flex-wrap gap-8 md:gap-12">
+<nav class="flex flex-col gap-3">
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors underline-offset-4 hover:underline" href="#">The House</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors underline-offset-4 hover:underline" href="#">Attractions</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors underline-offset-4 hover:underline" href="#">Gallery</a>
+</nav>
+<nav class="flex flex-col gap-3">
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors underline-offset-4 hover:underline" href="#">Rates</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors underline-offset-4 hover:underline" href="#">Contact</a>
+</nav>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-margin-desktop pb-8 pt-4 border-t border-surface-container-high/50 text-center md:text-left">
+<span class="font-body-md text-body-md text-secondary dark:text-secondary-fixed opacity-70">
+                © 2024 Lagom Masuria. Just enough. All rights reserved.
+            </span>
+</div>
+</footer>
+</body></html>

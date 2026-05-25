@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html lang="pl"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lagom Masuria - Galeria i Cennik</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-primary": "#bbcca9",
+                      "background": "#fbf9f8",
+                      "primary": "#455538",
+                      "tertiary-fixed-dim": "#c9c6c0",
+                      "secondary-fixed": "#ffdcc5",
+                      "tertiary": "#52504c",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-fixed": "#e6e2dc",
+                      "on-secondary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "secondary-container": "#fdc39a",
+                      "on-surface": "#1b1c1c",
+                      "inverse-on-surface": "#f3f0f0",
+                      "surface-tint": "#536346",
+                      "inverse-surface": "#303030",
+                      "surface-container-highest": "#e4e2e1",
+                      "secondary-fixed-dim": "#f4bb92",
+                      "surface-container-low": "#f6f3f2",
+                      "on-tertiary-fixed": "#1c1c18",
+                      "on-primary-fixed": "#121f08",
+                      "surface-bright": "#fbf9f8",
+                      "on-primary": "#ffffff",
+                      "on-background": "#1b1c1c",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-fixed-variant": "#484742",
+                      "on-primary-fixed-variant": "#3c4b30",
+                      "surface-dim": "#dcd9d9",
+                      "surface-container": "#f0eded",
+                      "on-tertiary": "#ffffff",
+                      "on-primary-container": "#dceec9",
+                      "surface-variant": "#e4e2e1",
+                      "on-tertiary-container": "#ece8e2",
+                      "error": "#ba1a1a",
+                      "primary-container": "#5d6d4f",
+                      "outline": "#75786f",
+                      "on-secondary-container": "#794e2e",
+                      "on-error": "#ffffff",
+                      "surface-container-high": "#eae8e7",
+                      "surface": "#fbf9f8",
+                      "secondary": "#805533",
+                      "on-secondary-fixed-variant": "#653d1e",
+                      "primary-fixed-dim": "#bbcca9",
+                      "primary-fixed": "#d6e8c3",
+                      "on-surface-variant": "#444840",
+                      "tertiary-container": "#6a6863",
+                      "on-secondary-fixed": "#301400",
+                      "outline-variant": "#c5c8bd"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "section-gap": "120px",
+                      "margin-desktop": "64px",
+                      "container-max": "1280px",
+                      "gutter": "24px",
+                      "base": "8px",
+                      "margin-mobile": "20px"
+              },
+              "fontFamily": {
+                      "body-lg": ["DM Sans"],
+                      "label-caps": ["DM Sans"],
+                      "headline-md": ["DM Sans"],
+                      "headline-lg-mobile": ["DM Sans"],
+                      "headline-lg": ["DM Sans"],
+                      "body-md": ["DM Sans"],
+                      "headline-sm": ["DM Sans"]
+              },
+              "fontSize": {
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                      "headline-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-sm": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}]
+              }
+            }
+          }
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer utilities {
+            .bg-glass {
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+            .glow-shadow {
+                box-shadow: 0 10px 40px -10px rgba(69, 85, 56, 0.08);
+            }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-lg antialiased">
+<!-- TopAppBar -->
+<header class="bg-surface/90 backdrop-blur-md fixed top-0 w-full z-50 transition-colors duration-300">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-20">
+<div class="flex items-center gap-2 text-primary cursor-pointer active:opacity-70">
+<span class="material-symbols-outlined text-[32px]">water_lux</span>
+<span class="font-headline-md text-headline-md tracking-tighter">LAGOM MASURIA</span>
+</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">The House</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Attractions</a>
+<a class="font-body-md text-body-md text-primary font-medium border-b border-primary pb-1" href="#">Gallery</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Rates</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Contact</a>
+</nav>
+<button class="font-label-caps text-label-caps bg-primary text-on-primary px-8 py-4 rounded-full hover:bg-primary/90 transition-colors cursor-pointer active:opacity-70">
+                BOOK NOW
+            </button>
+</div>
+</header>
+<main class="pt-32 pb-section-gap">
+<!-- Gallery Header -->
+<section class="max-w-container-max mx-auto px-margin-desktop mb-24 text-center">
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-6">Galeria</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+                Odkryj harmonię natury i minimalistycznego designu. Nasze wnętrza i otoczenie zostały zaprojektowane, aby zaoferować Ci przestrzeń do prawdziwego oddechu.
+            </p>
+</section>
+<!-- Bento Grid Gallery -->
+<section class="max-w-container-max mx-auto px-margin-desktop mb-section-gap">
+<div class="grid grid-cols-1 md:grid-cols-4 grid-rows-[300px_300px_300px] gap-gutter">
+<div class="md:col-span-2 md:row-span-2 rounded-xl overflow-hidden group">
+<img alt="Wnętrze salonu" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A spacious, light-filled living room featuring minimalist Scandinavian furniture in natural wood and soft cream textiles. Large floor-to-ceiling windows look out onto a serene, misty pine forest, bringing organic textures indoors. The lighting is soft and diffused, creating a peaceful, airy atmosphere consistent with a premium eco-retreat. A warm, tactile aesthetic dominates the serene space." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCueHA1524PnKeIaF08ySnj5XVQTxCdx6Mamrg2CPxPCxyPZI7sSxODkq4vtcVJqEqRD_WffZrb_uMEOGT2wlsMDUq2nbN8mKJvQjPi__QGCmpIqHw_heKYYGdoYVmrr1nYVagKQeNYBbHwHJ1Iyen02uvsF-rj5k5u42B544Mx98xRI7NSeHmuXZVC_9HCerUqNm1Ex9wXph_g-ODG9m6jKU6FEeqg3q-sz_xUbx3gEb74chKS-zOVYTD7GVDkBA3mfPwllCi8Pv7i"/>
+</div>
+<div class="md:col-span-1 md:row-span-1 rounded-xl overflow-hidden group">
+<img alt="Detal drewna" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A close-up shot of beautifully crafted natural oak wood paneling, highlighting organic grain textures. Subtle, warm morning light washes over the surface, emphasizing a tactile, minimalist design ethos. The mood is quiet and grounded, reflecting high-quality craftsmanship in a serene environment. The palette is rich in earthy tones and soft shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWcydb_O5DLrreGtLy03vixbckAb0x_k2Pp76pnI2fJ-fT8CQr50BjvveUg3PAFkcz1j9llPylWCUegDKD7Nq4M9ffOhLAemxo87yvfAuLaGi08zdGy0bBlNhDQsTGDY9FjNMeFTILonp8mdIgBxzh6je26eCn7MEbh4rsoeZT4gkjlDci-BOYCGZhrI6IKuF5a1vWQi3hsCFhoYLRSMIVbtDki49B9c9oQAyJQnOFa06fb6B_xq5urC7nb27RWmTGqBEZTWTjsT5b"/>
+</div>
+<div class="md:col-span-1 md:row-span-1 rounded-xl overflow-hidden group">
+<img alt="Jezioro o poranku" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A tranquil lake landscape at dawn, shrouded in a soft, ethereal mist. Tall, dark green pine trees reflect perfectly on the glass-like water surface. The color palette features muted greens, cool blues, and soft whites, creating a highly peaceful and atmospheric visual. The minimal composition evokes a deep sense of quietude and breathability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLNhzuwsfVFgPtPamAOZNNu970bOy0pkfkyeECkXAtF4MVUZNb4vw4R41wW9UOWNjT5B1FUXALk5udAecl7jsAYefsi2toww4hOqOaT1uK0sG66bovNuNGJ3u3SSWU_ScEgYFrdgq80HF7T_5Nx4N0LniJlXtncY1edoJueYoLUSYIcMwetlY4ENbYlcOvtrcqO6jaCKAYHUuga1Vm22nL-n9_wZKiBlNlwhNB8pv2kCWkVngfZL-VZeH8Nhms43j2ne_A-LYVnVF6"/>
+</div>
+<div class="md:col-span-2 md:row-span-1 rounded-xl overflow-hidden group">
+<img alt="Sypialnia" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A serene, minimalist bedroom with crisp white linen bedding on a low-profile wooden bed frame. A large window offers a view of a lush, dense forest bathed in dappled sunlight. The interior design relies on a clean, uncluttered aesthetic with organic touches like a ceramic vase with dried grasses. The lighting is bright and inviting, perfect for relaxation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPMUpTdCF6gwQbNegDA32-3lsLM_72cExrMvPV1hzi6OnL98Gt-mV_nZPb9BrTX4XbmZ-ZGavOLyMYzNGhsp0VD6XRpizFq05jx8Hl4B0zqytZ8rQfwPcBS_Orj_z_OBUo8J8ONMnAbP4p9mCOXxdBaL7FenMHfCg0ngzYS3o-SLpHNfpTCe6rVy4AfK87w2jBCWs-n1PrLuOdWGT1-Ux6Zvri6Qz2TQiCGtG2-_ZnF73fifaV4lJ0wFjwUGR53wpstlfRLrvkU07P"/>
+</div>
+<div class="md:col-span-1 md:row-span-1 rounded-xl overflow-hidden group">
+<img alt="Minimalistyczny detal" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A highly aesthetic, minimalist composition showing a simple ceramic cup resting on a textured linen cloth over a raw wooden table. The lighting is soft and directional, casting gentle shadows that highlight the tactile quality of the materials. The mood is calm, slow-paced, and intentional. The color palette consists of warm off-whites, soft greys, and pale browns." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCKJOJvA-RgBT3yBCGjHqvvm0lHXaoqwyBG9X6pE2foyhkfXh6sJWtfcl0-BDXVjtp-gA0VK6lSfW81eraPc02ephsmsXASM_zgFff0rBZX9xB-Y_B-EV-lRU0vZatoyA0HRNgZ0Ux1GWEn40rww6yGJHmkQaOrahq8AaIYx3M23maiWR21b-i2llNZriRkxaXrCn-9AGWP2cIhtX0hpnz7WXNn-1PWa2_QTt6_Rr8vrkI4NR9Eipgj8yquoD73xny09IVuLK8uvg1"/>
+</div>
+<div class="md:col-span-1 md:row-span-1 rounded-xl overflow-hidden group">
+<img alt="Las z góry" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="An aerial view of a dense, lush green pine forest, showcasing a rich canopy of varied textures and shades of forest green. The scene feels organic, remote, and deeply connected to nature. Soft, overcast lighting provides an even, moody illumination without harsh contrasts. The image conveys a profound sense of isolation and tranquility." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD--thTSVICA20drKeJl1MyHHb2MWm2aai6tEaeZZ5qVy2jlVRYjMZ2z7G_Mejwf1oKGh01q2JyBmc5CAb4mahHtAdtrzASclOTCwsksiWL0yxxYrV8ZNRjvZjxR4eZrogi3ZG7Y09MooTgvXYHNGETn1uG_OgT1YIPzoJEDK3GemVZ7CiAxcExfrR8KPhjn83bWZ8gL6h2ZsB_PFTC3mMuSPYzaPeSJjYPNXyZOyrMK4U2AfcIvjg066M8qMv2O5ps0XYjrjNQGSvR"/>
+</div>
+</div>
+</section>
+<!-- Pricing Section -->
+<section class="max-w-container-max mx-auto px-margin-desktop">
+<div class="bg-surface-container-low rounded-[32px] p-16 glow-shadow">
+<div class="text-center mb-16">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Cennik</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Przejrzyste zasady dla Twojego komfortu.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+<!-- Low Season -->
+<div class="flex flex-col items-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-4 tracking-widest">SEZON NISKI</span>
+<div class="flex items-baseline gap-1 mb-2">
+<span class="font-headline-lg text-headline-lg text-on-surface">600</span>
+<span class="font-body-md text-body-md text-on-surface-variant">zł / noc</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-center">Październik - Kwiecień<br/>(z wyłączeniem świąt)</p>
+</div>
+<!-- High Season -->
+<div class="flex flex-col items-center relative">
+<div class="absolute -top-6 bg-primary text-on-primary font-label-caps text-label-caps px-4 py-1 rounded-full">POPULARNY</div>
+<span class="font-label-caps text-label-caps text-primary mb-4 tracking-widest">SEZON WYSOKI</span>
+<div class="flex items-baseline gap-1 mb-2">
+<span class="font-headline-lg text-headline-lg text-primary">1200</span>
+<span class="font-body-md text-body-md text-on-surface-variant">zł / noc</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-center">Maj - Wrzesień<br/>oraz długie weekendy</p>
+</div>
+<!-- Holidays -->
+<div class="flex flex-col items-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-4 tracking-widest">ŚWIĘTA / SYLWESTER</span>
+<div class="flex items-baseline gap-1 mb-2">
+<span class="font-headline-lg text-headline-lg text-on-surface">1500</span>
+<span class="font-body-md text-body-md text-on-surface-variant">zł / noc</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-center">Boże Narodzenie, Sylwester,<br/>Wielkanoc</p>
+</div>
+</div>
+<div class="border-t border-outline-variant/30 pt-8 flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex flex-wrap justify-center gap-6 text-on-surface-variant font-body-md text-body-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">cleaning_services</span>
+                            Opłata za sprzątanie: 200 zł
+                        </div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">calendar_month</span>
+                            Min. długość pobytu: 2 noce
+                        </div>
+</div>
+<button class="font-label-caps text-label-caps bg-primary text-on-primary px-10 py-5 rounded-full hover:bg-primary/90 transition-colors shadow-[0_4px_20px_-4px_rgba(69,85,56,0.3)] cursor-pointer active:scale-95">
+                        ZAREZERWUJ SWÓJ POBYT
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low w-full mt-section-gap">
+<div class="flex flex-col md:flex-row justify-between items-start gap-gutter max-w-container-max mx-auto px-margin-desktop py-16">
+<div class="font-label-caps text-label-caps text-primary">
+                LAGOM MASURIA
+            </div>
+<nav class="flex flex-col md:flex-row gap-6 md:gap-8">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors underline-offset-4 hover:underline" href="#">The House</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors underline-offset-4 hover:underline" href="#">Attractions</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors underline-offset-4 hover:underline" href="#">Gallery</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors underline-offset-4 hover:underline" href="#">Rates</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors underline-offset-4 hover:underline" href="#">Contact</a>
+</nav>
+<div class="font-body-md text-body-md text-secondary">
+                © 2024 Lagom Masuria. Just enough. All rights reserved.
+            </div>
+</div>
+</footer>
+</body></html>
