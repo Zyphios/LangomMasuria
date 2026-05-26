@@ -4,8 +4,12 @@
     "house": "House",
     "gallery": "Gallery",
     "rates": "Rates",
+    "attractions": "Attractions",
     "contact": "Contact",
     "bookNow": "Book now"
+  },
+  "footer": {
+    "tagline": "Your place on earth, where time moves a little slower."
   },
   "home": {
     "hero": {
@@ -15,10 +19,69 @@
     },
     "amenities": {
       "title": "Why Lagom Masuria",
+      "subtitle": "Everything you need for deep rest, designed with attention to every detail.",
       "jacuzzi": "Jacuzzi under the stars",
       "forest": "Forest at your doorstep",
-      "lake": "Lake within walking distance"
+      "lake": "Lake within walking distance",
+      "jacuzziDesc": "A private outdoor relaxation zone, perfect for unwinding under the stars in the evening.",
+      "forestDesc": "Immerse yourself in the scent of pine forest. Our plot borders a protected nature reserve.",
+      "lakeDesc": "Only 500m separates you from the crystal-clear Garbas Lake. A perfect walk for summer mornings."
+    },
+    "interior": {
+      "title": "An interior full of light",
+      "desc": "Designed in harmony with the Lagom philosophy - neither too little nor too much. A spacious living room with fireplace, fully equipped kitchen, and forest-view bedrooms create a comfortable retreat for up to 6 guests.",
+      "cta": "SEE THE GALLERY"
     }
+  },
+  "house": {
+    "title": "About Our House",
+    "desc": "Designed around the 'Lagom' philosophy - just right. Our house is a place where Scandinavian minimalism meets the warmth of the Masurian landscape. We offer space to breathe and slow down in the heart of nature in Stare Juchy.",
+    "stats": {
+      "space": "Space",
+      "bedrooms": "Bedrooms",
+      "guests": "Guests"
+    },
+    "attractions": {
+      "title": "Attractions nearby",
+      "lake": {
+        "distance": "500m from the house",
+        "title": "Garbas Lake",
+        "desc": "Crystal-clear water and a gentle sandy shoreline - the perfect natural bathing spot."
+      },
+      "kayak": {
+        "title": "Kayaks & SUP",
+        "desc": "Explore the calm waters of the surrounding lakes at your own pace. Equipment is available on site."
+      },
+      "bike": {
+        "title": "Cycling trips",
+        "desc": "Hundreds of kilometres of forest paths and scenic trails around Stare Juchy."
+      },
+      "fishing": {
+        "title": "Fishing",
+        "desc": "Quiet mornings on Garbas Lake. We provide access to a private pier."
+      },
+      "food": {
+        "title": "Local cuisine",
+        "desc": "Discover regional flavours with our trusted local hosts."
+      }
+    }
+  },
+  "gallery": {
+    "title": "Gallery",
+    "subtitle": "Discover the harmony of nature and minimalist design. Our interiors and surroundings were created to give you space to truly breathe."
+  },
+  "pricing": {
+    "title": "Pricing",
+    "subtitle": "Clear rules for your comfort.",
+    "low": "LOW SEASON",
+    "high": "HIGH SEASON",
+    "holidays": "HOLIDAYS / NEW YEAR",
+    "lowDates": "October - April\n(excluding holidays)",
+    "highDates": "May - September\nand long weekends",
+    "holidayDates": "Christmas, New Year,\nEaster",
+    "cleaningFee": "Cleaning fee: 200 PLN",
+    "minStay": "Minimum stay: 2 nights",
+    "cta": "BOOK YOUR STAY"
   },
   "booking": {
     "step1": "Step 1: Dates",

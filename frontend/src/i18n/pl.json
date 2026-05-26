@@ -1,32 +1,95 @@
-{
+﻿{
   "nav": {
     "home": "Start",
     "house": "Dom",
     "gallery": "Galeria",
     "rates": "Cennik",
+    "attractions": "Atrakcje",
     "contact": "Kontakt",
     "bookNow": "Rezerwuj"
   },
+  "footer": {
+    "tagline": "Twoje miejsce na ziemi, gdzie czas p\u0142ynie wolniej."
+  },
   "home": {
     "hero": {
-      "title": "Twój azyl na Mazurach",
-      "subtitle": "Minimalistyczny dom nad jeziorem i wśród lasów.",
-      "cta": "Sprawdź dostępność"
+      "title": "Tw\u00f3j azyl na Mazurach",
+      "subtitle": "Minimalistyczny dom nad jeziorem i w\u015br\u00f3d las\u00f3w.",
+      "cta": "Sprawd\u017a dost\u0119pno\u015b\u0107"
     },
     "amenities": {
       "title": "Dlaczego Lagom Masuria",
+      "subtitle": "Wszystko, czego potrzebujesz do pe\u0142nego relaksu, zaprojektowane z dba\u0142o\u015bci\u0105 o ka\u017cdy detal.",
       "jacuzzi": "Jacuzzi pod gwiazdami",
       "forest": "Las za progiem",
-      "lake": "Jezioro w spacerowej odległości"
+      "lake": "Jezioro w spacerowej odleg\u0142o\u015bci",
+      "jacuzziDesc": "Prywatna strefa relaksu na \u015bwie\u017cym powietrzu, idealna na wieczorne odpr\u0119\u017cenie pod gwiazdami.",
+      "forestDesc": "Zanurz si\u0119 w zapachu sosnowego lasu. Nasza dzia\u0142ka graniczy bezpo\u015brednio z rezerwatem przyrody.",
+      "lakeDesc": "Zaledwie 500m dzieli Ci\u0119 od krystalicznie czystego jeziora Garbas. Spacer idealny na letnie poranki."
+    },
+    "interior": {
+      "title": "Wn\u0119trze pe\u0142ne \u015bwiat\u0142a",
+      "desc": "Zaprojektowane w zgodzie z filozofi\u0105 Lagom - ani za ma\u0142o, ani za du\u017co. Przestronny salon z kominkiem, w pe\u0142ni wyposa\u017cona kuchnia i sypialnie z widokiem na las zapewniaj\u0105 komfortowy wypoczynek dla maksymalnie 6 os\u00f3b.",
+      "cta": "ZOBACZ GALERI\u0118"
     }
+  },
+  "house": {
+    "title": "O Naszym Domu",
+    "desc": "Zaprojektowany z my\u015bl\u0105 o filozofii 'Lagom' \u2013 w sam raz. Nasz dom to przestrze\u0144, gdzie skandynawski minimalizm spotyka si\u0119 z ciep\u0142em mazurskiego krajobrazu. Oferujemy miejsce do oddechu i wyciszenia w samym sercu natury w miejscowo\u015bci Stare Juchy.",
+    "stats": {
+      "space": "Przestrzeni",
+      "bedrooms": "Sypialnie",
+      "guests": "Os\u00f3b"
+    },
+    "attractions": {
+      "title": "Atrakcje w okolicy",
+      "lake": {
+        "distance": "500m od domu",
+        "title": "Jezioro Garbas",
+        "desc": "Krystalicznie czysta woda i piaszczyste, \u0142agodne zej\u015bcie \u2013 idealne naturalne k\u0105pielisko."
+      },
+      "kayak": {
+        "title": "Kajaki i SUP",
+        "desc": "Eksploruj spokojne wody okolicznych jezior w swoim tempie. Sprz\u0119t dost\u0119pny na miejscu."
+      },
+      "bike": {
+        "title": "Wycieczki rowerowe",
+        "desc": "Setki kilometr\u00f3w le\u015bnych \u015bcie\u017cek i malowniczych tras wok\u00f3\u0142 Starych Juch."
+      },
+      "fishing": {
+        "title": "W\u0119dkarstwo",
+        "desc": "Cisza o poranku na jeziorze Garbas. Zapewniamy dost\u0119p do prywatnego pomostu."
+      },
+      "food": {
+        "title": "Lokalna kuchnia",
+        "desc": "Odkryj smaki regionu u zaprzyja\u017anionych gospodarzy."
+      }
+    }
+  },
+  "gallery": {
+    "title": "Galeria",
+    "subtitle": "Odkryj harmoni\u0119 natury i minimalistycznego designu. Nasze wn\u0119trza i otoczenie zosta\u0142y zaprojektowane, aby zaoferowa\u0107 Ci przestrze\u0144 do prawdziwego oddechu."
+  },
+  "pricing": {
+    "title": "Cennik",
+    "subtitle": "Przejrzyste zasady dla Twojego komfortu.",
+    "low": "SEZON NISKI",
+    "high": "SEZON WYSOKI",
+    "holidays": "\u015aWI\u0118TA / SYLWESTER",
+    "lowDates": "Pa\u017adziernik - Kwiecie\u0144\n(z wy\u0142\u0105czeniem \u015bwi\u0105t)",
+    "highDates": "Maj - Wrzesie\u0144\noraz d\u0142ugie weekendy",
+    "holidayDates": "Bo\u017ce Narodzenie, Sylwester,\nWielanoc",
+    "cleaningFee": "Op\u0142ata za sprz\u0105tanie: 200 z\u0142",
+    "minStay": "Min. d\u0142ugo\u015b\u0107 pobytu: 2 noce",
+    "cta": "ZAREZERWUJ SW\u00d3J POBYT"
   },
   "booking": {
     "step1": "Krok 1: Daty",
-    "step2": "Krok 2: Dane gości",
+    "step2": "Krok 2: Dane go\u015bci",
     "step3": "Krok 3: Zadatek",
     "step4": "Krok 4: Potwierdzenie",
     "dates": "Daty pobytu",
-    "guestDetails": "Dane gości",
+    "guestDetails": "Dane go\u015bci",
     "deposit": "Zadatek",
     "confirmation": "Potwierdzenie",
     "next": "Dalej",
@@ -35,12 +98,12 @@
   "admin": {
     "bookings": "Rezerwacje",
     "calendar": "Kalendarz",
-    "messages": "Wiadomości",
+    "messages": "Wiadomo\u015bci",
     "gallery": "Galeria",
     "pricing": "Cennik",
     "logout": "Wyloguj",
     "status": {
-      "pending": "Oczekująca",
+      "pending": "Oczekuj\u0105ca",
       "confirmed": "Potwierdzona",
       "cancelled": "Anulowana"
     }
