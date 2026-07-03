@@ -48,4 +48,73 @@ describe('admin api', () => {
     expect(response.status).toBe(200);
     expect(response.body.pricePerNight).toBe('1400');
   });
+
+  it('creates a manual booking, blocks the dates, and skips the minimum-stay rule', async () => {
+    await prisma.blockedDate.deleteMany({ where: { date: { in: [new Date('2026-09-09'), new Date('2026-09-10')] } } });
+    await prisma.booking.deleteMany({ where: { guestPhone: '+48600000000' } });
+
+    const response = await request(createApp())
+      .post('/api/admin/bookings/manual')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        guestName: 'Telefoniczny Gość',
+        guestPhone: '+48600000000',
+        checkIn: '2026-09-10',
+        checkOut: '2026-09-11',
+        guestsCount: 2,
+        pricePerNight: 1000,
+        discountPercent: 10,
+        depositAmount: 300
+      });
+
+    expect(response.status).toBe(201);
+    expect(response.body.status).toBe('CONFIRMED');
+
+    const booking = await prisma.booking.findUniqueOrThrow({ where: { id: response.body.id } });
+
+    expect(booking.source).toBe('MANUAL');
+    expect(booking.guestEmail).toBeNull();
+    expect(booking.totalPrice.toNumber()).toBe(1100);
+    expect(booking.depositAmount.toNumber()).toBe(300);
+
+    const blocked = await prisma.blockedDate.findUnique({ where: { date: new Date('2026-09-10') } });
+
+    expect(blocked).not.toBeNull();
+  });
+
+  it('rejects a manual booking when the dates conflict with an existing confirmed booking', async () => {
+    await prisma.blockedDate.deleteMany({ where: { date: { in: [new Date('2026-09-20'), new Date('2026-09-21')] } } });
+    await prisma.booking.deleteMany({ where: { guestPhone: { in: ['+48600000001', '+48600000002'] } } });
+
+    await prisma.booking.create({
+      data: {
+        guestName: 'Existing Guest',
+        guestEmail: 'existing@example.com',
+        guestPhone: '+48600000001',
+        checkIn: new Date('2026-09-20'),
+        checkOut: new Date('2026-09-22'),
+        guestsCount: 2,
+        totalPrice: new Prisma.Decimal(2000),
+        status: 'CONFIRMED',
+        locale: 'pl'
+      }
+    });
+
+    const response = await request(createApp())
+      .post('/api/admin/bookings/manual')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        guestName: 'Konflikt',
+        guestPhone: '+48600000002',
+        checkIn: '2026-09-20',
+        checkOut: '2026-09-21',
+        guestsCount: 1,
+        pricePerNight: 500,
+        discountPercent: 0,
+        depositAmount: 0
+      });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('Selected dates are not available');
+  });
 });

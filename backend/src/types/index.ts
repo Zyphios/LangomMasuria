@@ -14,6 +14,18 @@ export type BookingCreateInput = {
   notes?: string;
   locale: Locale;
 };
+export type ManualBookingCreateInput = {
+  guestName: string;
+  guestEmail?: string;
+  guestPhone: string;
+  checkIn: string;
+  checkOut: string;
+  guestsCount: number;
+  notes?: string;
+  pricePerNight: number;
+  discountPercent: number;
+  depositAmount: number;
+};
 export type BookingStatusUpdate = { status: BookingStatus };
 export type PaymentInitInput = { bookingId: string; amount: number };
 export type PricingValue = Prisma.Decimal;

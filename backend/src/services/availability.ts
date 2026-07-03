@@ -1,9 +1,9 @@
-import { addDays, differenceInCalendarDays, eachDayOfInterval, endOfMonth, format, isWithinInterval, startOfMonth } from 'date-fns';
+import { differenceInCalendarDays, endOfMonth, isWithinInterval, startOfMonth } from 'date-fns';
 import { BookingStatus, Prisma, PrismaClient, type PricingSeason } from '@prisma/client';
 
 export const CLEANING_FEE = 200;
 export const MIN_STAY_NIGHTS = 2;
-const toIsoDate = (value: Date) => format(value, 'yyyy-MM-dd');
+const toIsoDate = (value: Date) => value.toISOString().slice(0, 10);
 
 export const getBlockedDatesForMonth = async (prisma: PrismaClient, month: number, year: number) => {
   const rangeStart = startOfMonth(new Date(year, month - 1, 1));
@@ -19,15 +19,14 @@ export const getBlockedDatesForMonth = async (prisma: PrismaClient, month: numbe
     orderBy: { checkIn: 'asc' }
   });
 
-  const bookingDates = confirmedBookings.flatMap((booking) =>
-    eachDayOfInterval({ start: booking.checkIn, end: addDays(booking.checkOut, -1) }).map(toIsoDate)
-  );
+  const bookingDates = confirmedBookings.flatMap((booking) => getNightDates(booking.checkIn, booking.checkOut).map(toIsoDate));
 
   return Array.from(new Set([...blockedDates.map((entry) => toIsoDate(entry.date)), ...bookingDates])).sort();
 };
 
 export const getNightCount = (checkIn: Date, checkOut: Date) => differenceInCalendarDays(checkOut, checkIn);
-export const getNightDates = (checkIn: Date, checkOut: Date) => eachDayOfInterval({ start: checkIn, end: addDays(checkOut, -1) });
+export const getNightDates = (checkIn: Date, checkOut: Date) =>
+  Array.from({ length: getNightCount(checkIn, checkOut) }, (_, index) => new Date(Date.UTC(checkIn.getUTCFullYear(), checkIn.getUTCMonth(), checkIn.getUTCDate() + index)));
 
 export const assertMinimumStay = (checkIn: Date, checkOut: Date) => {
   const nights = getNightCount(checkIn, checkOut);
