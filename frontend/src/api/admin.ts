@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import type { BookingStatus, GalleryImage, PricingSeason } from '../types';
+import type { AdminBookingRow, BookingStatus, GalleryImage, ManualBookingPayload, PricingSeason } from '../types';
 
 const withAuth = (token: string) => ({ Authorization: `Bearer ${token}` });
 
@@ -10,7 +10,21 @@ export const loginAdmin = (email: string, password: string) =>
   });
 
 export const getAdminBookings = (token: string) =>
-  apiClient<any[]>('/api/admin/bookings', { headers: withAuth(token) });
+  apiClient<AdminBookingRow[]>('/api/admin/bookings', { headers: withAuth(token) });
+
+export const createManualBooking = (token: string, payload: ManualBookingPayload) =>
+  apiClient<{ id: string; status: BookingStatus; totalPrice: number }>('/api/admin/bookings/manual', {
+    method: 'POST',
+    headers: withAuth(token),
+    body: JSON.stringify(payload)
+  });
+
+export const updateBookingDeposit = (token: string, id: string, depositAmount: number) =>
+  apiClient<{ depositAmount: string }>(`/api/admin/bookings/${id}/deposit`, {
+    method: 'PATCH',
+    headers: withAuth(token),
+    body: JSON.stringify({ depositAmount })
+  });
 
 export const updateAdminBooking = (token: string, id: string, status: BookingStatus) =>
   apiClient<{ status: BookingStatus }>(`/api/admin/bookings/${id}`, {

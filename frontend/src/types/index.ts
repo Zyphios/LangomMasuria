@@ -4,6 +4,21 @@ export type Locale = 'pl' | 'en';
 
 export type BookingStatus = 'PENDING' | 'CONFIRMED' | 'CANCELLED';
 
+export type BookingSource = 'WEBSITE' | 'MANUAL';
+
+export type AdminBookingRow = {
+  id: string;
+  guestName: string;
+  guestEmail: string | null;
+  guestPhone: string;
+  status: BookingStatus;
+  source: BookingSource;
+  checkIn: string;
+  checkOut: string;
+  totalPrice: string;
+  depositAmount: string;
+};
+
 export type GalleryImage = {
   id: string;
   url: string;
@@ -31,6 +46,19 @@ export type BookingPayload = {
   guestsCount: number;
   notes?: string;
   locale: Locale;
+};
+
+export type ManualBookingPayload = {
+  guestName: string;
+  guestEmail?: string;
+  guestPhone: string;
+  checkIn: string;
+  checkOut: string;
+  guestsCount: number;
+  notes?: string;
+  pricePerNight: number;
+  discountPercent: number;
+  depositAmount: number;
 };
 
 export type BookingResponse = {
