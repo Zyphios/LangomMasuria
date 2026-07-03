@@ -13,11 +13,23 @@ type Props = {
 
 const fieldClasses = 'mt-2 w-full rounded-lg border border-outline bg-surface-container-lowest px-4 py-3 text-on-surface outline-none transition-colors focus:border-primary';
 
+// UTC-safe night-date enumeration (mirrors backend's getNightDates fix in availability.ts) —
+// avoids local-timezone drift when comparing selected nights against ISO blockedDates from the API.
+const getNightDatesUtc = (checkIn: string, checkOut: string): string[] => {
+  const start = new Date(`${checkIn}T00:00:00.000Z`).getTime();
+  const end = new Date(`${checkOut}T00:00:00.000Z`).getTime();
+  const dates: string[] = [];
+  for (let t = start; t < end; t += 24 * 60 * 60 * 1000) {
+    dates.push(new Date(t).toISOString().slice(0, 10));
+  }
+  return dates;
+};
+
 export default function ManualBookingForm({ token, onCreated, onCancel }: Props) {
-  const today = new Date();
-  const { data: availability } = useAvailability(today.getMonth() + 1, today.getFullYear());
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
+  const referenceDate = checkIn ? new Date(`${checkIn}T00:00:00.000Z`) : new Date();
+  const { data: availability } = useAvailability(referenceDate.getUTCMonth() + 1, referenceDate.getUTCFullYear());
   const [guestName, setGuestName] = useState('');
   const [guestEmail, setGuestEmail] = useState('');
   const [guestPhone, setGuestPhone] = useState('');
@@ -49,8 +61,30 @@ export default function ManualBookingForm({ token, onCreated, onCancel }: Props)
       return;
     }
 
-    if (pricePerNight <= 0) {
+    const blockedDates = availability?.blockedDates || [];
+    const overlapsBlocked = getNightDatesUtc(checkIn, checkOut).some((date) => blockedDates.includes(date));
+    if (overlapsBlocked) {
+      setError('Wybrany zakres dat obejmuje zajęty termin');
+      return;
+    }
+
+    if (!Number.isFinite(pricePerNight) || pricePerNight <= 0) {
       setError('Podaj cenę za noc');
+      return;
+    }
+
+    if (!Number.isFinite(discountPercent) || discountPercent < 0 || discountPercent > 100) {
+      setError('Rabat musi być liczbą od 0 do 100');
+      return;
+    }
+
+    if (!Number.isFinite(depositAmount) || depositAmount < 0) {
+      setError('Zaliczka musi być liczbą nieujemną');
+      return;
+    }
+
+    if (!Number.isFinite(guestsCount) || guestsCount < 1) {
+      setError('Podaj liczbę gości');
       return;
     }
 
