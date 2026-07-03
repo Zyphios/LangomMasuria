@@ -117,4 +117,15 @@ describe('admin api', () => {
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('Selected dates are not available');
   });
+
+  it('updates the deposit amount for any booking', async () => {
+    const response = await request(createApp())
+      .patch(`/api/admin/bookings/${bookingId}/deposit`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({ depositAmount: 450 });
+    expect(response.status).toBe(200);
+    expect(response.body.depositAmount).toBe('450');
+    const booking = await prisma.booking.findUniqueOrThrow({ where: { id: bookingId } });
+    expect(booking.depositAmount.toNumber()).toBe(450);
+  });
 });

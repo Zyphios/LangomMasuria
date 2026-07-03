@@ -16,6 +16,7 @@ const readSchema = z.object({ isRead: z.boolean() });
 const blockedDateSchema = z.object({ date: z.string().date(), reason: z.string().optional() });
 const gallerySchema = z.object({ url: z.string().url(), captionPl: z.string().optional(), captionEn: z.string().optional(), sortOrder: z.number().int().default(0) });
 const pricingSchema = z.object({ namePl: z.string().min(1), nameEn: z.string().min(1), pricePerNight: z.number().positive(), dateFrom: z.string().date(), dateTo: z.string().date(), isFeatured: z.boolean() });
+const depositSchema = z.object({ depositAmount: z.number().min(0) });
 const manualBookingSchema = z.object({
   guestName: z.string().min(1),
   guestEmail: z.string().email().optional().or(z.literal('')).transform((value) => (value ? value : undefined)),
@@ -69,6 +70,13 @@ adminRouter.post('/bookings/manual', validate(manualBookingSchema), async (req, 
     if (error instanceof Error) return res.status(400).json({ message: error.message });
     throw error;
   }
+});
+adminRouter.patch('/bookings/:id/deposit', validate(depositSchema), async (req, res) => {
+  const booking = await prisma.booking.update({
+    where: { id: req.params.id as string },
+    data: { depositAmount: new Prisma.Decimal(depositSchema.parse(req.body).depositAmount) }
+  });
+  res.json({ depositAmount: booking.depositAmount.toString() });
 });
 adminRouter.patch('/bookings/:id', validate(bookingStatusSchema), async (req, res) => {
   const booking = await prisma.booking.update({ where: { id: req.params.id as string }, data: { status: bookingStatusSchema.parse(req.body).status } });
