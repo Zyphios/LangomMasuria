@@ -39,7 +39,7 @@ export const buildOwnerMessageEmail = (message: ContactMessage) => ({
   text: [`Nadawca: ${message.name}`, `Email: ${message.email}`, '', message.message].join('\n'),
 });
 
-export const buildGuestConfirmationEmail = (booking: Booking) => ({
+export const buildGuestConfirmationEmail = (booking: Booking & { guestEmail: string }) => ({
   to: booking.guestEmail,
   subject: booking.locale === 'en' ? 'Booking confirmation — Lagom Masuria' : 'Potwierdzenie rezerwacji — Lagom Masuria',
   text:
@@ -70,5 +70,5 @@ export const sendOwnerBookingEmail = async (booking: Booking) =>
   transporter.sendMail({ from: ownerEmail, ...buildOwnerBookingEmail(booking) });
 export const sendOwnerMessageEmail = async (message: ContactMessage) =>
   transporter.sendMail({ from: ownerEmail, ...buildOwnerMessageEmail(message) });
-export const sendGuestConfirmationEmail = async (booking: Booking) =>
+export const sendGuestConfirmationEmail = async (booking: Booking & { guestEmail: string }) =>
   transporter.sendMail({ from: ownerEmail, ...buildGuestConfirmationEmail(booking) });

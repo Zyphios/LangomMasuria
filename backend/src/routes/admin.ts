@@ -63,7 +63,7 @@ adminRouter.post('/bookings/manual', validate(manualBookingSchema), async (req, 
       }
     });
     await blockDatesForBooking(prisma, booking, 'Manual phone booking');
-    if (booking.guestEmail) await sendGuestConfirmationEmail(booking);
+    if (booking.guestEmail) await sendGuestConfirmationEmail({ ...booking, guestEmail: booking.guestEmail });
     res.status(201).json({ id: booking.id, status: booking.status, totalPrice: totalPrice.toNumber() });
   } catch (error) {
     if (error instanceof Error) return res.status(400).json({ message: error.message });
@@ -74,7 +74,7 @@ adminRouter.patch('/bookings/:id', validate(bookingStatusSchema), async (req, re
   const booking = await prisma.booking.update({ where: { id: req.params.id as string }, data: { status: bookingStatusSchema.parse(req.body).status } });
   if (booking.status === BookingStatus.CONFIRMED) {
     await blockDatesForBooking(prisma, booking);
-    if (booking.guestEmail) await sendGuestConfirmationEmail(booking);
+    if (booking.guestEmail) await sendGuestConfirmationEmail({ ...booking, guestEmail: booking.guestEmail });
   }
   res.json({ status: booking.status });
 });
