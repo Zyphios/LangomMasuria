@@ -1,0 +1,169 @@
+import { useMemo, useState } from 'react';
+import { differenceInCalendarDays } from 'date-fns';
+import BookingCalendar from '../../components/BookingCalendar';
+import { createManualBooking } from '../../api/admin';
+import { useAvailability } from '../../hooks/useAvailability';
+import { CLEANING_FEE } from '../../types';
+
+type Props = {
+  token: string;
+  onCreated: () => void;
+  onCancel: () => void;
+};
+
+const fieldClasses = 'mt-2 w-full rounded-lg border border-outline bg-surface-container-lowest px-4 py-3 text-on-surface outline-none transition-colors focus:border-primary';
+
+export default function ManualBookingForm({ token, onCreated, onCancel }: Props) {
+  const today = new Date();
+  const { data: availability } = useAvailability(today.getMonth() + 1, today.getFullYear());
+  const [checkIn, setCheckIn] = useState('');
+  const [checkOut, setCheckOut] = useState('');
+  const [guestName, setGuestName] = useState('');
+  const [guestEmail, setGuestEmail] = useState('');
+  const [guestPhone, setGuestPhone] = useState('');
+  const [guestsCount, setGuestsCount] = useState(2);
+  const [notes, setNotes] = useState('');
+  const [pricePerNight, setPricePerNight] = useState(0);
+  const [discountPercent, setDiscountPercent] = useState(0);
+  const [depositAmount, setDepositAmount] = useState(0);
+  const [error, setError] = useState('');
+
+  const nights = useMemo(
+    () => (!checkIn || !checkOut ? 0 : differenceInCalendarDays(new Date(checkOut), new Date(checkIn))),
+    [checkIn, checkOut]
+  );
+  const subtotal = pricePerNight * nights;
+  const discountAmount = subtotal * (discountPercent / 100);
+  const total = Math.max(0, subtotal - discountAmount) + (nights > 0 ? CLEANING_FEE : 0);
+
+  const submit = async () => {
+    setError('');
+
+    if (!guestName || !guestPhone) {
+      setError('Uzupełnij imię, nazwisko i telefon');
+      return;
+    }
+
+    if (!checkIn || !checkOut || nights < 1) {
+      setError('Wybierz zakres dat');
+      return;
+    }
+
+    if (pricePerNight <= 0) {
+      setError('Podaj cenę za noc');
+      return;
+    }
+
+    try {
+      await createManualBooking(token, {
+        guestName,
+        guestEmail: guestEmail || undefined,
+        guestPhone,
+        checkIn,
+        checkOut,
+        guestsCount,
+        notes: notes || undefined,
+        pricePerNight,
+        discountPercent,
+        depositAmount
+      });
+      onCreated();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Nie udało się zapisać rezerwacji');
+    }
+  };
+
+  return (
+    <div className='rounded-2xl bg-white p-6 shadow-sm'>
+      <h2 className='text-2xl font-semibold'>Nowa rezerwacja telefoniczna</h2>
+      <div className='mt-6'>
+        <BookingCalendar
+          blockedDates={availability?.blockedDates || []}
+          checkIn={checkIn}
+          checkOut={checkOut}
+          onCheckInChange={setCheckIn}
+          onCheckOutChange={setCheckOut}
+        />
+      </div>
+      <div className='mt-6 grid gap-4 md:grid-cols-2'>
+        <label>
+          Imię i nazwisko
+          <input aria-label='Imię i nazwisko' className={fieldClasses} value={guestName} onChange={(event) => setGuestName(event.target.value)} />
+        </label>
+        <label>
+          E-mail (opcjonalnie)
+          <input aria-label='E-mail (opcjonalnie)' className={fieldClasses} value={guestEmail} onChange={(event) => setGuestEmail(event.target.value)} />
+        </label>
+        <label>
+          Telefon
+          <input aria-label='Telefon' className={fieldClasses} value={guestPhone} onChange={(event) => setGuestPhone(event.target.value)} />
+        </label>
+        <label>
+          Liczba gości
+          <input
+            aria-label='Liczba gości'
+            type='number'
+            min={1}
+            max={8}
+            className={fieldClasses}
+            value={guestsCount}
+            onChange={(event) => setGuestsCount(Number(event.target.value))}
+          />
+        </label>
+        <label>
+          Cena za noc (PLN)
+          <input
+            aria-label='Cena za noc (PLN)'
+            type='number'
+            min={0}
+            className={fieldClasses}
+            value={pricePerNight}
+            onChange={(event) => setPricePerNight(Number(event.target.value))}
+          />
+        </label>
+        <label>
+          Rabat (%)
+          <input
+            aria-label='Rabat (%)'
+            type='number'
+            min={0}
+            max={100}
+            className={fieldClasses}
+            value={discountPercent}
+            onChange={(event) => setDiscountPercent(Number(event.target.value))}
+          />
+        </label>
+        <label>
+          Zaliczka (PLN)
+          <input
+            aria-label='Zaliczka (PLN)'
+            type='number'
+            min={0}
+            className={fieldClasses}
+            value={depositAmount}
+            onChange={(event) => setDepositAmount(Number(event.target.value))}
+          />
+        </label>
+        <label className='md:col-span-2'>
+          Notatki
+          <textarea aria-label='Notatki' className={`${fieldClasses} min-h-24`} value={notes} onChange={(event) => setNotes(event.target.value)} />
+        </label>
+      </div>
+      <div className='mt-6 rounded-xl bg-surface-container p-4'>
+        <p>Noce: {nights} × {pricePerNight} PLN = {subtotal} PLN</p>
+        <p>Rabat: -{discountAmount} PLN</p>
+        <p>Sprzątanie: {nights > 0 ? CLEANING_FEE : 0} PLN</p>
+        <p className='font-semibold'>Suma: {total} PLN</p>
+      </div>
+      {error ? <p className='mt-4 text-red-600'>{error}</p> : null}
+      <div className='mt-6 flex gap-3'>
+        <button type='button' onClick={submit} className='rounded bg-pine px-4 py-2 text-white'>
+          Zapisz rezerwację
+        </button>
+        <button type='button' onClick={onCancel} className='rounded border px-4 py-2'>
+          Anuluj
+        </button>
+      </div>
+    </div>
+  );
+}
