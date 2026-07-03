@@ -11,13 +11,15 @@ datasource db {
 model Booking {
   id          String        @id @default(uuid())
   guestName   String
-  guestEmail  String
+  guestEmail  String?
   guestPhone  String
   checkIn     DateTime      @db.Date
   checkOut    DateTime      @db.Date
   guestsCount Int
   status      BookingStatus @default(PENDING)
+  source      BookingSource @default(WEBSITE)
   totalPrice  Decimal       @db.Decimal(10, 2)
+  depositAmount Decimal     @default(0) @db.Decimal(10, 2)
   notes       String?
   locale      String        @default("pl")
   createdAt   DateTime      @default(now())
@@ -27,6 +29,11 @@ enum BookingStatus {
   PENDING
   CONFIRMED
   CANCELLED
+}
+
+enum BookingSource {
+  WEBSITE
+  MANUAL
 }
 
 model BlockedDate {
