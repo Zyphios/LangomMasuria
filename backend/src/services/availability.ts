@@ -3,6 +3,10 @@ import { BookingStatus, Prisma, PrismaClient, type PricingSeason } from '@prisma
 
 export const CLEANING_FEE = 200;
 export const MIN_STAY_NIGHTS = 2;
+// checkIn/checkOut are parsed as UTC midnight (e.g. new Date('2026-09-10') = 2026-09-10T00:00:00Z).
+// Using date-fns local-time helpers (format/eachDayOfInterval/addDays) here would snap results to
+// local midnight, which is a different instant in non-UTC timezones and breaks BlockedDate lookups
+// and comparisons. Keep this arithmetic in UTC.
 const toIsoDate = (value: Date) => value.toISOString().slice(0, 10);
 
 export const getBlockedDatesForMonth = async (prisma: PrismaClient, month: number, year: number) => {

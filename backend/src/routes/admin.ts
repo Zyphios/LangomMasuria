@@ -8,6 +8,7 @@ import { requireAuth } from '../middleware/auth';
 import { validate } from '../middleware/validate';
 import { assertDatesAvailable, blockDatesForBooking, calculateManualPrice, getNightCount } from '../services/availability';
 import { sendGuestConfirmationEmail } from '../services/email';
+import type { ManualBookingCreateInput } from '../types';
 
 const loginSchema = z.object({ email: z.string().email(), password: z.string().min(1) });
 const bookingStatusSchema = z.object({ status: z.nativeEnum(BookingStatus) });
@@ -39,7 +40,7 @@ adminRouter.use(requireAuth as never);
 adminRouter.get('/bookings', async (_req, res) => res.json(await prisma.booking.findMany({ orderBy: { createdAt: 'desc' } })));
 adminRouter.post('/bookings/manual', validate(manualBookingSchema), async (req, res) => {
   try {
-    const payload = manualBookingSchema.parse(req.body);
+    const payload: ManualBookingCreateInput = manualBookingSchema.parse(req.body);
     const checkIn = new Date(payload.checkIn);
     const checkOut = new Date(payload.checkOut);
     await assertDatesAvailable(prisma, checkIn, checkOut);
