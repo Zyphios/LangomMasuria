@@ -57,3 +57,15 @@ export const calculateTotalPrice = async (prisma: PrismaClient, checkIn: Date, c
   const subtotal = getNightDates(checkIn, checkOut).reduce((sum, date) => sum + pickSeasonForDate(seasons, date).pricePerNight.toNumber(), 0);
   return new Prisma.Decimal(subtotal + CLEANING_FEE);
 };
+
+export const blockDatesForBooking = async (prisma: PrismaClient, booking: { checkIn: Date; checkOut: Date }, reason = 'Confirmed booking') => {
+  for (const date of getNightDates(booking.checkIn, booking.checkOut)) {
+    await prisma.blockedDate.upsert({ where: { date }, update: { reason }, create: { date, reason } });
+  }
+};
+
+export const calculateManualPrice = (pricePerNight: number, nights: number, discountPercent: number) => {
+  const subtotal = pricePerNight * nights;
+  const discounted = subtotal * (1 - discountPercent / 100);
+  return new Prisma.Decimal(Math.round((discounted + CLEANING_FEE) * 100) / 100);
+};

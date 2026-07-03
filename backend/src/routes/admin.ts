@@ -2,11 +2,11 @@ import { Router } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { BookingStatus, Prisma } from '@prisma/client';
-import { eachDayOfInterval, addDays } from 'date-fns';
 import { z } from 'zod';
 import { prisma } from '../index';
 import { requireAuth } from '../middleware/auth';
 import { validate } from '../middleware/validate';
+import { blockDatesForBooking } from '../services/availability';
 import { sendGuestConfirmationEmail } from '../services/email';
 
 const loginSchema = z.object({ email: z.string().email(), password: z.string().min(1) });
@@ -28,10 +28,8 @@ adminRouter.get('/bookings', async (_req, res) => res.json(await prisma.booking.
 adminRouter.patch('/bookings/:id', validate(bookingStatusSchema), async (req, res) => {
   const booking = await prisma.booking.update({ where: { id: req.params.id as string }, data: { status: bookingStatusSchema.parse(req.body).status } });
   if (booking.status === BookingStatus.CONFIRMED) {
-    for (const date of eachDayOfInterval({ start: booking.checkIn, end: addDays(booking.checkOut, -1) })) {
-      await prisma.blockedDate.upsert({ where: { date }, update: { reason: 'Confirmed booking' }, create: { date, reason: 'Confirmed booking' } });
-    }
-    await sendGuestConfirmationEmail(booking);
+    await blockDatesForBooking(prisma, booking);
+    if (booking.guestEmail) await sendGuestConfirmationEmail(booking);
   }
   res.json({ status: booking.status });
 });
