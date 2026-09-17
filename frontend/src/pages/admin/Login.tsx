@@ -39,7 +39,7 @@ export default function Login() {
           />
         </label>
         
-        <button type='button' onClick={submit} className='mt-6 rounded bg-pine px-4 py-2 text-white'>
+        <button type='button' onClick={submit} className='mt-6 rounded bg-pine px-4 py-2 font-medium text-white transition-colors hover:bg-pine-dark'>
           Zaloguj
         </button>
       </div>

@@ -10,12 +10,12 @@ describe('POST /api/bookings', () => {
 
   afterAll(async () => { await prisma.booking.deleteMany(); });
 
-  it('creates a pending booking and includes the cleaning fee in total price', async () => {
+  it('creates a pending booking and calculates total price from the season rate', async () => {
     const response = await request(createApp()).post('/api/bookings').send({ guestName: 'Anna Nowak', guestEmail: 'anna@example.com', guestPhone: '+48555111222', checkIn: '2026-06-01', checkOut: '2026-06-04', guestsCount: 4, notes: 'Sauna please', locale: 'pl' });
     expect(response.status).toBe(201);
     expect(response.body.status).toBe('PENDING');
     const booking = await prisma.booking.findUniqueOrThrow({ where: { id: response.body.id } });
-    expect(booking.totalPrice.toNumber()).toBe(3800);
+    expect(booking.totalPrice.toNumber()).toBe(3600);
   });
 
   it('rejects stays shorter than two nights', async () => {

@@ -3,14 +3,17 @@ import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Booking from './Booking';
 import * as bookingsApi from '../api/bookings';
+import * as pricingApi from '../api/pricing';
 import { vi } from 'vitest';
 
 vi.spyOn(bookingsApi, 'getAvailability').mockResolvedValue({ blockedDates: [] });
-vi.spyOn(bookingsApi, 'createBooking').mockResolvedValue({ id: 'booking-1', status: 'PENDING' });
-vi.spyOn(bookingsApi, 'initPayment').mockResolvedValue({ redirectUrl: '/booking?step=4&status=success', orderId: 'STUB-booking-1' });
+vi.spyOn(pricingApi, 'getPricingSeasons').mockResolvedValue([
+  { id: 's1', namePl: 'Sezon wysoki', nameEn: 'High season', pricePerNight: '1200', dateFrom: '2026-05-01', dateTo: '2026-09-30', isFeatured: true }
+]);
+vi.spyOn(bookingsApi, 'createBooking').mockResolvedValue({ id: 'booking-1', reference: 'LM-20260101-ANN1A2B', status: 'PENDING', totalPrice: 3600 });
 
 describe('booking wizard', () => {
-  it('submits guest details, initializes payment, and shows the confirmation summary', async () => {
+  it('shows a review step before submitting, then the confirmation with a friendly reference', async () => {
     const user = userEvent.setup();
     render(
       <QueryClientProvider client={new QueryClient()}>
@@ -28,10 +31,14 @@ describe('booking wizard', () => {
     await user.clear(screen.getByLabelText('Liczba gości'));
     await user.type(screen.getByLabelText('Liczba gości'), '4');
     await user.click(screen.getByRole('button', { name: 'Dalej' }));
-    
-    await user.click(screen.getByRole('button', { name: 'Uruchom płatność testową' }));
-    
-    expect(await screen.findByText(/STUB-booking-1/)).toBeInTheDocument();
-    expect(await screen.findByText('Opłata za sprzątanie: 200 PLN')).toBeInTheDocument();
+
+    // Review/summary step: guest details are shown for a final check, booking isn't created yet.
+    expect(await screen.findByText('Anna Nowak')).toBeInTheDocument();
+    expect(bookingsApi.createBooking).not.toHaveBeenCalled();
+    await user.click(screen.getByRole('button', { name: 'Wyślij prośbę o rezerwację' }));
+
+    expect(await screen.findByText(/LM-20260101-ANN1A2B/)).toBeInTheDocument();
   });
 });
+
+

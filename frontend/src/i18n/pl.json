@@ -14,18 +14,18 @@
   "home": {
     "hero": {
       "title": "Tw\u00f3j azyl na Mazurach",
-      "subtitle": "Minimalistyczny dom nad jeziorem i w\u015br\u00f3d las\u00f3w.",
-      "cta": "Sprawd\u017a dost\u0119pno\u015b\u0107"
+      "subtitle": "Odkryj harmoni\u0119 w duchu Lagom. Minimalistyczny dom zatopiony w naturze, oferuj\u0105cy blisko\u015b\u0107 jeziora Garbas (500m) i spok\u00f3j z dala od codzienno\u015bci.",
+      "cta": "ZAREZERWUJ TERAZ"
     },
     "amenities": {
-      "title": "Dlaczego Lagom Masuria",
+      "title": "Udogodnienia",
       "subtitle": "Wszystko, czego potrzebujesz do pe\u0142nego relaksu, zaprojektowane z dba\u0142o\u015bci\u0105 o ka\u017cdy detal.",
-      "jacuzzi": "Jacuzzi pod gwiazdami",
-      "forest": "Las za progiem",
-      "lake": "Jezioro w spacerowej odleg\u0142o\u015bci",
+      "jacuzzi": "Jacuzzi i Bania",
+      "forest": "Otoczenie Lasu",
+      "lake": "Blisko\u015b\u0107 Jeziora",
       "jacuzziDesc": "Prywatna strefa relaksu na \u015bwie\u017cym powietrzu, idealna na wieczorne odpr\u0119\u017cenie pod gwiazdami.",
       "forestDesc": "Zanurz si\u0119 w zapachu sosnowego lasu. Nasza dzia\u0142ka graniczy bezpo\u015brednio z rezerwatem przyrody.",
-      "lakeDesc": "Zaledwie 500m dzieli Ci\u0119 od krystalicznie czystego jeziora Garbas. Spacer idealny na letnie poranki."
+      "lakeDesc": "Zaledwie 500m dzieli Ci\u0119 od jeziora Garbas z dzikim, malowniczym zej\u015bciem do wody. Spacer idealny na letnie poranki."
     },
     "interior": {
       "title": "Wn\u0119trze pe\u0142ne \u015bwiat\u0142a",
@@ -43,10 +43,10 @@
     },
     "attractions": {
       "title": "Atrakcje w okolicy",
-      "lake": {
-        "distance": "500m od domu",
-        "title": "Jezioro Garbas",
-        "desc": "Krystalicznie czysta woda i piaszczyste, \u0142agodne zej\u015bcie \u2013 idealne naturalne k\u0105pielisko."
+      "pond": {
+        "distance": "Widok z okolicy",
+        "title": "Panorama mazurskich pag\u00f3rk\u00f3w",
+        "desc": "Falisty krajobraz w stron\u0119 miejscowo\u015bci Liski i prywatny staw w tle \u2013 widok, kt\u00f3ry towarzyszy porannej kawie na tarasie."
       },
       "kayak": {
         "title": "Kajaki i SUP",
@@ -58,11 +58,16 @@
       },
       "fishing": {
         "title": "W\u0119dkarstwo",
-        "desc": "Cisza o poranku na jeziorze Garbas. Zapewniamy dost\u0119p do prywatnego pomostu."
+        "desc": "Zabierz ma\u0142\u0105 \u0142\u00f3dk\u0119 wios\u0142ow\u0105 i wyp\u0142y\u0144 o poranku na po\u0142\u00f3w \u2013 dost\u0119pna na miejscu dla naszych go\u015bci."
       },
       "food": {
         "title": "Lokalna kuchnia",
         "desc": "Odkryj smaki regionu u zaprzyja\u017anionych gospodarzy."
+      },
+      "garbas": {
+        "distance": "500m od domu",
+        "title": "Jezioro Garbas",
+        "desc": "Dzikie, malownicze zej\u015bcie do wody w\u015br\u00f3d natury \u2013 spacer w sam raz na letni poranek."
       }
     }
   },
@@ -79,21 +84,72 @@
     "lowDates": "Pa\u017adziernik - Kwiecie\u0144\n(z wy\u0142\u0105czeniem \u015bwi\u0105t)",
     "highDates": "Maj - Wrzesie\u0144\noraz d\u0142ugie weekendy",
     "holidayDates": "Bo\u017ce Narodzenie, Sylwester,\nWielanoc",
-    "cleaningFee": "Op\u0142ata za sprz\u0105tanie: 200 z\u0142",
     "minStay": "Min. d\u0142ugo\u015b\u0107 pobytu: 2 noce",
     "cta": "ZAREZERWUJ SW\u00d3J POBYT"
   },
   "booking": {
-    "step1": "Krok 1: Daty",
-    "step2": "Krok 2: Dane go\u015bci",
-    "step3": "Krok 3: Zadatek",
-    "step4": "Krok 4: Potwierdzenie",
+    "title": "Sprawd\u017a Dost\u0119pno\u015b\u0107",
+    "subtitle": "Wybierz dogodny termin i wy\u015blij zapytanie o rezerwacj\u0119 pobytu w sercu natury. Skontaktujemy si\u0119, aby potwierdzi\u0107 termin.",
+    "step1": "1. DATY",
+    "step2": "2. DANE",
+    "step3": "3. PODSUMOWANIE",
+    "step4": "4. POTWIERDZENIE",
     "dates": "Daty pobytu",
+    "datesSubtitle": "Minimalna d\u0142ugo\u015b\u0107 pobytu to 2 noce. Cena orientacyjna aktualizuje si\u0119 automatycznie.",
+    "estimatedCost": "Szacunkowy koszt pobytu:",
     "guestDetails": "Dane go\u015bci",
-    "deposit": "Zadatek",
-    "confirmation": "Potwierdzenie",
+    "guestName": "Imi\u0119 i nazwisko",
+    "email": "Email",
+    "phone": "Telefon",
+    "guestsCount": "Liczba go\u015bci",
+    "notes": "Uwagi",
+    "nights": "Noclegi",
+    "total": "Razem",
+    "summaryTitle": "Podsumowanie rezerwacji",
+    "summarySubtitle": "Sprawd\u017a poprawno\u015b\u0107 danych przed wys\u0142aniem zapytania. Mo\u017cesz jeszcze wr\u00f3ci\u0107 i je poprawi\u0107.",
+    "summaryDates": "Termin pobytu",
+    "summaryGuest": "Dane go\u015bcia",
+    "summaryPrice": "Podsumowanie kwoty",
+    "sendRequest": "Wy\u015blij pro\u015bb\u0119 o rezerwacj\u0119",
+    "confirmation": "Dzi\u0119kujemy za zg\u0142oszenie!",
+    "confirmationMessage": "Otrzymali\u015bmy Twoje zapytanie o rezerwacj\u0119. Skontaktujemy si\u0119 z Tob\u0105 mailowo lub telefonicznie, aby potwierdzi\u0107 termin i zablokowa\u0107 go w kalendarzu.",
+    "bookingIdLabel": "Numer zg\u0142oszenia:",
+    "houseRulesTitle": "Zasady Domu",
+    "checkInTitle": "ZAMELDOWANIE",
+    "checkInValue": "od 16:00",
+    "quietHoursTitle": "CISZA NOCNA",
+    "quietHoursValue": "22:00 \u2013 06:00",
+    "petsTitle": "ZWIERZ\u0118TA",
+    "petsValue": "Mile widziane",
+    "noSmokingTitle": "ZAKAZ PALENIA",
+    "noSmokingValue": "W ca\u0142ym obiekcie",
+    "contactLabel": "KONTAKT",
+    "writeToUs": "Napisz do nas",
+    "contactName": "KONTAKT \u2014 IMI\u0118",
+    "contactEmail": "KONTAKT \u2014 EMAIL",
+    "contactMessage": "KONTAKT \u2014 WIADOMO\u015a\u0106",
+    "sendMessage": "Wy\u015blij wiadomo\u015b\u0107",
+    "messageSent": "Wiadomo\u015b\u0107 zosta\u0142a wys\u0142ana.",
+    "minStayError": "Minimalna d\u0142ugo\u015b\u0107 pobytu to 2 noce",
+    "fillDetailsError": "Uzupe\u0142nij wszystkie wymagane dane go\u015bcia",
+    "unavailableError": "Wybrany termin jest niedost\u0119pny. Wybierz inne daty.",
     "next": "Dalej",
     "prev": "Wstecz"
+  },
+  "calendar": {
+    "prevMonth": "Poprzedni miesi\u0105c",
+    "nextMonth": "Nast\u0119pny miesi\u0105c",
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "days": {
+      "mon": "PN",
+      "tue": "WT",
+      "wed": "\u015aR",
+      "thu": "CZ",
+      "fri": "PT",
+      "sat": "SO",
+      "sun": "ND"
+    }
   },
   "admin": {
     "bookings": "Rezerwacje",

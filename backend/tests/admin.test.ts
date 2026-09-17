@@ -14,7 +14,7 @@ describe('admin api', () => {
     const passwordHash = await bcrypt.hash('Lagom123!', 10);
     const admin = await prisma.adminUser.upsert({ where: { email: 'admin@lagommasuria.pl' }, update: { passwordHash }, create: { email: 'admin@lagommasuria.pl', passwordHash } });
     token = jwt.sign({ adminId: admin.id }, process.env.JWT_SECRET || 'test_secret');
-    bookingId = (await prisma.booking.create({ data: { guestName: 'Admin Test', guestEmail: 'guest@example.com', guestPhone: '+48111111111', checkIn: new Date('2026-07-01'), checkOut: new Date('2026-07-03'), guestsCount: 2, totalPrice: new Prisma.Decimal(2600), status: BookingStatus.PENDING, locale: 'pl' } })).id;
+    bookingId = (await prisma.booking.create({ data: { reference: 'LM-TEST-ADMIN001', guestName: 'Admin Test', guestEmail: 'guest@example.com', guestPhone: '+48111111111', checkIn: new Date('2026-07-01'), checkOut: new Date('2026-07-03'), guestsCount: 2, totalPrice: new Prisma.Decimal(2600), status: BookingStatus.PENDING, locale: 'pl' } })).id;
     messageId = (await prisma.contactMessage.create({ data: { name: 'Reader', email: 'reader@example.com', message: 'Hello' } })).id;
     pricingId = (await prisma.pricingSeason.findFirstOrThrow()).id;
   });
@@ -74,7 +74,7 @@ describe('admin api', () => {
 
     expect(booking.source).toBe('MANUAL');
     expect(booking.guestEmail).toBeNull();
-    expect(booking.totalPrice.toNumber()).toBe(1100);
+    expect(booking.totalPrice.toNumber()).toBe(900);
     expect(booking.depositAmount.toNumber()).toBe(300);
 
     const blocked = await prisma.blockedDate.findUnique({ where: { date: new Date('2026-09-10') } });
@@ -88,6 +88,7 @@ describe('admin api', () => {
 
     await prisma.booking.create({
       data: {
+        reference: 'LM-TEST-EXISTING1',
         guestName: 'Existing Guest',
         guestEmail: 'existing@example.com',
         guestPhone: '+48600000001',

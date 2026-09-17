@@ -16,12 +16,12 @@ services:
       - '4000:4000'
     environment:
       DATABASE_URL: postgresql://lagom:lagom_pass@db:5432/lagom
-      JWT_SECRET: change_me_in_production
-      SMTP_HOST: smtp.example.com
-      SMTP_PORT: '587'
-      SMTP_USER: ''
-      SMTP_PASS: ''
-      OWNER_EMAIL: hello@lagommasuria.pl
+      JWT_SECRET: ${JWT_SECRET:-change_me_in_production}
+      SMTP_HOST: ${SMTP_HOST:-smtp.example.com}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      OWNER_EMAIL: ${OWNER_EMAIL:-hello@lagommasuria.pl}
       PAYU_MERCHANT_ID: stub
       PAYU_SECRET_KEY: stub
     depends_on:
@@ -33,6 +33,12 @@ services:
       - '3000:3000'
     environment:
       VITE_API_URL: http://localhost:4000
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/index.html:/app/index.html
+      - ./frontend/tailwind.config.ts:/app/tailwind.config.ts
+      - ./frontend/postcss.config.cjs:/app/postcss.config.cjs
+      - ./frontend/vite.config.ts:/app/vite.config.ts
     depends_on:
       - backend
 

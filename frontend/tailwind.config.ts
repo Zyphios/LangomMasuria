@@ -7,6 +7,8 @@ export default {
       colors: {
         'primary': '#455538',
         'on-primary': '#ffffff',
+        'pine': '#2f4a3c',
+        'pine-dark': '#213529',
         'primary-container': '#5d6d4f',
         'on-primary-container': '#dceec9',
         'primary-fixed': '#d6e8c3',

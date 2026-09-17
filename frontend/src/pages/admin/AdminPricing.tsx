@@ -30,7 +30,7 @@ export default function AdminPricing() {
           onChange={(event) => setSeason((current) => ({ ...current, pricePerNight: event.target.value }))}
         />
       </label>
-      <button type='button' onClick={submit} className='mt-4 rounded bg-pine px-4 py-2 text-white'>
+      <button type='button' onClick={submit} className='mt-4 rounded bg-pine px-4 py-2 font-medium text-white transition-colors hover:bg-pine-dark'>
         Save pricing
       </button>
       {message ? <p className='mt-4'>{message}</p> : null}

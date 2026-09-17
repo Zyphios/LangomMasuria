@@ -1,7 +1,6 @@
 import { differenceInCalendarDays, endOfMonth, isWithinInterval, startOfMonth } from 'date-fns';
 import { BookingStatus, Prisma, PrismaClient, type PricingSeason } from '@prisma/client';
 
-export const CLEANING_FEE = 200;
 export const MIN_STAY_NIGHTS = 2;
 // checkIn/checkOut are parsed as UTC midnight (e.g. new Date('2026-09-10') = 2026-09-10T00:00:00Z).
 // Using date-fns local-time helpers (format/eachDayOfInterval/addDays) here would snap results to
@@ -58,7 +57,7 @@ export const assertDatesAvailable = async (prisma: PrismaClient, checkIn: Date, 
 export const calculateTotalPrice = async (prisma: PrismaClient, checkIn: Date, checkOut: Date) => {
   const seasons = await prisma.pricingSeason.findMany({ orderBy: { dateFrom: 'asc' } });
   const subtotal = getNightDates(checkIn, checkOut).reduce((sum, date) => sum + pickSeasonForDate(seasons, date).pricePerNight.toNumber(), 0);
-  return new Prisma.Decimal(subtotal + CLEANING_FEE);
+  return new Prisma.Decimal(subtotal);
 };
 
 export const blockDatesForBooking = async (prisma: PrismaClient, booking: { checkIn: Date; checkOut: Date }, reason = 'Confirmed booking') => {
@@ -70,5 +69,5 @@ export const blockDatesForBooking = async (prisma: PrismaClient, booking: { chec
 export const calculateManualPrice = (pricePerNight: number, nights: number, discountPercent: number) => {
   const subtotal = pricePerNight * nights;
   const discounted = subtotal * (1 - discountPercent / 100);
-  return new Prisma.Decimal(Math.round((discounted + CLEANING_FEE) * 100) / 100);
+  return new Prisma.Decimal(Math.round(discounted * 100) / 100);
 };

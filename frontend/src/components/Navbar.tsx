@@ -14,6 +14,15 @@ export default function Navbar() {
   const { t } = useTranslation();
   const location = useLocation();
 
+  // Both "Contact" and "Book now" point to /booking. If the guest is already on that page
+  // (often scrolled down past the calendar), react-router's Link does nothing on click since
+  // the location doesn't change - making the button look broken. Force a scroll-to-top instead.
+  const handleBookNowClick = () => {
+    if (location.pathname === '/booking') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <header className="fixed top-0 z-50 w-full border-b border-outline-variant/30 bg-surface/90 backdrop-blur-md">
       <div className="mx-auto flex h-20 max-w-container-max items-center justify-between px-8 md:px-margin-desktop">
@@ -45,6 +54,7 @@ export default function Navbar() {
           <LanguageToggle />
           <Link
             to="/booking"
+            onClick={handleBookNowClick}
             className="hidden rounded bg-primary px-8 py-4 text-label-caps uppercase text-on-primary transition-colors hover:bg-surface-tint md:block"
           >
             {t('nav.bookNow')}

@@ -17,7 +17,11 @@ export default function AdminLayout() {
           <Link to='/admin/messages'>{t('admin.messages')}</Link>
           <Link to='/admin/gallery'>{t('admin.gallery')}</Link>
           <Link to='/admin/pricing'>{t('admin.pricing')}</Link>
-          <button type='button' onClick={auth.logout} className='rounded border px-3 py-2 text-left'>
+          <button
+            type='button'
+            onClick={auth.logout}
+            className='rounded border border-outline px-3 py-2 text-left text-on-surface transition-colors hover:bg-surface-container'
+          >
             {t('admin.logout')}
           </button>
         </nav>

@@ -3,9 +3,11 @@ import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Booking from './Booking';
 import * as bookingsApi from '../api/bookings';
+import * as pricingApi from '../api/pricing';
 import { vi } from 'vitest';
 
 vi.spyOn(bookingsApi, 'getAvailability').mockResolvedValue({ blockedDates: ['2026-06-10'] });
+vi.spyOn(pricingApi, 'getPricingSeasons').mockResolvedValue([]);
 
 describe('booking step 1', () => {
   it('prevents selecting a stay shorter than two nights', async () => {

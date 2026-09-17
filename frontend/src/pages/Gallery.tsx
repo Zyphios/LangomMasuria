@@ -11,22 +11,21 @@ export default function Gallery() {
   const { data: pricing = [] } = useQuery({ queryKey: ['pricing'], queryFn: getPricingSeasons });
 
   const galleryImages = images.length > 0 ? images : [
-    { id: '1', url: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80', captionPl: 'Salon', captionEn: 'Living room', sortOrder: 1 },
-    { id: '2', url: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=80', captionPl: 'Kuchnia', captionEn: 'Kitchen', sortOrder: 2 },
-    { id: '3', url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80', captionPl: 'Jezioro', captionEn: 'Lake', sortOrder: 3 },
-    { id: '4', url: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80', captionPl: 'Sypialnia', captionEn: 'Bedroom', sortOrder: 4 },
-    { id: '5', url: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=800&q=80', captionPl: 'Łazienka', captionEn: 'Bathroom', sortOrder: 5 },
-    { id: '6', url: 'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=800&q=80', captionPl: 'Jacuzzi', captionEn: 'Jacuzzi', sortOrder: 6 }
+    { id: '1', url: '/glowne-foto.jpg', captionPl: 'Dom o zmierzchu', captionEn: 'House at dusk', sortOrder: 1 },
+    { id: '2', url: '/shared image (19).jpg', captionPl: 'Dom noc\u0105, w \u015bwietle latarni', captionEn: 'The house glowing at night', sortOrder: 2 },
+    { id: '3', url: '/shared image (3).jpg', captionPl: 'Dom nad stawem', captionEn: 'The house by the pond', sortOrder: 3 },
+    { id: '4', url: '/shared image (13).jpg', captionPl: 'Jacuzzi z widokiem na \u0142\u0105ki', captionEn: 'Hot tub with meadow views', sortOrder: 4 },
+    { id: '5', url: '/IMG_20260705_162852.jpg', captionPl: 'Kuchnia', captionEn: 'Kitchen', sortOrder: 5 },
+    { id: '6', url: '/IMG-20260705-WA0003.jpg', captionPl: 'Detale kuchni', captionEn: 'Kitchen details', sortOrder: 6 },
+    { id: '7', url: '/shared image (5).jpg', captionPl: 'Kuchnia i jadalnia', captionEn: 'Kitchen and dining nook', sortOrder: 7 },
+    { id: '8', url: '/IMG_20260705_163047.jpg', captionPl: 'Salon z widokiem na taras', captionEn: 'Living room with terrace view', sortOrder: 8 },
+    { id: '9', url: '/shared image (7).jpg', captionPl: 'Salon z antresol\u0105', captionEn: 'Living room with mezzanine view', sortOrder: 9 },
+    { id: '10', url: '/shared image (6).jpg', captionPl: 'Sypialnia z widokiem na \u0142\u0105ki', captionEn: 'Bedroom with meadow view', sortOrder: 10 },
+    { id: '11', url: '/shared image (20).jpg', captionPl: 'Antresola sypialniana', captionEn: 'Loft bedroom', sortOrder: 11 },
+    { id: '12', url: '/shared image (21).jpg', captionPl: '\u0141azienka', captionEn: 'Bathroom', sortOrder: 12 }
   ];
 
-  const gridClasses = [
-    'md:col-span-2 md:row-span-2',
-    'md:col-span-1 md:row-span-1',
-    'md:col-span-1 md:row-span-1',
-    'md:col-span-2 md:row-span-1',
-    'md:col-span-1 md:row-span-1',
-    'md:col-span-1 md:row-span-1'
-  ];
+  const gridClasses = ['md:col-span-2 md:row-span-2'];
 
   const sortedPricing = [...pricing].sort((a, b) => {
     if (a.isFeatured) return 0;
@@ -51,8 +50,8 @@ export default function Gallery() {
         </section>
 
         <section className="mx-auto mb-section-gap max-w-container-max px-8 md:px-margin-desktop">
-          <div className="grid grid-cols-1 gap-gutter md:grid-cols-4 md:grid-rows-[300px_300px_300px]">
-            {galleryImages.slice(0, 6).map((image, index) => (
+          <div className="grid grid-flow-dense grid-cols-2 gap-gutter sm:grid-cols-3 md:grid-cols-4 auto-rows-[220px] md:auto-rows-[260px]">
+            {galleryImages.map((image, index) => (
               <div key={image.id} className={`${gridClasses[index] || ''} group overflow-hidden rounded-xl`}>
                 <img
                   src={image.url}
@@ -95,10 +94,6 @@ export default function Gallery() {
             </div>
             <div className="flex flex-col items-center justify-between gap-8 border-t border-outline-variant/30 pt-8 md:flex-row">
               <div className="flex flex-wrap justify-center gap-6 text-body-md text-on-surface-variant">
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>cleaning_services</span>
-                  {t('pricing.cleaningFee')}
-                </div>
                 <div className="flex items-center gap-2">
                   <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>calendar_month</span>
                   {t('pricing.minStay')}

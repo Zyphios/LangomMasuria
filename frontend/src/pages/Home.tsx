@@ -9,7 +9,7 @@ export default function Home() {
       <section className="relative flex h-[819px] min-h-[600px] items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1600&q=80"
+            src="/glowne-foto.jpg"
             alt="Lagom Masuria - dom na Mazurach"
             className="h-full w-full object-cover"
           />
@@ -64,8 +64,8 @@ export default function Home() {
             </div>
             <div className="relative h-[500px] overflow-hidden rounded-xl">
               <img
-                src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80"
-                alt="Wnętrze Lagom Masuria"
+                src="/IMG_20260705_162921.jpg"
+                alt="Lagom Masuria - wnętrze salonu"
                 className="h-full w-full object-cover"
               />
             </div>

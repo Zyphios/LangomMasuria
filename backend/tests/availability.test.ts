@@ -10,6 +10,7 @@ describe('GET /api/availability', () => {
     await prisma.blockedDate.create({ data: { date: new Date('2026-06-10'), reason: 'Maintenance' } });
     await prisma.booking.create({
       data: {
+        reference: 'LM-TEST-AVAILABIL',
         guestName: 'Jan Kowalski',
         guestEmail: 'jan@example.com',
         guestPhone: '+48123123123',

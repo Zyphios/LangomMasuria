@@ -4,5 +4,6 @@ COPY package.json package-lock.json* ./
 RUN npm install
 COPY tsconfig.json vite.config.ts vitest.config.ts tailwind.config.ts postcss.config.cjs index.html ./
 COPY src ./src
+COPY public ./public
 EXPOSE 3000
 CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "3000"]

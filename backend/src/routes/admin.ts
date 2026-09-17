@@ -7,6 +7,7 @@ import { prisma } from '../index';
 import { requireAuth } from '../middleware/auth';
 import { validate } from '../middleware/validate';
 import { assertDatesAvailable, blockDatesForBooking, calculateManualPrice, getNightCount } from '../services/availability';
+import { generateBookingReference } from '../services/bookingReference';
 import { sendGuestConfirmationEmail } from '../services/email';
 import type { ManualBookingCreateInput } from '../types';
 
@@ -47,25 +48,37 @@ adminRouter.post('/bookings/manual', validate(manualBookingSchema), async (req, 
     await assertDatesAvailable(prisma, checkIn, checkOut);
     const nights = getNightCount(checkIn, checkOut);
     const totalPrice = calculateManualPrice(payload.pricePerNight, nights, payload.discountPercent);
-    const booking = await prisma.booking.create({
-      data: {
-        guestName: payload.guestName,
-        guestEmail: payload.guestEmail,
-        guestPhone: payload.guestPhone,
-        checkIn,
-        checkOut,
-        guestsCount: payload.guestsCount,
-        notes: payload.notes,
-        totalPrice,
-        depositAmount: new Prisma.Decimal(payload.depositAmount),
-        status: BookingStatus.CONFIRMED,
-        source: 'MANUAL',
-        locale: 'pl'
+
+    let booking;
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      const reference = generateBookingReference(payload.guestEmail);
+      try {
+        booking = await prisma.booking.create({
+          data: {
+            guestName: payload.guestName,
+            guestEmail: payload.guestEmail,
+            guestPhone: payload.guestPhone,
+            checkIn,
+            checkOut,
+            guestsCount: payload.guestsCount,
+            notes: payload.notes,
+            totalPrice,
+            reference,
+            depositAmount: new Prisma.Decimal(payload.depositAmount),
+            status: BookingStatus.CONFIRMED,
+            source: 'MANUAL',
+            locale: 'pl'
+          }
+        });
+        break;
+      } catch (error) {
+        const isDuplicateReference = error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002';
+        if (!isDuplicateReference || attempt === 4) throw error;
       }
-    });
-    await blockDatesForBooking(prisma, booking, 'Manual phone booking');
-    if (booking.guestEmail) await sendGuestConfirmationEmail({ ...booking, guestEmail: booking.guestEmail });
-    res.status(201).json({ id: booking.id, status: booking.status, totalPrice: totalPrice.toNumber() });
+    }
+    await blockDatesForBooking(prisma, booking!, 'Manual phone booking');
+    if (booking!.guestEmail) await sendGuestConfirmationEmail({ ...booking!, guestEmail: booking!.guestEmail });
+    res.status(201).json({ id: booking!.id, reference: booking!.reference, status: booking!.status, totalPrice: totalPrice.toNumber() });
   } catch (error) {
     if (error instanceof Error) return res.status(400).json({ message: error.message });
     throw error;

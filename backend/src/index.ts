@@ -15,6 +15,15 @@ export const prisma = new PrismaClient();
 export const createApp = () => {
   const app = express();
 
+  // All API responses are dynamic (booking/pricing/gallery data can change at any time), so
+  // disable Express's automatic ETag generation and tell browsers never to cache them. Without
+  // this, admin pages could silently show a stale 304-cached list after data changes server-side.
+  app.disable('etag');
+  app.use((_req: Request, res: Response, next: NextFunction) => {
+    res.set('Cache-Control', 'no-store');
+    next();
+  });
+
   app.use(cors());
   app.use(express.json());
   app.use('/api/availability', availabilityRouter);

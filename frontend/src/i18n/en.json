@@ -25,7 +25,7 @@
       "lake": "Lake within walking distance",
       "jacuzziDesc": "A private outdoor relaxation zone, perfect for unwinding under the stars in the evening.",
       "forestDesc": "Immerse yourself in the scent of pine forest. Our plot borders a protected nature reserve.",
-      "lakeDesc": "Only 500m separates you from the crystal-clear Garbas Lake. A perfect walk for summer mornings."
+      "lakeDesc": "Only 500m separates you from Garbas Lake, with a wild, scenic path down to the water."
     },
     "interior": {
       "title": "An interior full of light",
@@ -43,10 +43,10 @@
     },
     "attractions": {
       "title": "Attractions nearby",
-      "lake": {
-        "distance": "500m from the house",
-        "title": "Garbas Lake",
-        "desc": "Crystal-clear water and a gentle sandy shoreline - the perfect natural bathing spot."
+      "pond": {
+        "distance": "The view nearby",
+        "title": "Panorama of the Masurian hills",
+        "desc": "Rolling countryside towards the village of Liski, with a private pond in the distance \u2014 the view that comes with your morning coffee on the terrace."
       },
       "kayak": {
         "title": "Kayaks & SUP",
@@ -58,11 +58,16 @@
       },
       "fishing": {
         "title": "Fishing",
-        "desc": "Quiet mornings on Garbas Lake. We provide access to a private pier."
+        "desc": "Take the small rowing boat out at dawn for a quiet catch \u2014 available on site for our guests."
       },
       "food": {
         "title": "Local cuisine",
         "desc": "Discover regional flavours with our trusted local hosts."
+      },
+      "garbas": {
+        "distance": "500m from the house",
+        "title": "Garbas Lake",
+        "desc": "A wild, scenic path down to the water, tucked away in nature \u2014 a perfect walk for a summer morning."
       }
     }
   },
@@ -79,21 +84,72 @@
     "lowDates": "October - April\n(excluding holidays)",
     "highDates": "May - September\nand long weekends",
     "holidayDates": "Christmas, New Year,\nEaster",
-    "cleaningFee": "Cleaning fee: 200 PLN",
     "minStay": "Minimum stay: 2 nights",
     "cta": "BOOK YOUR STAY"
   },
   "booking": {
-    "step1": "Step 1: Dates",
-    "step2": "Step 2: Guest details",
-    "step3": "Step 3: Deposit",
-    "step4": "Step 4: Confirmation",
+    "title": "Check Availability",
+    "subtitle": "Choose your dates and send a booking request for your stay in the heart of nature. We'll contact you to confirm the dates.",
+    "step1": "1. DATES",
+    "step2": "2. DETAILS",
+    "step3": "3. SUMMARY",
+    "step4": "4. CONFIRMATION",
     "dates": "Stay dates",
+    "datesSubtitle": "Minimum stay is 2 nights. The estimated price updates automatically.",
+    "estimatedCost": "Estimated stay cost:",
     "guestDetails": "Guest details",
-    "deposit": "Deposit",
-    "confirmation": "Confirmation",
+    "guestName": "Full name",
+    "email": "Email",
+    "phone": "Phone",
+    "guestsCount": "Number of guests",
+    "notes": "Notes",
+    "nights": "Nights",
+    "total": "Total",
+    "summaryTitle": "Booking summary",
+    "summarySubtitle": "Double-check your details before sending the request. You can still go back and edit them.",
+    "summaryDates": "Stay dates",
+    "summaryGuest": "Guest details",
+    "summaryPrice": "Price summary",
+    "sendRequest": "Send booking request",
+    "confirmation": "Thank you for your request!",
+    "confirmationMessage": "We've received your booking request. We'll contact you by email or phone to confirm the dates and block them in the calendar.",
+    "bookingIdLabel": "Request number:",
+    "houseRulesTitle": "House Rules",
+    "checkInTitle": "CHECK-IN",
+    "checkInValue": "from 4:00 PM",
+    "quietHoursTitle": "QUIET HOURS",
+    "quietHoursValue": "10:00 PM \u2013 6:00 AM",
+    "petsTitle": "PETS",
+    "petsValue": "Welcome",
+    "noSmokingTitle": "NO SMOKING",
+    "noSmokingValue": "Throughout the property",
+    "contactLabel": "CONTACT",
+    "writeToUs": "Get in touch",
+    "contactName": "CONTACT \u2014 NAME",
+    "contactEmail": "CONTACT \u2014 EMAIL",
+    "contactMessage": "CONTACT \u2014 MESSAGE",
+    "sendMessage": "Send message",
+    "messageSent": "Your message has been sent.",
+    "minStayError": "Minimum stay is 2 nights",
+    "fillDetailsError": "Fill in all required guest details",
+    "unavailableError": "Selected dates are unavailable. Please choose different dates.",
     "next": "Next",
     "prev": "Previous"
+  },
+  "calendar": {
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "days": {
+      "mon": "MO",
+      "tue": "TU",
+      "wed": "WE",
+      "thu": "TH",
+      "fri": "FR",
+      "sat": "SA",
+      "sun": "SU"
+    }
   },
   "admin": {
     "bookings": "Bookings",

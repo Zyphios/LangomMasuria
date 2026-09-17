@@ -1,5 +1,3 @@
-export const CLEANING_FEE = 200;
-
 export type Locale = 'pl' | 'en';
 
 export type BookingStatus = 'PENDING' | 'CONFIRMED' | 'CANCELLED';
@@ -8,6 +6,7 @@ export type BookingSource = 'WEBSITE' | 'MANUAL';
 
 export type AdminBookingRow = {
   id: string;
+  reference: string;
   guestName: string;
   guestEmail: string | null;
   guestPhone: string;
@@ -63,7 +62,9 @@ export type ManualBookingPayload = {
 
 export type BookingResponse = {
   id: string;
+  reference: string;
   status: BookingStatus;
+  totalPrice: number;
 };
 
 export type AvailabilityResponse = {
@@ -79,5 +80,5 @@ export type ContactPayload = {
 export type BookingWizardForm = BookingPayload & {
   totalPrice: number;
   bookingId?: string;
-  orderId?: string;
+  reference?: string;
 };

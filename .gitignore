@@ -1,2 +1,24 @@
 
 .worktrees/
+
+# Dependencies and build output
+node_modules/
+dist/
+build/
+
+# Environment files with real secrets — never commit these; copy .env.example instead
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+
+# Editor/OS cruft
+.DS_Store
+Thumbs.db
+
+# Ad-hoc debug artifacts
+frontend/probe-booking.mjs
+frontend/probe-booking.png
+/screenshot-*.png
+/glowne foto.jpg

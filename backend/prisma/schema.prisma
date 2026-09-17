@@ -10,6 +10,7 @@ datasource db {
 
 model Booking {
   id            String        @id @default(uuid())
+  reference     String        @unique
   guestName     String
   guestEmail    String?
   guestPhone    String
