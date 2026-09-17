@@ -34,16 +34,21 @@ export default function Home() {
         </div>
         <div className="grid grid-cols-1 gap-gutter md:grid-cols-3">
           {[
-            { icon: 'hot_tub', title: t('home.amenities.jacuzzi'), desc: t('home.amenities.jacuzziDesc') },
-            { icon: 'forest', title: t('home.amenities.forest'), desc: t('home.amenities.forestDesc') },
-            { icon: 'water_drop', title: t('home.amenities.lake'), desc: t('home.amenities.lakeDesc') }
-          ].map(({ icon, title, desc }) => (
-            <div key={icon} className="flex flex-col items-start gap-4 rounded-xl bg-surface-container-low p-8 transition-colors duration-300 hover:bg-surface-container">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-container text-on-primary-container">
-                <span className="material-symbols-outlined">{icon}</span>
+            { icon: 'hot_tub', title: t('home.amenities.jacuzzi'), desc: t('home.amenities.jacuzziDesc'), image: '/dodaj4.jpg' },
+            { icon: 'forest', title: t('home.amenities.forest'), desc: t('home.amenities.forestDesc'), image: '/otoczenie.jpg' },
+            { icon: 'water_drop', title: t('home.amenities.lake'), desc: t('home.amenities.lakeDesc'), image: '/garbas.jpg' }
+          ].map(({ icon, title, desc, image }) => (
+            <div key={icon} className="flex flex-col overflow-hidden rounded-xl bg-surface-container-low transition-colors duration-300 hover:bg-surface-container">
+              <div className="h-48 w-full overflow-hidden">
+                <img src={image} alt={title} className="h-full w-full object-cover" />
               </div>
-              <h3 className="text-headline-sm text-on-surface">{title}</h3>
-              <p className="text-body-md text-on-surface-variant">{desc}</p>
+              <div className="flex flex-col items-start gap-4 p-8">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-container text-on-primary-container">
+                  <span className="material-symbols-outlined">{icon}</span>
+                </div>
+                <h3 className="text-headline-sm text-on-surface">{title}</h3>
+                <p className="text-body-md text-on-surface-variant">{desc}</p>
+              </div>
             </div>
           ))}
         </div>
