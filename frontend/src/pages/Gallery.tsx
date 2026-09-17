@@ -22,7 +22,11 @@ export default function Gallery() {
     { id: '9', url: '/shared image (7).jpg', captionPl: 'Salon z antresol\u0105', captionEn: 'Living room with mezzanine view', sortOrder: 9 },
     { id: '10', url: '/shared image (6).jpg', captionPl: 'Sypialnia z widokiem na \u0142\u0105ki', captionEn: 'Bedroom with meadow view', sortOrder: 10 },
     { id: '11', url: '/shared image (20).jpg', captionPl: 'Antresola sypialniana', captionEn: 'Loft bedroom', sortOrder: 11 },
-    { id: '12', url: '/shared image (21).jpg', captionPl: '\u0141azienka', captionEn: 'Bathroom', sortOrder: 12 }
+    { id: '12', url: '/shared image (21).jpg', captionPl: '\u0141azienka', captionEn: 'Bathroom', sortOrder: 12 },
+    { id: '13', url: '/pagorki.jpg', captionPl: 'Panorama mazurskich pag\u00f3rk\u00f3w o \u015bwicie', captionEn: 'Panorama of Masurian hills at dawn', sortOrder: 13 },
+    { id: '14', url: '/dodaj2.jpg', captionPl: 'Widok z antresoli na salon i \u0142\u0105ki', captionEn: 'View from the loft over the living room and meadows', sortOrder: 14 },
+    { id: '15', url: '/dodaj3.jpg', captionPl: 'Salon z wyj\u015bciem na taras i jacuzzi', captionEn: 'Living room opening onto the terrace and hot tub', sortOrder: 15 },
+    { id: '16', url: '/dodaj4.jpg', captionPl: 'Dom noc\u0105 z pod\u015bwietlonym jacuzzi', captionEn: 'The house at night with the glowing hot tub', sortOrder: 16 }
   ];
 
   const gridClasses = ['md:col-span-2 md:row-span-2'];

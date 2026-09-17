@@ -33,7 +33,11 @@ async function main() {
         { url: '/shared image (7).jpg', captionPl: 'Salon z antresolą', captionEn: 'Living room with mezzanine view', sortOrder: 9 },
         { url: '/shared image (6).jpg', captionPl: 'Sypialnia z widokiem na łąki', captionEn: 'Bedroom with meadow view', sortOrder: 10 },
         { url: '/shared image (20).jpg', captionPl: 'Antresola sypialniana', captionEn: 'Loft bedroom', sortOrder: 11 },
-        { url: '/shared image (21).jpg', captionPl: 'Łazienka', captionEn: 'Bathroom', sortOrder: 12 }
+        { url: '/shared image (21).jpg', captionPl: 'Łazienka', captionEn: 'Bathroom', sortOrder: 12 },
+        { url: '/pagorki.jpg', captionPl: 'Panorama mazurskich pagórków o świcie', captionEn: 'Panorama of Masurian hills at dawn', sortOrder: 13 },
+        { url: '/dodaj2.jpg', captionPl: 'Widok z antresoli na salon i łąki', captionEn: 'View from the loft over the living room and meadows', sortOrder: 14 },
+        { url: '/dodaj3.jpg', captionPl: 'Salon z wyjściem na taras i jacuzzi', captionEn: 'Living room opening onto the terrace and hot tub', sortOrder: 15 },
+        { url: '/dodaj4.jpg', captionPl: 'Dom nocą z podświetlonym jacuzzi', captionEn: 'The house at night with the glowing hot tub', sortOrder: 16 }
       ]
     });
   }
