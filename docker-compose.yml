@@ -22,6 +22,8 @@ services:
       SMTP_USER: ${SMTP_USER:-}
       SMTP_PASS: ${SMTP_PASS:-}
       OWNER_EMAIL: ${OWNER_EMAIL:-hello@lagommasuria.pl}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@lagommasuria.pl}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Lagom123!}
       PAYU_MERCHANT_ID: stub
       PAYU_SECRET_KEY: stub
     depends_on:
@@ -32,7 +34,7 @@ services:
     ports:
       - '3000:3000'
     environment:
-      VITE_API_URL: http://localhost:4000
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:4000}
     volumes:
       - ./frontend/src:/app/src
       - ./frontend/index.html:/app/index.html
