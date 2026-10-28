@@ -1,12 +1,15 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { getGalleryImages } from '../api/gallery';
 import { getPricingSeasons } from '../api/pricing';
+import GalleryLightbox, { getGalleryCaption } from '../components/GalleryLightbox';
 import type { PricingSeason } from '../types';
 
 export default function Gallery() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [selectedImageId, setSelectedImageId] = useState<string | null>(null);
   const { data: images = [] } = useQuery({ queryKey: ['gallery'], queryFn: getGalleryImages });
   const { data: pricing = [] } = useQuery({ queryKey: ['pricing'], queryFn: getPricingSeasons });
 
@@ -30,6 +33,11 @@ export default function Gallery() {
   ];
 
   const gridClasses = ['md:col-span-2 md:row-span-2'];
+  const selectedIndex = galleryImages.findIndex((image) => image.id === selectedImageId);
+
+  useEffect(() => {
+    if (selectedImageId !== null && selectedIndex === -1) setSelectedImageId(null);
+  }, [selectedImageId, selectedIndex]);
 
   const sortedPricing = [...pricing].sort((a, b) => {
     if (a.isFeatured) return 0;
@@ -56,13 +64,20 @@ export default function Gallery() {
         <section className="mx-auto mb-section-gap max-w-container-max px-8 md:px-margin-desktop">
           <div className="grid grid-flow-dense grid-cols-2 gap-gutter sm:grid-cols-3 md:grid-cols-4 auto-rows-[220px] md:auto-rows-[260px]">
             {galleryImages.map((image, index) => (
-              <div key={image.id} className={`${gridClasses[index] || ''} group overflow-hidden rounded-xl`}>
+              <button
+                key={image.id}
+                type="button"
+                aria-label={t('gallery.viewer.open', { caption: getGalleryCaption(image, i18n.language) })}
+                onClick={() => setSelectedImageId(image.id)}
+                className={`${gridClasses[index] || ''} group cursor-zoom-in overflow-hidden rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary`}
+              >
                 <img
                   src={image.url}
-                  alt={image.captionPl || 'Lagom Masuria'}
+                  alt={getGalleryCaption(image, i18n.language)}
+                  loading={index === 0 ? 'eager' : 'lazy'}
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-              </div>
+              </button>
             ))}
           </div>
         </section>
@@ -113,6 +128,14 @@ export default function Gallery() {
           </div>
         </section>
       </main>
+      {selectedIndex !== -1 && (
+        <GalleryLightbox
+          images={galleryImages}
+          index={selectedIndex}
+          onIndexChange={(index) => setSelectedImageId(galleryImages[index].id)}
+          onClose={() => setSelectedImageId(null)}
+        />
+      )}
     </div>
   );
 }
