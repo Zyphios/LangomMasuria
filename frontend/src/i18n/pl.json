@@ -73,7 +73,16 @@
   },
   "gallery": {
     "title": "Galeria",
-    "subtitle": "Odkryj harmoni\u0119 natury i minimalistycznego designu. Nasze wn\u0119trza i otoczenie zosta\u0142y zaprojektowane, aby zaoferowa\u0107 Ci przestrze\u0144 do prawdziwego oddechu."
+    "subtitle": "Odkryj harmoni\u0119 natury i minimalistycznego designu. Nasze wn\u0119trza i otoczenie zosta\u0142y zaprojektowane, aby zaoferowa\u0107 Ci przestrze\u0144 do prawdziwego oddechu.",
+    "viewer": {
+      "title": "Podgl\u0105d zdj\u0119\u0107",
+      "open": "Powi\u0119ksz zdj\u0119cie: {{caption}}",
+      "previous": "Poprzednie zdj\u0119cie",
+      "next": "Nast\u0119pne zdj\u0119cie",
+      "close": "Zamknij podgl\u0105d",
+      "counter": "{{current}} / {{total}}",
+      "loadError": "Nie uda\u0142o si\u0119 wczyta\u0107 zdj\u0119cia. Przejd\u017a do nast\u0119pnego lub spr\u00f3buj ponownie."
+    }
   },
   "pricing": {
     "title": "Cennik",

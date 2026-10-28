@@ -73,7 +73,16 @@
   },
   "gallery": {
     "title": "Gallery",
-    "subtitle": "Discover the harmony of nature and minimalist design. Our interiors and surroundings were created to give you space to truly breathe."
+    "subtitle": "Discover the harmony of nature and minimalist design. Our interiors and surroundings were created to give you space to truly breathe.",
+    "viewer": {
+      "title": "Photo viewer",
+      "open": "Enlarge photo: {{caption}}",
+      "previous": "Previous photo",
+      "next": "Next photo",
+      "close": "Close photo viewer",
+      "counter": "{{current}} / {{total}}",
+      "loadError": "The photo could not be loaded. Go to the next photo or try again."
+    }
   },
   "pricing": {
     "title": "Pricing",
