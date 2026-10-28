@@ -69,7 +69,7 @@ export default function Home() {
             </div>
             <div className="relative h-[500px] overflow-hidden rounded-xl">
               <img
-                src="/IMG_20260705_162921.jpg"
+                src="/IMG_20260705_163047.jpg"
                 alt="Lagom Masuria - wnętrze salonu"
                 className="h-full w-full object-cover"
               />
