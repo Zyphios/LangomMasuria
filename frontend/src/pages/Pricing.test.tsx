@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
 import Pricing from './Pricing';
@@ -31,6 +31,7 @@ describe('pricing page', () => {
   });
 
   afterEach(async () => {
+    cleanup();
     await i18n.changeLanguage('pl');
   });
 

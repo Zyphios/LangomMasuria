@@ -41,6 +41,35 @@
       "bedrooms": "Sypialnie",
       "guests": "Os\u00f3b"
     },
+    "amenities": {
+      "outdoor": {
+        "title": "Na \u015bwie\u017cym powietrzu",
+        "description": "Spokojne poranki, wsp\u00f3lne posi\u0142ki i wieczory przy ogniu. Tutaj jest miejsce na odpoczynek we w\u0142asnym rytmie.",
+        "imageAlt": "Otoczenie Domku na Mazurskiej",
+        "grill": "Grill",
+        "firepit": "Miejsce na ognisko",
+        "jacuzzi": "Jacuzzi i bania",
+        "woodTerms": "Pierwszy worek drewna w cenie pobytu. Kolejne worki dodatkowo p\u0142atne \u2014 cen\u0119 ustalimy przed przyjazdem."
+      },
+      "family": {
+        "title": "Aktywnie i rodzinnie",
+        "description": "Mecz w pi\u0142k\u0119, zabawa na podw\u00f3rku albo wycieczka po okolicy. Po\u0142\u0105cz chwile spokoju z ruchem na \u015bwie\u017cym powietrzu.",
+        "imageAlt": "Mazurski krajobraz wok\u00f3\u0142 domu",
+        "goal": "Bramka do gry w pi\u0142k\u0119",
+        "yard": "Podw\u00f3rko do zabawy",
+        "bikesSup": "Rowery i SUP",
+        "equipmentTerms": "Rowery i SUP dost\u0119pne po wcze\u015bniejszym uzgodnieniu."
+      },
+      "indoor": {
+        "title": "Komfort wewn\u0105trz",
+        "description": "Poranna kawa w kuchni, przyjemny ch\u0142\u00f3d w ciep\u0142y dzie\u0144 i spokojny wiecz\u00f3r w salonie. Pod r\u0119k\u0105 masz to, co u\u0142atwia codzienny wypoczynek.",
+        "imageAlt": "Kuchnia w Domku na Mazurskiej",
+        "coffee": "Ekspres przelewowy",
+        "ac": "Klimatyzacja",
+        "tv": "Telewizor",
+        "internet": "Internet"
+      }
+    },
     "attractions": {
       "title": "Atrakcje w okolicy",
       "pond": {
@@ -50,7 +79,7 @@
       },
       "kayak": {
         "title": "Kajaki i SUP",
-        "desc": "Eksploruj spokojne wody okolicznych jezior w swoim tempie. Sprz\u0119t dost\u0119pny na miejscu."
+        "desc": "Eksploruj spokojne wody okolicznych jezior w swoim tempie. SUP dost\u0119pny po wcze\u015bniejszym uzgodnieniu."
       },
       "bike": {
         "title": "Wycieczki rowerowe",

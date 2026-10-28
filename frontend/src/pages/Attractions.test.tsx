@@ -1,9 +1,10 @@
-import { render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import Attractions from './Attractions';
 import i18n from '../i18n';
 
 describe('attractions page', () => {
   afterEach(async () => {
+    cleanup();
     await i18n.changeLanguage('pl');
   });
 

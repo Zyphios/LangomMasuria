@@ -41,6 +41,35 @@
       "bedrooms": "Bedrooms",
       "guests": "Guests"
     },
+    "amenities": {
+      "outdoor": {
+        "title": "In the open air",
+        "description": "Slow mornings, shared meals and evenings by the fire. There is room here to unwind at your own pace.",
+        "imageAlt": "Outdoor surroundings of Domek na Mazurskiej",
+        "grill": "Barbecue",
+        "firepit": "Firepit",
+        "jacuzzi": "Jacuzzi and outdoor bathing tub",
+        "woodTerms": "The first bag of firewood is included in your stay. Additional bags cost extra \u2014 we will agree the price before arrival."
+      },
+      "family": {
+        "title": "Active days for the family",
+        "description": "A kickabout, time playing in the yard or a trip around the area. Mix quiet moments with outdoor activities.",
+        "imageAlt": "The Masurian landscape around the house",
+        "goal": "Football goal",
+        "yard": "Yard for play",
+        "bikesSup": "Bicycles and SUP",
+        "equipmentTerms": "Bicycles and SUP are available by prior arrangement."
+      },
+      "indoor": {
+        "title": "Comfort indoors",
+        "description": "Make your morning coffee in the kitchen, cool down on a warm day and enjoy a relaxed evening in the living room.",
+        "imageAlt": "Kitchen at Domek na Mazurskiej",
+        "coffee": "Drip coffee maker",
+        "ac": "Air conditioning",
+        "tv": "Television",
+        "internet": "Internet"
+      }
+    },
     "attractions": {
       "title": "Attractions nearby",
       "pond": {
@@ -50,7 +79,7 @@
       },
       "kayak": {
         "title": "Kayaks & SUP",
-        "desc": "Explore the calm waters of the surrounding lakes at your own pace. Equipment is available on site."
+        "desc": "Explore the calm waters of the surrounding lakes at your own pace. SUP is available by prior arrangement."
       },
       "bike": {
         "title": "Cycling trips",
