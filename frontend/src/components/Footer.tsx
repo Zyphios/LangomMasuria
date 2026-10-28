@@ -14,11 +14,11 @@ export default function Footer() {
         <div className="flex flex-wrap gap-8 md:gap-12">
           <nav className="flex flex-col gap-3">
             <Link to="/house" className="text-body-md text-on-surface-variant transition-colors hover:text-primary">{t('nav.house')}</Link>
-            <Link to="/house#attractions" className="text-body-md text-on-surface-variant transition-colors hover:text-primary">{t('nav.attractions')}</Link>
+            <Link to="/attractions" className="text-body-md text-on-surface-variant transition-colors hover:text-primary">{t('nav.attractions')}</Link>
             <Link to="/gallery" className="text-body-md text-on-surface-variant transition-colors hover:text-primary">{t('nav.gallery')}</Link>
           </nav>
           <nav className="flex flex-col gap-3">
-            <Link to="/gallery#rates" className="text-body-md text-on-surface-variant transition-colors hover:text-primary">{t('nav.rates')}</Link>
+            <Link to="/pricing" className="text-body-md text-on-surface-variant transition-colors hover:text-primary">{t('nav.rates')}</Link>
             <Link to="/booking" className="text-body-md text-on-surface-variant transition-colors hover:text-primary">{t('nav.contact')}</Link>
           </nav>
         </div>

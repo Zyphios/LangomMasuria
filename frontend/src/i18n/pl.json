@@ -62,6 +62,7 @@
       },
       "food": {
         "title": "Lokalna kuchnia",
+        "imageAlt": "Kuchnia w Domku na Mazurskiej",
         "desc": "Odkryj smaki regionu u zaprzyja\u017anionych gospodarzy."
       },
       "garbas": {
@@ -87,6 +88,10 @@
   "pricing": {
     "title": "Cennik",
     "subtitle": "Przejrzyste zasady dla Twojego komfortu.",
+    "popular": "POPULARNY",
+    "perNight": "z\u0142 / noc",
+    "loadError": "Nie uda\u0142o si\u0119 wczyta\u0107 cennika. Spr\u00f3buj ponownie lub skontaktuj si\u0119 z nami, aby ustali\u0107 cen\u0119.",
+    "empty": "Cennik jest obecnie aktualizowany. Skontaktuj si\u0119 z nami, aby ustali\u0107 cen\u0119 pobytu.",
     "low": "SEZON NISKI",
     "high": "SEZON WYSOKI",
     "holidays": "\u015aWI\u0118TA / SYLWESTER",

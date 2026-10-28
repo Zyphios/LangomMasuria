@@ -4,9 +4,9 @@ import LanguageToggle from './LanguageToggle';
 
 const navLinks = [
   { to: '/house', labelKey: 'nav.house' },
-  { to: '/house#attractions', labelKey: 'nav.attractions' },
+  { to: '/attractions', labelKey: 'nav.attractions' },
   { to: '/gallery', labelKey: 'nav.gallery' },
-  { to: '/gallery#rates', labelKey: 'nav.rates' },
+  { to: '/pricing', labelKey: 'nav.rates' },
   { to: '/booking', labelKey: 'nav.contact' }
 ];
 
@@ -32,13 +32,13 @@ export default function Navbar() {
         </Link>
         <nav className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => {
-            const isActive = location.pathname === link.to ||
-              (link.to !== '/' && location.pathname.startsWith(link.to.split('#')[0]));
+            const isActive = location.pathname === link.to;
 
             return (
               <Link
                 key={link.to}
                 to={link.to}
+                aria-current={isActive ? 'page' : undefined}
                 className={`text-body-md transition-colors duration-300 ${
                   isActive
                     ? 'border-b border-primary pb-1 font-medium text-primary'

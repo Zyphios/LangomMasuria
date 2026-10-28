@@ -3,6 +3,8 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import House from './pages/House';
 import Gallery from './pages/Gallery';
+import Attractions from './pages/Attractions';
+import Pricing from './pages/Pricing';
 import Booking from './pages/Booking';
 import Login from './pages/admin/Login';
 import AdminLayout from './pages/admin/AdminLayout';
@@ -19,6 +21,8 @@ export default function App() {
         <Route path='/' element={<Home />} />
         <Route path='/house' element={<House />} />
         <Route path='/gallery' element={<Gallery />} />
+        <Route path='/attractions' element={<Attractions />} />
+        <Route path='/pricing' element={<Pricing />} />
         <Route path='/booking' element={<Booking />} />
       </Route>
       <Route path='/admin/login' element={<Login />} />

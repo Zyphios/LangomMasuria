@@ -62,6 +62,7 @@
       },
       "food": {
         "title": "Local cuisine",
+        "imageAlt": "Kitchen at Domek na Mazurskiej",
         "desc": "Discover regional flavours with our trusted local hosts."
       },
       "garbas": {
@@ -87,6 +88,10 @@
   "pricing": {
     "title": "Pricing",
     "subtitle": "Clear rules for your comfort.",
+    "popular": "POPULAR",
+    "perNight": "PLN / night",
+    "loadError": "Pricing could not be loaded. Please try again or contact us to confirm the price.",
+    "empty": "Pricing is currently being updated. Please contact us to agree the price of your stay.",
     "low": "LOW SEASON",
     "high": "HIGH SEASON",
     "holidays": "HOLIDAYS / NEW YEAR",
