@@ -115,12 +115,31 @@ Zachowujemy istniejące `CANCELLED`, aby nie zmieniać bez potrzeby kontraktu an
 - SMTP nie gwarantuje dokładnie jednokrotnego dostarczenia przy awarii między przyjęciem maila a zapisem wyniku. Minimalizujemy duplikaty, ale nie obiecujemy gwarancji po stronie zewnętrznej poczty.
 - Faktyczne doręczenie trzeba sprawdzić na kontrolnym adresie po skonfigurowaniu SMTP; same testy aplikacji nie potwierdzają doręczenia do skrzynki.
 
+### Rozszerzenie z 29.10.2026: decyzja właściciela z maila
+
+Właściciel wybrał prywatny link bez logowania, z dodatkowym zatwierdzeniem na stronie. Panel administratora pozostaje pełnoprawnym, niezależnym sposobem obsługi tych samych rezerwacji.
+
+- Mail właściciela o nowym zgłoszeniu zawiera przyciski „Potwierdź” i „Odrzuć” oraz odpowiedniki tekstowe. Przyciski otwierają mobilną stronę `/booking-decision` z numerem zgłoszenia, datami, ceną, końcem blokady i wybraną decyzją. Nie pokazujemy tam nazwiska, maila, telefonu ani notatek gościa.
+- Samo otwarcie linku, podgląd wiadomości i pobranie danych nie zmieniają statusu ani nie zużywają linku. Dopiero jawne zatwierdzenie na stronie wysyła żądanie POST. Strona nigdy nie zatwierdza automatycznie po załadowaniu; skanery linków poczty nie mogą podjąć decyzji przez samo pobranie adresu.
+- Każde nowe zgłoszenie internetowe dostaje osobny losowy sekret o co najmniej 256 bitach entropii. Baza zapisuje wyłącznie jego skrót SHA-256, w opcjonalnym unikalnym polu `Booking.decisionTokenHash`. Nie używamy numeru rezerwacji ani zwykłego identyfikatora jako uprawnienia.
+- Sekret trafia wyłącznie do maila właściciela, nie do odpowiedzi publicznego tworzenia rezerwacji ani list dostępności. Obie akcje korzystają z tego samego sekretu; wskazanie akcji w adresie samo w sobie nie jest autoryzacją.
+- Link jest poufnym dostępem: osoba, której właściciel przekaże wiadomość, również może z niego skorzystać. Treść maila o tym informuje. Nie dodajemy kolejnego hasła ani obowiązku logowania.
+- Link działa wyłącznie dla aktywnego `PENDING`, do istniejącego `expiresAt`; dokładnie po 24h nie można ani potwierdzić, ani odrzucić zgłoszenia z maila. Otwarcie nie przedłuża ważności. Decyzja w panelu lub z maila natychmiast wyłącza obie akcje linku.
+- Sekret przekazujemy we fragmencie adresu, nie w ścieżce ani parametrach zapytania. Strona usuwa fragment z bieżącego wpisu historii po odczycie i trzyma sekret tylko w pamięci, bez localStorage. Do API trafia on w treści POST; nie zapisujemy go w logach, komunikatach błędów ani analityce.
+- Backend buduje linki z jawnego `PUBLIC_SITE_URL`, na VPS `https://domeknamazurskiej.pl`, nigdy z nagłówka Host żądania. Dla produkcji wymagamy HTTPS; lokalne testy mogą używać HTTP na localhost. Brak lub błędna konfiguracja jest jawnym błędem powiadomienia, nie linkiem do przypadkowego adresu.
+- Podgląd i wykonanie to osobne publiczne endpointy POST z walidacją długości/formatu sekretu i dozwolonej decyzji. Odpowiedzi nie są buforowane; strona używa polityki `Referrer-Policy: no-referrer`. Błędne, zużyte i wygasłe linki nie dają dostępu do danych rezerwacji i pokazują komunikat z odnośnikiem do panelu.
+- Wykonanie korzysta z dokładnie tego samego serwisu decyzji, transakcji i blokady co panel. Sekret, status, upływ czasu i dostępność są sprawdzane ponownie po uzyskaniu blokady. Dwa kliknięcia albo sprzeczne decyzje z panelu i maila nie mogą nadpisać pierwszej decyzji ani dodać drugiego zadania wysyłki.
+- Potwierdzenie utrwala `CONFIRMED` i jedno zadanie maila do klienta w tej samej transakcji. Odrzucenie utrwala `CANCELLED` i zwalnia termin zgodnie ze wspólnymi zasadami; bez dodatkowego maila o odrzuceniu. Kalendarze pokazują te same dane niezależnie od źródła decyzji.
+- Komunikat po decyzji rozróżnia „rezerwacja potwierdzona, mail oczekuje na wysyłkę” od faktycznej wysyłki. Błąd połączenia nie jest przedstawiany jako sukces; po niepewnym wyniku ponowna próba nie odwraca stanu ani nie dubluje kolejki.
+- Stare zgłoszenia i ręczne rezerwacje nie dostają automatycznie sekretów ani nowych powiadomień. Nie dodajemy w tym zakresie regenerowania linków. Jeśli powiadomienie właściciela się nie powiedzie, zgłoszenie nadal można obsłużyć w panelu; błąd wysyłki musi zostać jawnie zarejestrowany.
+- Zmiana obejmuje model i migrację, serwis decyzji i publiczne endpointy, mail właściciela, osobną stronę mobilną PL/EN oraz konfigurację adresu i nagłówków. Nie zastępuje wcześniejszego planu kolejki potwierdzeń, wygaszania ani kalendarzy; rozszerza go o drugą drogę podjęcia tej samej decyzji.
+
 ## 5. Dane istniejące i wdrożenie
 
 Obecny backend zapisuje potwierdzone pobyty dodatkowo w `BlockedDate`, z powodami m.in. `Confirmed booking` i `Manual phone booking`. Nie ma relacji, która pewnie identyfikuje pochodzenie takiego wpisu.
 
 - Przed wdrożeniem etapu rezerwacji wykonujemy backup bazy i `.env.vps`.
-- Migracja struktury dodaje `EXPIRED`, `expiresAt` dla oczekujących oraz model zadań email.
+- Migracja struktury dodaje `EXPIRED`, `expiresAt` dla oczekujących, model zadań email oraz opcjonalny unikalny skrót prywatnego linku decyzji.
 - Istniejące oczekujące zgłoszenia dostają termin wynikający z pierwotnego `createdAt`, a nie dodatkowe 24h od wdrożenia.
 - Nie wysyłamy automatycznie potwierdzeń dla wszystkich historycznych rezerwacji podczas migracji.
 - Przygotowujemy raport starych blokad, zestawiony z rezerwacjami. Nie kasujemy automatycznie wszystkich rekordów o podobnym opisie.
@@ -157,6 +176,17 @@ Aktualizujemy instrukcję wdrożenia o migracje, sprawdzenie SMTP, działanie pr
 - Zadania przeżywają restart; równoległe wykonania nie przejmują tego samego zadania.
 - Anulowanie przed rozpoczęciem wysyłki zatrzymuje oczekujące potwierdzenie. Maila przyjętego już przez SMTP nie można cofnąć.
 - Test faktycznego maila na kontrolnym adresie jest oddzielnym krokiem wdrożenia.
+
+### Decyzja z maila
+
+- Otwarcie obu linków i wielokrotny podgląd pozostawiają zgłoszenie `PENDING`, bez zmiany ważności i bez zadania potwierdzenia.
+- Dopiero zatwierdzenie na stronie potwierdza albo odrzuca; wyniki i kolory są identyczne z decyzją w panelu.
+- Błędny, zmieniony, zużyty i wygasły sekret jest odrzucany. Cudzy identyfikator lub numer zgłoszenia nie zastępuje sekretu.
+- Dokładnie na granicy 24h wykonanie nie jest możliwe, również gdy właściciel otworzył stronę wcześniej.
+- Równoczesne potwierdzenie i odrzucenie, z panelu lub maila, nie zmieniają ponownie rozstrzygniętego statusu; powstaje najwyżej jedno zadanie maila do klienta.
+- Surowy sekret nie trafia do bazy, publicznej odpowiedzi rezerwacji, list kalendarza, localStorage ani adresu żądania API. Mail HTML poprawnie koduje dane gościa i ma czytelny wariant tekstowy.
+- Strona działa na telefonie, obsługuje PL/EN, brak/błędny link i błąd sieci oraz wymaga jawnego kliknięcia przed zmianą.
+- Historyczne zgłoszenia pozostają obsługiwane w panelu; migracja nie wysyła nowych wiadomości i nie przedłuża ich blokad.
 
 Korzystamy z istniejących Vitest/Testing Library, Jest/Supertest i PostgreSQL do testów współbieżności. Nie zastępujemy testów transakcji samymi mockami Prisma.
 
