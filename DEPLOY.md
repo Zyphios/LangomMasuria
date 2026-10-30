@@ -1,6 +1,6 @@
 # Lagom Masuria — aktualne wdrożenie
 
-Stan opisany na 29.10.2026. Pełna instrukcja instalacji, aktualizacji i odtwarzania: [ODTWARZANIE-STRONY.md](ODTWARZANIE-STRONY.md).
+Stan opisany na 30.10.2026. Pełna instrukcja instalacji, aktualizacji i odtwarzania: [ODTWARZANIE-STRONY.md](ODTWARZANIE-STRONY.md).
 
 **Aktualizacja rezerwacji, panelu, mobilnego menu i dynamicznego cennika została opublikowana 29.10.2026 wspólnie z backendem, frontendem, migracją i konfiguracją. Nie stosuj do odtwarzania tej wersji poniższej procedury „tylko frontend”.** Instrukcja kontrolowanej aktualizacji znajduje się w sekcji „Weryfikowane zgłoszenia i decyzje z maila” na końcu tego dokumentu.
 
@@ -14,11 +14,17 @@ Publiczny cennik i kalkulator pobierają te same zapisane dane, odświeżane co 
 
 Ten etap zmienia frontend oraz walidację i wybór stawek w backendzie, ale nie dodaje osobnej migracji cennika. Opublikowano go razem z aktualizacją rezerwacji opisaną powyżej, nie procedurą „tylko frontend”.
 
-### Indywidualna cena rezerwacji — lokalnie, jeszcze niewdrożona
+### Indywidualna cena rezerwacji — wdrożona 30.10.2026
 
 Nowy edytor aktywnej rezerwacji oczekującej pozwala zapisać końcową kwotę lub rabat 0–100% od pierwotnej ceny. Nie zmienia zaliczki, cennika, terminu ani deadline. Panel wymaga zapisania zmian ceny i zaliczki przed potwierdzeniem; backend odrzuca zmianę po zatwierdzeniu lub wygaśnięciu. Mail PL/EN podaje cenę końcową, wpłaconą zaliczkę, dopłatę na miejscu i ewentualną nadpłatę, bez automatycznych zwrotów.
 
-Ta zmiana **nie weszła do opublikowanej paczki `lagom-release-20261029.tar.gz`**. Wymaga nowej paczki, wspólnej aktualizacji backendu/frontendu i migracji `20261029150000_booking_price_adjustment`. Migracja zachowuje obecne kwoty i zapamiętuje je jako pierwotne. Przed kolejnym wdrożeniem wykonaj świeże kopie i próbę migracji na odtworzonej, oddzielnej bazie, jak w procedurze aktualizacji rezerwacji. Nie przesyłaj danych lokalnego podglądu na produkcję.
+Opublikowano backend i frontend z commita `dbe726f` oraz migrację `20261029150000_booking_price_adjustment`, w paczce `~/lagom-release-20261030.tar.gz`. Kod i konfiguracja wdrożenia są zapisane na GitHubie na `master` oraz `feat/gallery-pages-reservations`. Plik `~/LangomMasuria/RELEASE` wskazuje wdrożony commit; folder nadal nie ma `.git`.
+
+Przed aktualizacją wykonano kopię kodu, prywatnej konfiguracji i bazy w `~/backups/release-20261030`, zachowano poprzednie obrazy jako `lagom-rollback-backend:20261030` i `lagom-rollback-frontend:20261030`. Odtworzono kopię na oddzielnym PostgreSQL i sprawdzono migrację bez zmiany liczby rezerwacji, sum cen ani zaliczek. Tak samo porównano dane po właściwej migracji, przed uruchomieniem backendu. Prywatne kopie `database-final.dump` i `.env.vps` pobrano i porównano sumami SHA-256 poza repozytorium: `%LOCALAPPDATA%\LangomMasuria\backups\release-20261030`. Traktuj je jako poufne; nie dodawaj ich do GitHuba.
+
+Weryfikacja wydania: 113 testów backendu na syntetycznej bazie `lagom_test`, 127 testów frontendu i 8 testów konfiguracji wdrożenia. Po publikacji kontenery osiągnęły `healthy`, publiczny frontend odpowiada obrazowi wydania, a logowanie admina, pola pierwotnej ceny/rabatu, nowy endpoint ceny, walidacja i wymaganie autoryzacji przeszły kontrolę bez modyfikowania rezerwacji gości. Rzeczywista dostawa maili na skrzynki nadal wymaga osobnego sprawdzenia.
+
+Przed kolejnym wdrożeniem ponownie wykonaj świeże kopie i próbę migracji na odtworzonej, oddzielnej bazie, jak w procedurze aktualizacji rezerwacji. Nie przesyłaj danych lokalnego podglądu na produkcję. Starsza paczka `lagom-release-20261029.tar.gz` nie zawiera edytora ceny i nie służy do odtwarzania obecnego wydania.
 
 ## Adresy i środowisko
 
@@ -174,7 +180,7 @@ Brak `ADMIN_EMAIL` przy uruchamianiu Compose: sprawdź folder i obecność `--en
 - Login admina określa `ADMIN_EMAIL`, hasło `ADMIN_PASSWORD` w `.env.vps`. Nie publikuj tego pliku ani wyników poleceń wyświetlających sekrety.
 - Stare hasło zapisane wcześniej w tym dokumencie zostało usunięte. Jeżeli było używane, zmień je; usunięcie tekstu nie usuwa go z ewentualnych wcześniejszych kopii.
 - W bieżącym Compose PayU ma wartości `stub` — nie jest skonfigurowaną integracją produkcyjną. Wysyłka maili wymaga prawidłowych ustawień SMTP.
-- Aktualny zestaw wdrożeniowy zawiera lokalne pliki jeszcze nieśledzone przez Git. Przed poleganiem na GitHubie jako kopii kodu dodaj wymagane pliki opisane w pełnej instrukcji.
+- Kod i komplet konfiguracji wdrożenia zapisano na GitHubie 30.10.2026. Prywatna konfiguracja i dane bazy pozostają poza Git.
 - Kod i zdjęcia nie wystarczą do odzyskania rezerwacji. Potrzebujesz osobnej kopii PostgreSQL i prywatnej kopii `.env.vps`.
 
 ## Podgląd lokalny

@@ -1,8 +1,10 @@
 # Lagom Masuria — instrukcja od zera i na przyszłość
 
-Stan: 28.10.2026. Instrukcja dla właściciela, także po utracie VPS.
+Stan: 30.10.2026. Instrukcja dla właściciela, także po utracie VPS.
 
 **Aktualizacja rezerwacji 29.10.2026:** nowe wydanie wymaga `PUBLIC_SITE_URL`, osobnego `BOOKING_ABUSE_SECRET`, działającego SMTP i migracji bazy. Przed aktualizacją lub odtworzeniem czytaj sekcję „Weryfikowane zgłoszenia i decyzje z maila” w [DEPLOY.md](DEPLOY.md). Formularz, backend i baza muszą być wdrożone razem; stara instrukcja samego frontendu nie wystarczy.
+
+**Aktualizacja ceny rezerwacji 30.10.2026:** wdrożono edytor kwoty/rabatu z commita `dbe726f` razem z frontendem, backendem i migracją `20261029150000_booking_price_adjustment`. Kod i pliki wdrożenia są już na GitHubie. Lokalna, poufna kopia bazy i konfiguracji z tego wdrożenia znajduje się w `%LOCALAPPDATA%\LangomMasuria\backups\release-20261030`; szczegóły kontroli i kopii na VPS opisuje [DEPLOY.md](DEPLOY.md).
 
 **PowerShell lokalny** oznacza komputer Windows. **SSH / Ubuntu** oznacza konsolę po zalogowaniu na serwer. Bloków `bash` nie wklejaj bezpośrednio do lokalnego PowerShella.
 
@@ -97,7 +99,7 @@ Przed wykonaniem kopii kodu sprawdź, czy folder lokalny zawiera:
 - `frontend\Dockerfile.vps`, `frontend\Dockerfile.vps.dockerignore`, `frontend\nginx.vps.conf`;
 - komplet źródeł, migracji Prisma, plików `package-lock.json` i zdjęć w `frontend\public`.
 
-**W dniu pisania część plików wdrożeniowych jest nieśledzona w Git.** Samo pobranie obecnej gałęzi z GitHuba nie gwarantuje kompletnego wdrożenia. Dodaj je świadomie do repozytorium (sekcja 9) lub zachowaj pełne archiwum lokalne. Nigdy nie dodawaj `.env.vps`.
+Komplet plików wdrożeniowych i kodu zapisano na `master` 30.10.2026. GitHub nie zawiera prywatnej `.env.vps` ani rezerwacji; zachowaj je w osobnych kopiach.
 
 ### Przesłanie całego projektu na pusty VPS
 
@@ -111,11 +113,11 @@ Następnie **PowerShell lokalny:**
 
 ```powershell
 cd "C:\Users\WojciechPetkowski\OneDrive - Cepheo\Desktop\Strona mazury"
-tar --exclude=.git --exclude=.worktrees --exclude=node_modules --exclude=dist --exclude=.env --exclude=".env.*" --exclude="*.dump" --exclude="*.sql" --exclude="*.gz" -czf "$env:TEMP\lagom-source.tar.gz" .
+git fetch origin && git archive --format=tar.gz --output="$env:TEMP\lagom-source.tar.gz" origin/master
 scp "$env:TEMP\lagom-source.tar.gz" ubuntu@57.128.219.94:/tmp/lagom-source.tar.gz
 ```
 
-Tworzy archiwum bieżących plików, także nieśledzonych przez Git, bez typowych sekretów i katalogów roboczych. Przed wysyłką przejrzyj listę (`tar -tzf "$env:TEMP\lagom-source.tar.gz"`); inne prywatne pliki trzeba osobno wykluczyć. To nie jest backup bazy.
+Tworzy archiwum kodu zapisanego na `origin/master`, razem z migracjami SQL i zdjęciami, bez nieśledzonych sekretów i katalogów roboczych. Nie zawiera lokalnych zmian bez commita/pusha. Przed wysyłką przejrzyj listę (`tar -tzf "$env:TEMP\lagom-source.tar.gz"`). To nie jest backup bazy.
 
 **SSH / Ubuntu:**
 

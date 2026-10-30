@@ -42,7 +42,7 @@ refreshing every 30 seconds and on window focus. Saving updates the shared cache
 immediately. Existing bookings keep their stored totals; manually agreed prices
 remain independent. Price edits need no rebuild after this feature is deployed.
 
-## Individual booking prices (local change, not yet deployed)
+## Individual booking prices (deployed 2026-10-30)
 
 For an active pending booking, choose a manual final total or a 0–100% discount
 from its preserved original total, then save before confirming. Repeated discounts
@@ -55,6 +55,8 @@ remaining amount on arrival. If the deposit exceeds the total, the balance is ze
 and overpayment is shown separately; no refund is performed automatically.
 Deployment needs both application images and migration
 `20261029150000_booking_price_adjustment`; existing totals and deposits are preserved.
+The production backend, frontend and migration were deployed together from commit
+`dbe726f`. See `DEPLOY.md` for the verified release and backup locations.
 
 ## Private VPS preview
 
