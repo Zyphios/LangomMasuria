@@ -2,7 +2,13 @@
 
 Stan opisany na 30.10.2026. Pełna instrukcja instalacji, aktualizacji i odtwarzania: [ODTWARZANIE-STRONY.md](ODTWARZANIE-STRONY.md).
 
-**Aktualizacja rezerwacji, panelu, mobilnego menu i dynamicznego cennika została opublikowana 29.10.2026 wspólnie z backendem, frontendem, migracją i konfiguracją. Nie stosuj do odtwarzania tej wersji poniższej procedury „tylko frontend”.** Instrukcja kontrolowanej aktualizacji znajduje się w sekcji „Weryfikowane zgłoszenia i decyzje z maila” na końcu tego dokumentu.
+**Aktualizacja rezerwacji, panelu, mobilnego menu i dynamicznego cennika została opublikowana 29.10.2026 wspólnie z backendem, frontendem, migracją i konfiguracją. Nie stosuj do odtwarzania tej wersji poniższej procedury „tylko frontend”.** Instrukcja kontrolowanej aktualizacji znajduje się w sekcji „Rezerwacje wstępne i decyzje z maila” na końcu tego dokumentu.
+
+### Rezerwacja od razu po formularzu — poprawka przygotowana 30.10.2026
+
+Nowy formularz zapisuje rezerwację oczekującą i blokuje noce na 24 godziny już przy wysłaniu, bez klikania przez klienta. Klient otrzymuje informację o oczekiwaniu na właściciela. Zatwierdzenie wysyła mail z końcową ceną, zaliczką i dopłatą, a odrzucenie/anulowanie z panelu lub linku właściciela wysyła osobną wiadomość i zwalnia blokadę tej rezerwacji.
+
+Wymagana jest wspólna aktualizacja frontendu, backendu i migracja `20261030100000_booking_notification_kind`. Wiersz `ConfirmationEmail` opisuje teraz aktualny typ powiadomienia (`PENDING`, `CONFIRMED`, `CANCELLED`) i jego wysyłkę. Szybka decyzja właściciela zastępuje niezrealizowany, nieaktualny mail oczekujący; nie wysyłamy go po decyzji końcowej. Migracja nie zmienia rezerwacji ani nie rozsyła historycznych odrzuceń.
 
 Przed wdrożeniem wykonano kopie bazy, kodu i prywatnej konfiguracji, zachowano poprzednie obrazy i sprawdzono migrację na odtworzonej, oddzielnej bazie. Po wdrożeniu potwierdzono publiczne strony, API cennika i kategorii kalendarza, nagłówki linków oraz mobilne menu i wycenę mieszanego pobytu. Weryfikacja połączenia i uwierzytelnienia SMTP przeszła, ale **rzeczywisty obieg maili gościa i właściciela pozostaje do sprawdzenia na skrzynkach**.
 
@@ -234,9 +240,9 @@ docker compose down
 
 Zatrzymuje lokalne kontenery. Nie dodawaj `-v`, jeśli chcesz zachować dane.
 
-## Weryfikowane zgłoszenia i decyzje z maila — aktualizacja 29.10.2026
+## Rezerwacje wstępne i decyzje z maila — aktualizacja 30.10.2026
 
-Nowy formularz wysyła link ważny 15 minut, **bez zajęcia terminu**. Dopiero jawne potwierdzenie adresu, dostępności i aktualnej ceny tworzy bursztynową blokadę na dokładnie 24h. Właściciel potwierdza lub odrzuca z panelu albo prywatnego linku w mailu; samo otwarcie linku niczego nie rozstrzyga. Potwierdzone pobyty są zielone, niezależne blokady szare. Wyjazd nie zajmuje nocy.
+Formularz od razu tworzy rezerwację `PENDING`, numer i bursztynową blokadę na dokładnie 24h. Mail klienta jest informacyjny, bez potwierdzania adresu. Właściciel potwierdza lub odrzuca z panelu albo prywatnego linku w mailu; samo otwarcie linku niczego nie rozstrzyga. Klient dostaje osobny mail z decyzją. Potwierdzone pobyty są zielone, niezależne blokady szare. Wyjazd nie zajmuje nocy. Stare, już wysłane linki weryfikacyjne zachowano wyłącznie na czas ich pierwotnej, 15-minutowej ważności; formularz nie tworzy nowych.
 
 ### Konfiguracja przed uruchomieniem
 
@@ -254,9 +260,9 @@ BOOKING_IP_DAILY_LIMIT=30
 BOOKING_LINK_MINUTE_LIMIT=30
 ```
 
-W SSH `openssl rand -hex 32` wygeneruje sekret — wstaw go lokalnie w edytorze, nie wysyłaj w czacie. Zachowuj ten sam sekret przy kolejnych restartach. Limity są dodatnimi liczbami całkowitymi, okna są kroczące; usunięcie/odrzucenie rezerwacji nie zeruje budżetu dobowego. Ręczne rezerwacje telefoniczne nie zużywają budżetu internetowego. Liczniki i weryfikacje są sprzątane po 48h, bez usuwania rezerwacji; dłuższy skonfigurowany cooldown wydłuża retencję potrzebnych liczników.
+W SSH `openssl rand -hex 32` wygeneruje sekret — wstaw go lokalnie w edytorze, nie wysyłaj w czacie. Zachowuj ten sam sekret przy kolejnych restartach. Domyślne limity to 1 aktywna rezerwacja oczekująca na adres, 3 utworzone zgłoszenia/24h na adres, 5 początkowych powiadomień/24h na adres, odstęp 120s oraz 10 prób/h i 30/24h na IP. Limity są dodatnimi liczbami całkowitymi, okna są kroczące; usunięcie/odrzucenie rezerwacji nie zeruje budżetu dobowego. Liczą się także poprzednie próby maili weryfikacyjnych, żeby aktualizacja nie zerowała ochrony. Wiadomości z decyzją właściciela nie podlegają limitom początkowych powiadomień. Ręczne rezerwacje telefoniczne nie zużywają budżetu internetowego. Liczniki i weryfikacje są sprzątane po 48h, bez usuwania rezerwacji; dłuższy skonfigurowany cooldown wydłuża retencję potrzebnych liczników.
 
-`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` muszą umożliwiać rzeczywistą wysyłkę. Bez SMTP formularz zwróci jawną odmowę wysyłki i nie zajmie terminu. Błąd wysyłki również zużywa próbę mailową. `OWNER_EMAIL` wskazuje skrzynkę właściciela, nadawca odpowiada kontu SMTP. Produkcyjny `PUBLIC_SITE_URL` wymaga HTTPS i nie może zawierać ścieżki, parametrów ani danych logowania.
+`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` muszą umożliwiać rzeczywistą wysyłkę. Rezerwacja i jej powiadomienie klienta zapisują się atomowo; brak SMTP nie cofa zapisu ani blokady. Kolejka rejestruje błąd, ponawia wysyłkę, a po 3 próbach pokazuje `FAILED` w panelu. Zlecenie pierwszego powiadomienia zużywa budżet mailowy także przy awarii SMTP; ponowienia tego samego powiadomienia nie tworzą kolejnych zgłoszeń. `OWNER_EMAIL` wskazuje skrzynkę właściciela, nadawca odpowiada kontu SMTP. Produkcyjny `PUBLIC_SITE_URL` wymaga HTTPS i nie może zawierać ścieżki, parametrów ani danych logowania.
 
 Nowy generator `deploy/init-env.sh` dodaje ustawienia tylko przy **nowej instalacji**. Po podmianie Compose brak nowych kluczy uniemożliwi także walidację poleceń dotyczących samego frontendu.
 
@@ -306,8 +312,8 @@ Odtworzenie frontendu odświeża adres backendu w Nginx. Obie strony linków mus
 
 Łańcuch zaufania dla limitów IP to **Internet → Caddy → loopback:8080 → Nginx → prywatny backend**. Caddy musi zastępować niezaufane `X-Forwarded-For` kanonicznym adresem klienta; Nginx przekazuje ten nagłówek bez dopisywania IP Caddy, a Express ufa jednemu proxy. Nie wystawiaj backendu ani portu 8080 publicznie i nie dodawaj szerokiego zaufania do obcych proxy. Lokalny backend nie ufa nagłówkom proxy.
 
-Wykonaj kontrolną rezerwację na własny adres: formularz → odebrany link → podgląd bez blokady → jawne potwierdzenie → bursztynowy termin → decyzja właściciela → zielony termin i rzeczywisty mail gościa. Osobno sprawdź odrzucenie i zwolnienie terminu oraz decyzję z panelu. Zmieniona cena wymaga ponownego kliknięcia. Usuń/anuluj kontrolne rezerwacje świadomie, bez usuwania niezależnych blokad. Testy z atrapą SMTP nie potwierdzają rzeczywistego dostarczenia.
+Wykonaj kontrolną rezerwację na własny adres: formularz → numer i bursztynowy termin od razu → informacyjny mail oczekujący → decyzja właściciela → zielony termin i rzeczywisty mail gościa z końcową ceną, zaliczką i dopłatą. Osobno sprawdź odrzucenie z panelu i z linku: termin ma się zwolnić, a gość ma dostać mail o odrzuceniu. Zmiany ceny i zaliczki zapisuj przed decyzją. Sprawdź również limity dokładnie na granicach 120s, godziny i 24h, ich zachowanie po odrzuceniu i restarcie oraz brak podwójnej blokady przy równoczesnych zgłoszeniach. Usuń/anuluj kontrolne rezerwacje świadomie, bez usuwania niezależnych blokad. Testy z lokalnym serwerem SMTP potwierdzają działanie kanału wysyłki, ale nie dostarczenie do rzeczywistej skrzynki.
 
-Proces backendu uruchamia wygaszanie i kolejkę od razu oraz co 30s. Niedostępność terminu kończy się dokładnie przy deadline nawet przed pracą procesu. Kolejka wykonuje do 3 prób, z odstępami 60s i 300s; stan przetrwa restart. `FAILED` umożliwia „Ponów wysyłkę” w panelu. `DELIVERY_UNKNOWN` oznacza niepewny wynik po utracie dzierżawy; ponowienie może zduplikować mail. `SENT` oznacza przyjęcie przez serwer SMTP, nie gwarancję znalezienia wiadomości w skrzynce. Błąd poczty nie odwołuje potwierdzonego pobytu; brak maila właściciela pozostawia zgłoszenie dostępne w panelu i generuje komunikat w logu.
+Proces backendu uruchamia wygaszanie i kolejkę od razu oraz co 30s. Niedostępność terminu kończy się dokładnie przy deadline nawet przed pracą procesu. Kolejka powiadomień klienta wykonuje do 3 prób, z odstępami 60s i 300s; stan przetrwa restart. `FAILED` umożliwia „Ponów wysyłkę” w panelu dla oczekiwania, potwierdzenia i odrzucenia, jeśli powiadomienie nadal odpowiada stanowi rezerwacji. Panel pokazuje typ aktualnego maila oddzielnie od wyniku dostarczenia. `DELIVERY_UNKNOWN` oznacza niepewny wynik po utracie dzierżawy; ponowienie może zduplikować mail. `SENT` oznacza przyjęcie przez serwer SMTP, nie gwarancję znalezienia wiadomości w skrzynce. Błąd poczty nie odwołuje zapisanego pobytu; brak maila właściciela pozostawia zgłoszenie dostępne w panelu i generuje komunikat w logu.
 
 **Nie wracaj po migracji do starego backendu bez osobnego odtworzenia zgodnego backupu** — stary kod nie zna nowego statusu i kontraktu formularza. Nie używaj `down -v` ani kasowania wolumenu. Przy kolejnych aktualizacjach uzgodnij okno wdrożenia; obecnej publikacji nie należy traktować jako potwierdzenia rzeczywistego dostarczenia maili.

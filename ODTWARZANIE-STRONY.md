@@ -2,7 +2,7 @@
 
 Stan: 30.10.2026. Instrukcja dla właściciela, także po utracie VPS.
 
-**Aktualizacja rezerwacji 29.10.2026:** nowe wydanie wymaga `PUBLIC_SITE_URL`, osobnego `BOOKING_ABUSE_SECRET`, działającego SMTP i migracji bazy. Przed aktualizacją lub odtworzeniem czytaj sekcję „Weryfikowane zgłoszenia i decyzje z maila” w [DEPLOY.md](DEPLOY.md). Formularz, backend i baza muszą być wdrożone razem; stara instrukcja samego frontendu nie wystarczy.
+**Aktualizacja rezerwacji:** nowe wydanie wymaga `PUBLIC_SITE_URL`, osobnego `BOOKING_ABUSE_SECRET`, działającego SMTP do powiadomień i migracji bazy. Przed aktualizacją lub odtworzeniem czytaj sekcję „Rezerwacje wstępne i decyzje z maila” w [DEPLOY.md](DEPLOY.md). Formularz, backend i baza muszą być wdrożone razem; stara instrukcja samego frontendu nie wystarczy. Poprawka `20261030100000_booking_notification_kind` wprowadza natychmiastową rezerwację oczekującą bez klikania w mailu i powiadomienia o odrzuceniu.
 
 **Aktualizacja ceny rezerwacji 30.10.2026:** wdrożono edytor kwoty/rabatu z commita `dbe726f` razem z frontendem, backendem i migracją `20261029150000_booking_price_adjustment`. Kod i pliki wdrożenia są już na GitHubie. Lokalna, poufna kopia bazy i konfiguracji z tego wdrożenia znajduje się w `%LOCALAPPDATA%\LangomMasuria\backups\release-20261030`; szczegóły kontroli i kopii na VPS opisuje [DEPLOY.md](DEPLOY.md).
 
@@ -149,7 +149,7 @@ chmod 600 .env.vps
 nano .env.vps
 ```
 
-Skrypt tworzy `.env.vps` z losowymi hasłami bazy, admina, JWT i osobnym sekretem limitów rezerwacji. Odmawia nadpisania istniejącego pliku. Sprawdź `ADMIN_EMAIL`, publiczny adres HTTPS i uzupełnij SMTP — jest wymagane do weryfikacji zgłoszeń internetowych. Zapis w nano: Ctrl+O, Enter; wyjście: Ctrl+X.
+Skrypt tworzy `.env.vps` z losowymi hasłami bazy, admina, JWT i osobnym sekretem limitów rezerwacji. Odmawia nadpisania istniejącego pliku. Sprawdź `ADMIN_EMAIL`, publiczny adres HTTPS i uzupełnij SMTP — jest wymagane do powiadomień gościa i właściciela, ale jego awaria nie cofa zapisanego zgłoszenia. Zapis w nano: Ctrl+O, Enter; wyjście: Ctrl+X.
 
 **Jeśli odtwarzasz starą instalację, nie generuj nowych danych zamiast zachowanej konfiguracji.** Przywróć prywatną kopię `.env.vps` i przejdź do sekcji 8 przed uruchomieniem backendu.
 

@@ -141,7 +141,7 @@
     "step1": "1. DATES",
     "step2": "2. DETAILS",
     "step3": "3. SUMMARY",
-    "step4": "4. CONFIRMATION",
+    "step4": "4. PROVISIONAL BOOKING",
     "dates": "Stay dates",
     "datesSubtitle": "Minimum stay is 2 nights. The estimated price updates automatically.",
     "estimatedCost": "Estimated stay cost:",
@@ -161,7 +161,10 @@
     "summaryPrice": "Price summary",
     "sendRequest": "Send booking request",
     "confirmation": "Thank you for your request!",
-    "confirmationMessage": "We've received your booking request. We'll contact you by email or phone to confirm the dates and block them in the calendar.",
+    "provisionalTitle": "Provisional booking",
+    "confirmationMessage": "Your dates are held immediately for up to 24 hours while you wait for the owner's decision. This is not yet a confirmed stay; the hold expires at the deadline below.",
+    "notificationInfo": "An informative email is sent or queued. No action or email verification is required. After the owner's decision, you will receive confirmation with the final price, deposit and balance, or a rejection email.",
+    "holdDeadline": "Dates held until",
     "bookingIdLabel": "Request number:",
     "houseRulesTitle": "House Rules",
     "checkInTitle": "CHECK-IN",
@@ -292,8 +295,13 @@
     "deliveryUnknown": "Delivery could not be established. Retrying may send a duplicate.",
     "bookingStates": { "PENDING": "Provisional", "CONFIRMED": "Confirmed", "CANCELLED": "Rejected / cancelled", "EXPIRED": "Expired" },
     "bookingFilters": { "PENDING": "Pending", "CONFIRMED": "Confirmed", "CANCELLED": "Rejected / cancelled", "EXPIRED": "Expired" },
+    "bookingMailKind": {
+      "PENDING": "Provisional booking notification",
+      "CONFIRMED": "Booking confirmation",
+      "CANCELLED": "Rejection / cancellation notification"
+    },
     "bookingMail": {
-      "QUEUED": "Confirmation queued", "SENDING": "Sending confirmation", "SENT": "Accepted by mail server",
+      "QUEUED": "Email queued", "SENDING": "Sending email", "SENT": "Accepted by mail server",
       "FAILED": "Email delivery failed", "CANCELLED": "Email cancelled", "NOT_APPLICABLE": "Not applicable", "NOT_RECORDED": "No delivery history"
     },
     "bookings": "Bookings",

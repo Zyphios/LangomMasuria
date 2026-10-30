@@ -239,7 +239,10 @@ export default function AdminBookings() {
               <td>
                 <p>{t(`admin.bookingStates.${booking.status}`)}</p>
                 {booking.status === 'PENDING' && booking.expiresAt && <p className="text-sm">{t('admin.decisionBy')}: {new Date(booking.expiresAt).toLocaleString(i18n.language === 'en' ? 'en-GB' : 'pl-PL')}</p>}
-                <p className="text-sm">{t(`admin.bookingMail.${booking.confirmation?.status ?? (booking.status === 'CONFIRMED' && booking.guestEmail ? 'NOT_RECORDED' : 'NOT_APPLICABLE')}`)}</p>
+                <p className="text-sm">
+                  {t(`admin.bookingMailKind.${booking.confirmation ? booking.confirmation.kind ?? 'CONFIRMED' : booking.status === 'PENDING' || booking.status === 'CANCELLED' ? booking.status : 'CONFIRMED'}`)}:{' '}
+                  {t(`admin.bookingMail.${booking.confirmation?.status ?? (booking.status !== 'EXPIRED' && booking.guestEmail ? 'NOT_RECORDED' : 'NOT_APPLICABLE')}`)}
+                </p>
                 {booking.confirmation?.lastError === 'DELIVERY_UNKNOWN' && <p className="text-sm text-error">
                   {t('admin.deliveryUnknown')}
                 </p>}

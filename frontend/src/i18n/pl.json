@@ -141,7 +141,7 @@
     "step1": "1. DATY",
     "step2": "2. DANE",
     "step3": "3. PODSUMOWANIE",
-    "step4": "4. POTWIERDZENIE",
+    "step4": "4. REZERWACJA WSTĘPNA",
     "dates": "Daty pobytu",
     "datesSubtitle": "Minimalna d\u0142ugo\u015b\u0107 pobytu to 2 noce. Cena orientacyjna aktualizuje si\u0119 automatycznie.",
     "estimatedCost": "Szacunkowy koszt pobytu:",
@@ -161,7 +161,10 @@
     "summaryPrice": "Podsumowanie kwoty",
     "sendRequest": "Wy\u015blij pro\u015bb\u0119 o rezerwacj\u0119",
     "confirmation": "Dzi\u0119kujemy za zg\u0142oszenie!",
-    "confirmationMessage": "Otrzymali\u015bmy Twoje zapytanie o rezerwacj\u0119. Skontaktujemy si\u0119 z Tob\u0105 mailowo lub telefonicznie, aby potwierdzi\u0107 termin i zablokowa\u0107 go w kalendarzu.",
+    "provisionalTitle": "Rezerwacja wstępna",
+    "confirmationMessage": "Termin został od razu zablokowany na maksymalnie 24 godziny w oczekiwaniu na decyzję właściciela. To jeszcze nie jest potwierdzony pobyt; blokada wygasa w podanym poniżej terminie.",
+    "notificationInfo": "Powiadomienie informacyjne jest wysłane lub oczekuje w kolejce. Nie musisz nic robić ani potwierdzać adresu e-mail. Po decyzji właściciela otrzymasz potwierdzenie z ostateczną ceną, zaliczką i pozostałą kwotą do zapłaty albo wiadomość o odrzuceniu.",
+    "holdDeadline": "Termin zablokowany do",
     "bookingIdLabel": "Numer zg\u0142oszenia:",
     "houseRulesTitle": "Zasady Domu",
     "checkInTitle": "ZAMELDOWANIE",
@@ -292,8 +295,13 @@
     "deliveryUnknown": "Nie mo\u017cna ustali\u0107, czy wiadomo\u015b\u0107 dotar\u0142a. Ponowienie mo\u017ce wys\u0142a\u0107 duplikat.",
     "bookingStates": { "PENDING": "Wst\u0119pna", "CONFIRMED": "Potwierdzona", "CANCELLED": "Odrzucona / anulowana", "EXPIRED": "Wygas\u0142a" },
     "bookingFilters": { "PENDING": "Oczekuj\u0105ce", "CONFIRMED": "Potwierdzone", "CANCELLED": "Odrzucone / anulowane", "EXPIRED": "Wygas\u0142e" },
+    "bookingMailKind": {
+      "PENDING": "Powiadomienie o rezerwacji wstępnej",
+      "CONFIRMED": "Potwierdzenie rezerwacji",
+      "CANCELLED": "Powiadomienie o odrzuceniu / anulowaniu"
+    },
     "bookingMail": {
-      "QUEUED": "Potwierdzenie oczekuje na wysy\u0142k\u0119", "SENDING": "Wysy\u0142anie potwierdzenia", "SENT": "Przekazano do serwera poczty",
+      "QUEUED": "Wiadomość oczekuje na wysyłkę", "SENDING": "Wysyłanie wiadomości", "SENT": "Przekazano do serwera poczty",
       "FAILED": "B\u0142\u0105d wysy\u0142ki", "CANCELLED": "Wysy\u0142ka anulowana", "NOT_APPLICABLE": "Nie dotyczy", "NOT_RECORDED": "Brak historii wysy\u0142ki"
     },
     "bookings": "Rezerwacje",

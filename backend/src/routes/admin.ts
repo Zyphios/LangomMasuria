@@ -54,8 +54,8 @@ adminRouter.get('/bookings', async (_req, res, next) => {
     res.json(bookings.map(({ decisionTokenHash: _secret, confirmationEmail, ...booking }) => ({
       ...booking,
       confirmation: confirmationEmail
-        ? { status: confirmationEmail.status, attempts: confirmationEmail.attempts, sentAt: confirmationEmail.sentAt, lastError: confirmationEmail.lastError }
-        : { status: booking.status === 'CONFIRMED' && booking.guestEmail ? 'NOT_RECORDED' : 'NOT_APPLICABLE', attempts: 0, sentAt: null, lastError: null }
+        ? { kind: confirmationEmail.kind, status: confirmationEmail.status, attempts: confirmationEmail.attempts, sentAt: confirmationEmail.sentAt, lastError: confirmationEmail.lastError }
+        : { status: ['PENDING', 'CONFIRMED', 'CANCELLED'].includes(booking.status) && booking.guestEmail ? 'NOT_RECORDED' : 'NOT_APPLICABLE', attempts: 0, sentAt: null, lastError: null }
     })));
   } catch (error) { next(error); }
 });

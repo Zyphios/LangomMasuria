@@ -36,7 +36,7 @@ describe('admin api', () => {
     expect(response.body[0].id).toBe(bookingId);
     expect(response.body[0]).not.toHaveProperty('decisionTokenHash');
     expect(response.body[0]).not.toHaveProperty('confirmationEmail');
-    expect(response.body[0].confirmation.status).toBe('NOT_APPLICABLE');
+    expect(response.body[0].confirmation.status).toBe('NOT_RECORDED');
   });
 
   it('updates booking status', async () => {

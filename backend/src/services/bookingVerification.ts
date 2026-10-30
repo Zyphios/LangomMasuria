@@ -5,6 +5,7 @@ import { bookingConfig, hashBookingIp, hashBookingSecret, newBookingSecret, norm
 import { generateBookingReference } from './bookingReference';
 import { decideBooking } from './bookingLifecycle';
 import { BookingOperationError, withBookingTransaction } from './bookingTransaction';
+import { queueGuestNotification } from './confirmationQueue';
 
 const DAY = 86400000;
 const unavailable = () => new BookingOperationError(409, 'LINK_UNAVAILABLE');
@@ -27,6 +28,49 @@ async function emailCapacity(tx: Prisma.TransactionClient, email: string, now: D
     return limited((pending[pending.length - config.pending].expiresAt!.getTime() - now.getTime()) / 1000);
   }
   return windowLimit(tx, { kind: 'BOOKING', email }, now, DAY, config.daily);
+}
+
+export async function createWebsiteBooking(db: PrismaClient, input: BookingCreateInput, ip: string) {
+  const config = bookingConfig();
+  const email = normalizeEmail(input.guestEmail);
+  const ipKey = hashBookingIp(ip);
+  const outcome = await withBookingTransaction(db, async (tx, now) => {
+    const ipError = await windowLimit(tx, { kind: 'SUBMISSION', ipKey }, now, 3600000, config.hourlyIp) ??
+      await windowLimit(tx, { kind: 'SUBMISSION', ipKey }, now, DAY, config.dailyIp);
+    if (ipError) return { error: ipError };
+    await tx.bookingAbuseEvent.create({ data: { kind: 'SUBMISSION', ipKey, createdAt: now } });
+    const mailEvents = { kind: { in: ['VERIFY_MAIL', 'REQUEST_MAIL'] }, email };
+    const error = await emailCapacity(tx, email, now) ??
+      await windowLimit(tx, mailEvents, now, DAY, config.emails) ??
+      await windowLimit(tx, mailEvents, now, config.cooldown * 1000, 1);
+    if (error) return { error };
+    const checkIn = new Date(input.checkIn);
+    const checkOut = new Date(input.checkOut);
+    let totalPrice: Prisma.Decimal;
+    try {
+      assertMinimumStay(checkIn, checkOut);
+      await assertDatesAvailable(tx, checkIn, checkOut, { now });
+      totalPrice = await calculateTotalPrice(tx, checkIn, checkOut);
+    } catch (error) {
+      if (error instanceof BookingOperationError) return { error };
+      throw error;
+    }
+    const ownerSecret = newBookingSecret();
+    const booking = await tx.booking.create({ data: {
+      ...input, guestEmail: email, checkIn, checkOut,
+      reference: generateBookingReference(email), totalPrice, originalTotalPrice: totalPrice,
+      status: 'PENDING', createdAt: now, expiresAt: new Date(now.getTime() + DAY),
+      decisionTokenHash: ownerSecret.hash
+    } });
+    await queueGuestNotification(tx, booking.id, 'PENDING', now);
+    await tx.bookingAbuseEvent.createMany({ data: [
+      { kind: 'BOOKING', email, createdAt: now },
+      { kind: 'REQUEST_MAIL', email, createdAt: now }
+    ] });
+    return { booking, ownerToken: ownerSecret.token };
+  });
+  if ('error' in outcome) throw outcome.error;
+  return outcome;
 }
 
 export async function limitBookingLinks(db: PrismaClient, ip: string) {
@@ -106,6 +150,7 @@ export const completeBookingVerification = (db: PrismaClient, token: string, exp
       reference: generateBookingReference(row.guestEmail), totalPrice, originalTotalPrice: totalPrice, status: 'PENDING',
       createdAt: now, expiresAt: new Date(now.getTime() + DAY), decisionTokenHash: ownerSecret.hash
     } });
+    await queueGuestNotification(tx, booking.id, 'PENDING', now);
     await tx.bookingVerification.update({ where: { id: row.id }, data: { consumedAt: now, bookingId: booking.id } });
     await tx.bookingAbuseEvent.create({ data: { kind: 'BOOKING', email: row.guestEmail, createdAt: now } });
     return { booking, ownerToken: ownerSecret.token };

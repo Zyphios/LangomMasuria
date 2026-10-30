@@ -45,7 +45,7 @@ it('keeps owner previews read-only and allows only one conflicting decision', as
   const link = await requestBookingVerification(db, input, '127.0.0.1');
   const { booking, ownerToken } = await completeBookingVerification(db, link.token, '1000');
   await previewBookingDecision(db, ownerToken!);
-  expect(await db.confirmationEmail.count()).toBe(0);
+  expect(await db.confirmationEmail.count()).toBe(1);
   const results = await Promise.allSettled([
     completeBookingDecision(db, ownerToken!, 'CONFIRMED'),
     completeBookingDecision(db, ownerToken!, 'CANCELLED')

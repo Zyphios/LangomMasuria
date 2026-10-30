@@ -49,10 +49,17 @@ enum ConfirmationStatus {
   CANCELLED
 }
 
+enum BookingEmailKind {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
 model ConfirmationEmail {
   id          String             @id @default(uuid())
   bookingId   String             @unique
   booking     Booking            @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  kind        BookingEmailKind   @default(CONFIRMED)
   status      ConfirmationStatus @default(QUEUED)
   attempts    Int                @default(0)
   availableAt DateTime           @default(now())

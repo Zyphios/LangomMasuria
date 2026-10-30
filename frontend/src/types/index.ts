@@ -2,6 +2,7 @@ export type Locale = 'pl' | 'en';
 
 export type BookingStatus = 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'EXPIRED';
 export type ConfirmationView = {
+  kind?: 'PENDING' | 'CONFIRMED' | 'CANCELLED';
   status: 'QUEUED' | 'SENDING' | 'SENT' | 'FAILED' | 'CANCELLED' | 'NOT_APPLICABLE' | 'NOT_RECORDED';
   attempts: number; sentAt: string | null; lastError: string | null;
 };
@@ -84,7 +85,10 @@ export type BookingResponse = {
   totalPrice: number;
   expiresAt: string | null;
 };
-export type VerificationResponse = { status: 'EMAIL_VERIFICATION_REQUIRED'; expiresAt: string };
+export type ProvisionalBookingResponse = Omit<BookingResponse, 'status' | 'expiresAt'> & {
+  status: 'PENDING';
+  expiresAt: string;
+};
 export type BookingLinkPreview = { checkIn: string; checkOut: string; guestsCount: number; totalPrice: string; expiresAt: string };
 
 export type AvailabilityResponse = {

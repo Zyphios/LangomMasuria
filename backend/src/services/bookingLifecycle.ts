@@ -3,6 +3,7 @@ import { assertDatesAvailable, calculateManualPrice, getNightCount } from './ava
 import { generateBookingReference } from './bookingReference';
 import { BookingOperationError, withBookingTransaction } from './bookingTransaction';
 import type { ManualBookingCreateInput } from '../types';
+import { queueGuestNotification } from './confirmationQueue';
 
 export const expirePendingBookings = async (db: Prisma.TransactionClient, now: Date) =>
   (await db.booking.updateMany({ where: { status: 'PENDING', expiresAt: { lte: now } }, data: { status: 'EXPIRED' } })).count;
@@ -17,12 +18,10 @@ export async function decideBooking(tx: Prisma.TransactionClient, id: string, st
     }
     if (booking.status !== 'PENDING') throw new BookingOperationError(409, 'BOOKING_ALREADY_DECIDED');
     await assertDatesAvailable(tx, booking.checkIn, booking.checkOut, { now, excludeBookingId: id });
-    if (booking.guestEmail) await tx.confirmationEmail.upsert({ where: { bookingId: id }, create: { bookingId: id }, update: {} });
   } else {
     if (!['PENDING', 'CONFIRMED'].includes(booking.status)) throw new BookingOperationError(409, 'BOOKING_ALREADY_DECIDED');
-    await tx.confirmationEmail.updateMany({ where: { bookingId: id, status: { in: ['QUEUED', 'SENDING', 'FAILED'] } },
-      data: { status: 'CANCELLED', leaseToken: null, leaseUntil: null } });
   }
+  if (booking.guestEmail) await queueGuestNotification(tx, id, status, now);
   return tx.booking.update({ where: { id }, data: { status } });
 }
 

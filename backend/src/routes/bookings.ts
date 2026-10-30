@@ -2,9 +2,9 @@ import { Router } from 'express';
 import { z } from 'zod';
 import { prisma } from '../index';
 import { validate } from '../middleware/validate';
-import { requestBookingVerification } from '../services/bookingVerification';
-import { sendBookingVerificationEmail } from '../services/email';
-import { BookingOperationError } from '../services/bookingTransaction';
+import { createWebsiteBooking } from '../services/bookingVerification';
+import { sendOwnerBookingEmail } from '../services/email';
+import { publicBooking } from '../services/bookingLifecycle';
 
 const bookingSchema = z.object({
   guestName: z.string().trim().min(1).max(200),
@@ -19,13 +19,8 @@ export const bookingsRouter = Router();
 bookingsRouter.post('/', validate(bookingSchema), async (req, res, next) => {
   try {
     const input = bookingSchema.parse(req.body);
-    const link = await requestBookingVerification(prisma, input, req.ip || req.socket.remoteAddress || 'unknown');
-    try {
-      await sendBookingVerificationEmail(input, link.token, link.expiresAt);
-    } catch {
-      console.error('Booking verification delivery failed; SMTP did not confirm delivery.');
-      throw new BookingOperationError(503, 'VERIFICATION_EMAIL_FAILED');
-    }
-    res.status(202).json({ status: 'EMAIL_VERIFICATION_REQUIRED', expiresAt: link.expiresAt });
+    const { booking, ownerToken } = await createWebsiteBooking(prisma, input, req.ip || req.socket.remoteAddress || 'unknown');
+    await sendOwnerBookingEmail(booking, ownerToken);
+    res.status(201).json(publicBooking(booking));
   } catch (error) { next(error); }
 });

@@ -31,13 +31,24 @@ it('confirms its own range and creates one durable mail without duplicate blocks
   expect((await getAvailabilityForMonth(db, 6, 2030, new Date())).confirmedDates).toHaveLength(2);
 });
 
-it('cancels the booking and its unsent mail without deleting an independent block', async () => {
+it('replaces an unsent confirmation with a rejection email without deleting an independent block', async () => {
   const booking = await pending();
   await changeBookingStatus(db, booking.id, 'CONFIRMED');
   await db.blockedDate.create({ data: { date: new Date('2030-06-10'), reason: 'Independent' } });
   await changeBookingStatus(db, booking.id, 'CANCELLED');
   expect((await getAvailabilityForMonth(db, 6, 2030, new Date())).blockedDates).toEqual(['2030-06-10']);
-  expect((await db.confirmationEmail.findUniqueOrThrow({ where: { bookingId: booking.id } })).status).toBe('CANCELLED');
+  expect(await db.confirmationEmail.findUniqueOrThrow({ where: { bookingId: booking.id } }))
+    .toMatchObject({ status: 'QUEUED', kind: 'CANCELLED', attempts: 0 });
+});
+
+it('queues a rejection from a pending booking once and releases its dates', async () => {
+  const booking = await pending();
+  await changeBookingStatus(db, booking.id, 'CANCELLED');
+  await changeBookingStatus(db, booking.id, 'CANCELLED');
+  expect(await db.confirmationEmail.count({ where: { bookingId: booking.id } })).toBe(1);
+  expect(await db.confirmationEmail.findUniqueOrThrow({ where: { bookingId: booking.id } }))
+    .toMatchObject({ status: 'QUEUED', kind: 'CANCELLED' });
+  expect((await getAvailabilityForMonth(db, 6, 2030, new Date())).blockedDates).toEqual([]);
 });
 
 it('rejects late confirmation and expires without traffic', async () => {

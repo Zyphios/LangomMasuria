@@ -1,5 +1,5 @@
 import { buildGuestConfirmationEmail, buildOwnerBookingEmail, buildOwnerMessageEmail, buildBookingVerificationEmail,
-  sendBookingVerificationEmail, sendGuestConfirmationEmail } from '../src/services/email';
+  sendBookingVerificationEmail, sendGuestConfirmationEmail, buildGuestBookingEmail } from '../src/services/email';
 import { Prisma, type Booking, type ContactMessage } from '@prisma/client';
 
 describe('notification recipients', () => {
@@ -75,6 +75,30 @@ describe('email templates', () => {
     expect(message.text).toContain('decision=CONFIRMED');
     expect(message.text).toContain('decision=CANCELLED');
     expect(message.text).not.toContain('/booking-decision?token=');
+  });
+  it.each(['pl', 'en'] as const)('builds a %s pending notice without a verification action or a final price', (locale) => {
+    const message = buildGuestBookingEmail({ ...booking, guestEmail: 'test@example.invalid', locale }, 'PENDING');
+    expect(message.text).toContain(booking.reference);
+    expect(message.text).toContain('2030-06-10');
+    expect(message.text).toContain(locale === 'pl' ? 'oczekuje na potwierdzenie przez właściciela' : 'awaits the owner');
+    expect(message.text).not.toContain('/verify-booking');
+    expect(message.text).not.toContain('1000');
+    expect(message.subject).not.toContain(locale === 'pl' ? 'Potwierdzenie rezerwacji' : 'Booking confirmation');
+  });
+  it.each(['pl', 'en'] as const)('builds a %s rejection notice identifying the released booking', (locale) => {
+    const message = buildGuestBookingEmail({ ...booking, guestEmail: 'test@example.invalid', locale, status: 'CANCELLED' }, 'CANCELLED');
+    expect(message.text).toContain(booking.reference);
+    expect(message.text).toContain('2030-06-10');
+    expect(message.text).toContain(locale === 'pl' ? 'nie blokuje już terminu' : 'no longer holds these dates');
+    expect(message.subject).toContain(locale === 'pl' ? 'odrzucona' : 'declined');
+    expect(message.text).not.toContain('/verify-booking');
+  });
+  it('uses the adjusted final price and deposit for a confirmed notification', () => {
+    const message = buildGuestBookingEmail({ ...booking, guestEmail: 'test@example.invalid',
+      totalPrice: new Prisma.Decimal(750), depositAmount: new Prisma.Decimal(200) }, 'CONFIRMED');
+    expect(message.text).toContain('Łącznie: 750.00 PLN');
+    expect(message.text).toContain('Wpłacona zaliczka: 200.00 PLN');
+    expect(message.text).toContain('Do dopłaty na miejscu: 550.00 PLN');
   });
   it.each(['pl', 'en'] as const)('builds a %s verification email without promising a hold', (locale) => {
     const message = buildBookingVerificationEmail({ guestName: 'Test', guestEmail: ' TEST@example.invalid ', guestPhone: '0',

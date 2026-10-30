@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 import { format } from 'date-fns';
-import { Prisma, type Booking, type ContactMessage } from '@prisma/client';
+import { Prisma, type Booking, type BookingEmailKind, type ContactMessage } from '@prisma/client';
 import type { BookingCreateInput } from '../types';
 import { bookingLink } from './bookingLinks';
 
@@ -113,6 +113,35 @@ export const buildGuestConfirmationEmail = (booking: Booking & { guestEmail: str
   };
 };
 
+export const buildGuestBookingEmail = (booking: Booking & { guestEmail: string }, kind: BookingEmailKind): MailMessage => {
+  if (kind === 'CONFIRMED') return buildGuestConfirmationEmail(booking);
+  const english = booking.locale === 'en';
+  const pending = kind === 'PENDING';
+  return {
+    to: booking.guestEmail,
+    subject: english
+      ? `${pending ? 'Booking awaiting owner decision' : 'Booking declined / cancelled'} — Domek na Mazurskiej`
+      : `${pending ? 'Rezerwacja oczekuje na decyzję' : 'Rezerwacja odrzucona / anulowana'} — Domek na Mazurskiej`,
+    text: [
+      `${english ? 'Booking reference' : 'Numer rezerwacji'}: ${booking.reference}`,
+      `${english ? 'Stay' : 'Termin'}: ${date(booking.checkIn)} - ${date(booking.checkOut)}`,
+      ...(pending
+        ? english
+          ? ['Your provisional booking awaits the owner\'s confirmation. These dates are held for up to 24 hours.',
+            'No email verification or clicking is required. We will email you the owner\'s decision.',
+            `Decision deadline: ${booking.expiresAt?.toISOString()}`]
+          : ['Rezerwacja wstępna oczekuje na potwierdzenie przez właściciela. Termin jest blokowany do 24 godzin.',
+            'Nie musisz potwierdzać adresu ani klikać linku. O decyzji właściciela poinformujemy Cię kolejnym mailem.',
+            `Termin decyzji: ${booking.expiresAt?.toISOString()}`]
+        : english
+          ? ['The owner has declined or cancelled this booking. It no longer holds these dates.',
+            'If you have paid a deposit, contact the owner to arrange settlement. No refund is made automatically.']
+          : ['Właściciel odrzucił lub anulował rezerwację. Ta rezerwacja nie blokuje już terminu.',
+            'Jeśli wpłacono zaliczkę, skontaktuj się z właścicielem w sprawie rozliczenia. Zwrot nie następuje automatycznie.'])
+    ].join('\n')
+  };
+};
+
 export const buildBookingVerificationEmail = (input: BookingCreateInput, token: string, expiresAt: Date) => {
   const english = input.locale === 'en';
   const link = bookingLink('/verify-booking', token);
@@ -136,3 +165,5 @@ export const sendOwnerBookingEmail = async (booking: Booking, token?: string) =>
 export const sendOwnerMessageEmail = async (message: ContactMessage) => sendSafely(buildOwnerMessageEmail(message));
 export const sendGuestConfirmationEmail = async (booking: Booking & { guestEmail: string }) =>
   sendStrictly(buildGuestConfirmationEmail(booking));
+export const sendGuestBookingEmail = async (booking: Booking & { guestEmail: string }, kind: BookingEmailKind) =>
+  sendStrictly(buildGuestBookingEmail(booking, kind));

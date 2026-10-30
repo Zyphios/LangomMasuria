@@ -1,11 +1,11 @@
 import { apiClient } from './client';
-import type { AvailabilityResponse, BookingPayload, BookingResponse, VerificationResponse, BookingLinkPreview } from '../types';
+import type { AvailabilityResponse, BookingPayload, BookingResponse, ProvisionalBookingResponse, BookingLinkPreview } from '../types';
 
 export const getAvailability = (month: number, year: number) =>
   apiClient<AvailabilityResponse>(`/api/availability?month=${month}&year=${year}`);
 
 export const createBooking = (payload: BookingPayload) =>
-  apiClient<VerificationResponse>('/api/bookings', {
+  apiClient<ProvisionalBookingResponse>('/api/bookings', {
     method: 'POST',
     body: JSON.stringify(payload)
   });

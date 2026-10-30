@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { expirePendingBookings } from './bookingLifecycle';
 import { withBookingTransaction } from './bookingTransaction';
 import { processNextConfirmation, type ConfirmationSender } from './confirmationQueue';
-import { sendGuestConfirmationEmail } from './email';
+import { sendGuestBookingEmail } from './email';
 import { bookingConfig } from './bookingLinks';
 
 export async function runBookingMaintenance(db: PrismaClient, now: Date, send: ConfirmationSender) {
@@ -23,7 +23,7 @@ export function startBookingJobs(db: PrismaClient) {
   let stopped = false;
   const tick = () => {
     if (running || stopped) return;
-    running = runBookingMaintenance(db, new Date(), sendGuestConfirmationEmail)
+    running = runBookingMaintenance(db, new Date(), sendGuestBookingEmail)
       .catch(() => { console.error('booking maintenance failed'); })
       .finally(() => { running = null; });
   };

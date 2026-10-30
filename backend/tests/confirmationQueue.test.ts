@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { processNextConfirmation, retryConfirmation } from '../src/services/confirmationQueue';
+import { changeBookingStatus } from '../src/services/bookingLifecycle';
 
 const db = new PrismaClient();
 beforeEach(async () => { await db.booking.deleteMany(); });
@@ -75,4 +76,45 @@ it('stops after three missing-SMTP attempts and retries only through an explicit
   await processNextConfirmation(db, new Date(now.getTime() + 720001), async () => {});
   expect((await db.confirmationEmail.findFirstOrThrow()).status).toBe('SENT');
   expect(await db.confirmationEmail.count()).toBe(1);
+});
+
+it.each(['PENDING', 'CANCELLED'] as const)('delivers and retries the current %s notification', async (kind) => {
+  const booking = await queued();
+  await db.booking.update({ where: { id: booking.id }, data: {
+    status: kind, expiresAt: kind === 'PENDING' ? new Date(Date.now() + 86400000) : null
+  } });
+  await db.confirmationEmail.update({ where: { bookingId: booking.id }, data: { kind } });
+  const now = new Date();
+  for (const delay of [0, 60000, 360000]) {
+    await processNextConfirmation(db, new Date(now.getTime() + delay), async () => { throw new Error('SMTP failed'); });
+  }
+  expect(await db.confirmationEmail.findUnique({ where: { bookingId: booking.id } }))
+    .toMatchObject({ kind, status: 'FAILED', attempts: 3 });
+  await retryConfirmation(db, booking.id);
+  let deliveredKind: string | undefined;
+  await processNextConfirmation(db, new Date(now.getTime() + 360001), async (_booking, actualKind) => { deliveredKind = actualKind; });
+  expect(deliveredKind).toBe(kind);
+  expect(await db.confirmationEmail.findUnique({ where: { bookingId: booking.id } }))
+    .toMatchObject({ kind, status: 'SENT' });
+});
+
+it('does not send an expired pending notification', async () => {
+  const booking = await queued();
+  await db.booking.update({ where: { id: booking.id }, data: { status: 'PENDING', expiresAt: new Date(0) } });
+  await db.confirmationEmail.update({ where: { bookingId: booking.id }, data: { kind: 'PENDING' } });
+  await processNextConfirmation(db, new Date(), async () => { throw new Error('Must not send'); });
+  expect(await db.confirmationEmail.findUnique({ where: { bookingId: booking.id } })).toMatchObject({ status: 'CANCELLED' });
+});
+
+it('does not overwrite a newly queued rejection when an older in-flight send completes', async () => {
+  const booking = await queued();
+  await processNextConfirmation(db, new Date(), async () => {
+    await changeBookingStatus(db, booking.id, 'CANCELLED');
+  });
+  expect(await db.confirmationEmail.findUnique({ where: { bookingId: booking.id } }))
+    .toMatchObject({ kind: 'CANCELLED', status: 'QUEUED', attempts: 0 });
+  let deliveredKind: string | undefined;
+  await processNextConfirmation(db, new Date(), async (_booking, kind) => { deliveredKind = kind; });
+  expect(deliveredKind).toBe('CANCELLED');
+  expect(await db.confirmationEmail.findUnique({ where: { bookingId: booking.id } })).toMatchObject({ status: 'SENT' });
 });

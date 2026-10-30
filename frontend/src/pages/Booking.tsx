@@ -1,7 +1,7 @@
 import { differenceInCalendarDays } from 'date-fns';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import BookingCalendar from '../components/BookingCalendar';
 import { sendContactMessage } from '../api/contact';
 import { createBooking } from '../api/bookings';
@@ -9,7 +9,7 @@ import { ApiError } from '../api/client';
 import { getPricingSeasons } from '../api/pricing';
 import { initialVisibleMonths, useCalendarAvailability } from '../hooks/useAvailability';
 import { estimateStayPrice, formatPrice } from '../utils/pricing';
-import type { BookingWizardForm } from '../types';
+import type { BookingWizardForm, ProvisionalBookingResponse } from '../types';
 
 const baseState: BookingWizardForm = {
   guestName: '',
@@ -33,7 +33,8 @@ export default function Booking() {
   const [error, setError] = useState('');
   const [form, setForm] = useState<BookingWizardForm>(baseState);
   const [sending, setSending] = useState(false);
-  const [verificationDeadline, setVerificationDeadline] = useState('');
+  const [createdBooking, setCreatedBooking] = useState<ProvisionalBookingResponse>();
+  const client = useQueryClient();
 
   const [visibleMonths, setVisibleMonths] = useState(initialVisibleMonths);
   const { isError: availabilityError, retry: retryAvailability, ...calendar } = useCalendarAvailability(visibleMonths);
@@ -97,14 +98,14 @@ export default function Booking() {
         notes: form.notes,
         locale: form.locale
       });
-      setVerificationDeadline(booking.expiresAt);
+      setCreatedBooking(booking);
       setError('');
       setStep(4);
+      void client.invalidateQueries({ queryKey: ['availability'] });
     } catch (err) {
       // The backend re-validates date availability as the final safeguard against overlapping
       // stays; surface its rejection instead of leaving the wizard silently stuck on step 3.
-      const key = err instanceof Error && ['BOOKING_RATE_LIMIT', 'VERIFICATION_EMAIL_FAILED'].includes(err.message)
-        ? err.message === 'BOOKING_RATE_LIMIT' ? 'links.rateLimited' : 'links.emailFailed' : '';
+      const key = err instanceof Error && err.message === 'BOOKING_RATE_LIMIT' ? 'links.rateLimited' : '';
       const wait = err instanceof ApiError && err.retryAfter ? ` ${t('links.retryAfter', { minutes: Math.ceil(err.retryAfter / 60) })}` : '';
       setError((key ? t(key) : err instanceof Error ? err.message : t('booking.unavailableError')) + wait);
     } finally { setSending(false); }
@@ -276,18 +277,20 @@ export default function Booking() {
             </section>
           ) : null}
 
-          {step === 4 ? (
+          {step === 4 && createdBooking ? (
             <section className='mt-10 rounded-[32px] bg-surface-container-lowest p-6 md:p-8'>
-              <h2 className='text-headline-sm text-on-surface'>{t('links.checkEmail')}</h2>
-              <p className='mt-3 text-body-lg text-on-surface-variant'>{t('links.checkEmailHelp')}</p>
+              <h2 className='text-headline-sm text-on-surface'>{t('booking.provisionalTitle')}</h2>
+              <p className='mt-3 text-body-lg text-on-surface-variant'>{t('booking.confirmationMessage')}</p>
+              <p className='mt-3 text-body-md text-on-surface-variant'>{t('booking.notificationInfo')}</p>
               <div className='mt-6 grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <div className='rounded-2xl bg-surface-container p-5'>
                   <p className="break-all">{form.guestEmail}</p>
-                  <p>{t('links.deadline')}: {new Date(verificationDeadline).toLocaleString(i18n.language === 'en' ? 'en-GB' : 'pl-PL')}</p>
+                  <p className="break-all">{t('booking.bookingIdLabel')} {createdBooking.reference}</p>
+                  <p>{t('booking.holdDeadline')}: {new Date(createdBooking.expiresAt).toLocaleString(i18n.language === 'en' ? 'en-GB' : 'pl-PL')}</p>
                 </div>
                 <div className='rounded-2xl bg-primary-container p-5 text-on-primary-container'>
                   <p>{t('booking.nights')}: {nights}</p>
-                  <p className='mt-2 font-semibold'>{t('booking.total')}: {formatPrice(form.totalPrice, i18n.language)} PLN</p>
+                  <p className='mt-2 font-semibold'>{t('booking.estimatedCost')} {formatPrice(createdBooking.totalPrice, i18n.language)} PLN</p>
                 </div>
               </div>
             </section>

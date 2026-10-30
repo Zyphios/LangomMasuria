@@ -34,7 +34,9 @@ beforeEach(async () => {
   await i18n.changeLanguage('pl');
   vi.spyOn(pricingApi, 'getPricingSeasons').mockResolvedValue(rates);
   vi.spyOn(bookingsApi, 'getAvailability').mockResolvedValue({ blockedDates: [], pendingDates: [], confirmedDates: [], manualBlockedDates: [] });
-  vi.spyOn(bookingsApi, 'createBooking').mockResolvedValue({ status: 'EMAIL_VERIFICATION_REQUIRED', expiresAt: '2030-01-01T10:15:00Z' });
+  vi.spyOn(bookingsApi, 'createBooking').mockResolvedValue({
+    id: 'booking-1', reference: 'TEST-1', status: 'PENDING', totalPrice: 2400, expiresAt: '2030-01-02T10:15:00Z'
+  });
 });
 
 afterEach(() => {

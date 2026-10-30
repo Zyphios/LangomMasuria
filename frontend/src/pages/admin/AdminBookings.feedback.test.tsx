@@ -57,6 +57,49 @@ afterEach(async () => {
 });
 
 describe('admin deposit feedback', () => {
+  it.each([
+    ['PENDING', 'Powiadomienie o rezerwacji wstępnej', 'Provisional booking notification'],
+    ['CONFIRMED', 'Potwierdzenie rezerwacji', 'Booking confirmation'],
+    ['CANCELLED', 'Powiadomienie o odrzuceniu / anulowaniu', 'Rejection / cancellation notification']
+  ] as const)('labels and retries failed %s notifications in both languages', async (kind, polish, english) => {
+    vi.mocked(adminApi.getAdminBookings).mockResolvedValue([{
+      ...rows[0], guestEmail: 'anna@example.com', status: kind,
+      confirmation: { kind, status: 'FAILED', attempts: 3, sentAt: null, lastError: 'DELIVERY_UNKNOWN' }
+    }]);
+    const retry = vi.spyOn(adminApi, 'retryBookingConfirmation').mockResolvedValue(undefined);
+    await showBookings();
+    expect(screen.getByText(`${polish}: Błąd wysyłki`)).toBeInTheDocument();
+    expect(screen.getByText(/Ponowienie może wysłać duplikat/)).toBeInTheDocument();
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Ponów wysyłkę' })); });
+    expect(retry).toHaveBeenCalledWith('synthetic-admin-token', 'feedback-1');
+    await act(async () => { await i18n.changeLanguage('en'); });
+    expect(screen.getByText(`${english}: Email delivery failed`)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Retry email' })).toBeInTheDocument();
+  });
+
+  it.each([
+    ['QUEUED', 'Wiadomość oczekuje na wysyłkę'],
+    ['SENDING', 'Wysyłanie wiadomości'],
+    ['SENT', 'Przekazano do serwera poczty'],
+    ['CANCELLED', 'Wysyłka anulowana']
+  ] as const)('distinguishes rejection notification kind from delivery state %s', async (status, label) => {
+    vi.mocked(adminApi.getAdminBookings).mockResolvedValue([{
+      ...rows[0], status: 'CANCELLED',
+      confirmation: { kind: 'CANCELLED', status, attempts: 1, sentAt: null, lastError: null }
+    }]);
+    await showBookings();
+    expect(screen.getByText(`Powiadomienie o odrzuceniu / anulowaniu: ${label}`)).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Ponów wysyłkę' })).not.toBeInTheDocument();
+  });
+
+  it('defaults historical notifications without kind to confirmation', async () => {
+    vi.mocked(adminApi.getAdminBookings).mockResolvedValue([{
+      ...rows[0], confirmation: { status: 'SENT', attempts: 1, sentAt: '2030-01-01', lastError: null }
+    }]);
+    await showBookings();
+    expect(screen.getByText('Potwierdzenie rezerwacji: Przekazano do serwera poczty')).toBeInTheDocument();
+  });
+
   it('does not offer a save when the amount is unchanged', async () => {
     await showBookings();
     expect(screen.getAllByRole('button', { name: 'Zapisz zaliczkę' }).every((button) => button.hasAttribute('disabled'))).toBe(true);

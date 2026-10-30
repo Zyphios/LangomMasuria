@@ -9,7 +9,7 @@ Full-stack vacation rental website for Lagom Masuria.
 
 ## Quick start
 1. Copy `.env.example` to `.env`.
-   Set a private random `BOOKING_ABUSE_SECRET` (at least 32 characters), the public frontend `PUBLIC_SITE_URL`, and working SMTP. Website bookings require email verification; missing SMTP returns an explicit error and never holds dates.
+   Set a private random `BOOKING_ABUSE_SECRET` (at least 32 characters), the public frontend `PUBLIC_SITE_URL`, and working SMTP. Website submissions immediately create a provisional 24-hour hold. Guest email failures remain queued and visible in the admin panel; they do not undo a saved booking.
 2. Start containers: `docker compose up --build`.
 3. Run backend Prisma setup:
    - `cd backend`
@@ -57,6 +57,34 @@ Deployment needs both application images and migration
 `20261029150000_booking_price_adjustment`; existing totals and deposits are preserved.
 The production backend, frontend and migration were deployed together from commit
 `dbe726f`. See `DEPLOY.md` for the verified release and backup locations.
+
+## Booking requests and email limits
+
+Submitting the website form returns HTTP 201 with the booking reference, `PENDING`
+status and expiry. Dates immediately appear as provisional in the calendar.
+Guests do not need to verify their email or click a link. Their first email only
+says the booking awaits the owner. The owner receives the request and can decide
+in the panel or through private decision links; opening a link alone does nothing.
+Confirmation emails include the final agreed total, deposit and balance.
+Rejection/cancellation queues a separate notice and releases the booking's nights.
+
+Default rolling limits: one active pending booking per normalized email,
+three created website bookings per email/24 hours, five initial email notices
+per email/24 hours, a 120-second initial-notice cooldown, and 10 attempts/hour
+and 30 attempts/24 hours per IP. Rejection, deletion and restarts do not reset
+the budgets. Owner decisions and their guest notices do not consume initial-mail
+budgets. These limits do not verify ownership of the supplied email address.
+
+The existing `ConfirmationEmail` row now describes the current guest notification
+(`kind`: `PENDING`, `CONFIRMED` or `CANCELLED`). Changing booking status replaces an
+unsent obsolete notice with the current decision. Delivery uses up to three
+attempts, then requires an explicit admin retry. The panel distinguishes the
+notice kind from its delivery state; `SENT` means SMTP acceptance, not inbox receipt.
+Deploy both application images together with migration
+`20261030100000_booking_notification_kind`. Existing bookings and historical
+delivery rows are preserved; the migration does not send retrospective notices.
+Legacy verification endpoints exist only for previously issued short-lived links;
+new submissions never issue them.
 
 ## Private VPS preview
 
@@ -148,6 +176,8 @@ Use `up`, not just `restart`: changed environment variables require container re
 Gmail uses STARTTLS on port 587; the sender is the authenticated `SMTP_USER` account.
 Without `SMTP_HOST`, the preview does not deliver email.
 Verify both a contact message and a booking notification arrive in the new inbox,
-and verify the guest receives a confirmation when the booking is confirmed.
+and verify the guest receives a pending notice followed by confirmation or rejection.
 Check spam as well. A successful form response alone does not prove email delivery:
-the application saves submissions even when SMTP fails and logs `Failed to send email`.
+the application saves submissions even when SMTP fails. Guest delivery failures
+are recorded in the notification queue and log `booking notification delivery failed`;
+owner notification failures are logged separately.

@@ -1,0 +1,4 @@
+CREATE TYPE "BookingEmailKind" AS ENUM ('PENDING', 'CONFIRMED', 'CANCELLED');
+
+ALTER TABLE "ConfirmationEmail"
+ADD COLUMN "kind" "BookingEmailKind" NOT NULL DEFAULT 'CONFIRMED';
