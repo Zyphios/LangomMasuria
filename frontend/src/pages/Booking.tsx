@@ -5,8 +5,10 @@ import { useQuery } from '@tanstack/react-query';
 import BookingCalendar from '../components/BookingCalendar';
 import { sendContactMessage } from '../api/contact';
 import { createBooking } from '../api/bookings';
+import { ApiError } from '../api/client';
 import { getPricingSeasons } from '../api/pricing';
-import { useAvailability } from '../hooks/useAvailability';
+import { initialVisibleMonths, useCalendarAvailability } from '../hooks/useAvailability';
+import { estimateStayPrice, formatPrice } from '../utils/pricing';
 import type { BookingWizardForm } from '../types';
 
 const baseState: BookingWizardForm = {
@@ -30,44 +32,36 @@ export default function Booking() {
   const [step, setStep] = useState(1);
   const [error, setError] = useState('');
   const [form, setForm] = useState<BookingWizardForm>(baseState);
+  const [sending, setSending] = useState(false);
+  const [verificationDeadline, setVerificationDeadline] = useState('');
 
-  const now = new Date();
-  const [visibleMonths, setVisibleMonths] = useState({
-    left: { month: now.getMonth() + 1, year: now.getFullYear() },
-    right: { month: now.getMonth() + 2 > 12 ? 1 : now.getMonth() + 2, year: now.getMonth() + 2 > 12 ? now.getFullYear() + 1 : now.getFullYear() }
-  });
-  const { data: leftAvailability } = useAvailability(visibleMonths.left.month, visibleMonths.left.year);
-  const { data: rightAvailability } = useAvailability(visibleMonths.right.month, visibleMonths.right.year);
-  const blockedDates = useMemo(
-    () => Array.from(new Set([...(leftAvailability?.blockedDates || []), ...(rightAvailability?.blockedDates || [])])),
-    [leftAvailability, rightAvailability]
-  );
+  const [visibleMonths, setVisibleMonths] = useState(initialVisibleMonths);
+  const { isError: availabilityError, retry: retryAvailability, ...calendar } = useCalendarAvailability(visibleMonths);
 
   const nights = useMemo(
     () => (!form.checkIn || !form.checkOut ? 0 : differenceInCalendarDays(new Date(form.checkOut), new Date(form.checkIn))),
     [form.checkIn, form.checkOut]
   );
 
-  const { data: pricingSeasons = [] } = useQuery({ queryKey: ['pricing'], queryFn: getPricingSeasons });
-
-  // Mirrors the backend's per-night season lookup so the estimate shown here matches the
-  // authoritative total the server calculates when the booking is actually created.
-  const estimatedTotal = useMemo(() => {
-    const nightsCount = Math.max(0, nights);
-    if (!form.checkIn || nightsCount === 0 || pricingSeasons.length === 0) return 0;
-    const checkInDate = new Date(form.checkIn);
-    let total = 0;
-    for (let i = 0; i < nightsCount; i += 1) {
-      const night = new Date(Date.UTC(checkInDate.getUTCFullYear(), checkInDate.getUTCMonth(), checkInDate.getUTCDate() + i));
-      const season = pricingSeasons.find((entry) => night >= new Date(entry.dateFrom) && night <= new Date(entry.dateTo));
-      total += season ? Number(season.pricePerNight) : 0;
-    }
-    return total;
-  }, [form.checkIn, nights, pricingSeasons]);
+  const { data: pricingSeasons = [], isPending: pricingPending, isError: pricingError, refetch: retryPricing } = useQuery({
+    queryKey: ['pricing'], queryFn: getPricingSeasons, refetchInterval: 30000, refetchOnWindowFocus: true
+  });
+  const estimatedTotal = useMemo(
+    () => estimateStayPrice(pricingSeasons, form.checkIn, form.checkOut),
+    [form.checkIn, form.checkOut, pricingSeasons]
+  );
+  const pricingUnavailable = pricingPending || pricingError || estimatedTotal === null;
+  const pricingMessage = pricingPending ? 'pricing.loading' : pricingError ? 'pricing.loadError' : 'booking.noPricing';
+  const displayedEstimate = pricingUnavailable ? '—' : formatPrice(estimatedTotal, i18n.language);
 
   const nextFromDates = () => {
+    if (calendar.disabled) { setError(t('links.availabilityError')); return; }
     if (nights < 2) {
       setError(t('booking.minStayError'));
+      return;
+    }
+    if (pricingPending || pricingError || estimatedTotal === null) {
+      setError(t(pricingMessage));
       return;
     }
     setForm((current) => ({ ...current, totalPrice: estimatedTotal, locale: i18n.language === 'en' ? 'en' : 'pl' }));
@@ -85,6 +79,13 @@ export default function Booking() {
   };
 
   const submitBookingRequest = async () => {
+    if (sending) return;
+    if (pricingPending || pricingError || estimatedTotal === null) {
+      setError(t(pricingMessage));
+      return;
+    }
+    setForm((current) => ({ ...current, totalPrice: estimatedTotal }));
+    setSending(true);
     try {
       const booking = await createBooking({
         guestName: form.guestName,
@@ -96,26 +97,29 @@ export default function Booking() {
         notes: form.notes,
         locale: form.locale
       });
-      setForm((current) => ({ ...current, bookingId: booking.id, reference: booking.reference, totalPrice: booking.totalPrice }));
+      setVerificationDeadline(booking.expiresAt);
       setError('');
       setStep(4);
     } catch (err) {
       // The backend re-validates date availability as the final safeguard against overlapping
       // stays; surface its rejection instead of leaving the wizard silently stuck on step 3.
-      setError(err instanceof Error ? err.message : t('booking.unavailableError'));
-    }
+      const key = err instanceof Error && ['BOOKING_RATE_LIMIT', 'VERIFICATION_EMAIL_FAILED'].includes(err.message)
+        ? err.message === 'BOOKING_RATE_LIMIT' ? 'links.rateLimited' : 'links.emailFailed' : '';
+      const wait = err instanceof ApiError && err.retryAfter ? ` ${t('links.retryAfter', { minutes: Math.ceil(err.retryAfter / 60) })}` : '';
+      setError((key ? t(key) : err instanceof Error ? err.message : t('booking.unavailableError')) + wait);
+    } finally { setSending(false); }
   };
 
   return (
-    <div className='bg-background pt-20'>
-      <main className='mx-auto max-w-container-max px-8 pb-section-gap pt-16 md:px-margin-desktop'>
+    <div className='bg-background pt-[var(--site-header-height)]'>
+      <main className='mx-auto max-w-container-max px-4 pb-section-gap pt-16 sm:px-8 md:px-margin-desktop'>
         <section className='mb-16 text-center'>
           <h1 className='text-headline-lg-mobile text-on-surface md:text-headline-lg'>{t('booking.title')}</h1>
           <p className='mt-4 mx-auto max-w-2xl text-body-lg text-on-surface-variant'>{t('booking.subtitle')}</p>
         </section>
 
-        <section className='rounded-[32px] border border-outline-variant/40 bg-surface-container-low p-6 md:p-10'>
-          <div className='flex justify-center items-center gap-4 md:gap-8 mb-10 overflow-x-auto'>
+        <section className='rounded-[32px] border border-outline-variant/40 bg-surface-container-low p-4 sm:p-6 md:p-10'>
+          <div className='mb-10 flex items-center justify-start gap-4 overflow-x-auto md:justify-center md:gap-8'>
             {[
               { icon: 'calendar_month', label: t('booking.step1') },
               { icon: 'person', label: t('booking.step2') },
@@ -145,6 +149,11 @@ export default function Booking() {
             })}
           </div>
 
+          {step < 4 && (pricingPending || pricingError || (nights >= 2 && estimatedTotal === null)) &&
+            <p role={pricingPending ? 'status' : 'alert'} className="mt-4 text-error">{t(pricingMessage)}
+              {pricingError && <button type="button" className="ml-3 underline" onClick={() => { void retryPricing(); }}>{t('links.retry')}</button>}
+            </p>}
+
           {step === 1 ? (
             <div className='mt-10'>
               <div className='mb-6 flex flex-col gap-2'>
@@ -152,18 +161,21 @@ export default function Booking() {
                 <p className='text-body-md text-on-surface-variant'>{t('booking.datesSubtitle')}</p>
               </div>
               <BookingCalendar
-                blockedDates={blockedDates}
+                {...calendar}
                 checkIn={form.checkIn}
                 checkOut={form.checkOut}
                 onCheckInChange={(value) => setForm((current) => ({ ...current, checkIn: value }))}
                 onCheckOutChange={(value) => setForm((current) => ({ ...current, checkOut: value }))}
                 onVisibleMonthsChange={setVisibleMonths}
               />
+              {calendar.disabled && <p role="alert" className="mt-4">{t(availabilityError ? 'links.availabilityError' : 'links.loading')}
+                {availabilityError && <button type="button" className="ml-3 underline" onClick={retryAvailability}>{t('links.retry')}</button>}
+              </p>}
               <div className='mt-6 flex flex-wrap items-center justify-between gap-4'>
                 <div className='rounded-2xl bg-surface-container-lowest px-5 py-4 text-body-md text-on-surface-variant'>
-                  {t('booking.estimatedCost')} <span className='font-medium text-on-surface'>{estimatedTotal} PLN</span>
+                  {t('booking.estimatedCost')} <span className='font-medium text-on-surface'>{displayedEstimate} PLN</span>
                 </div>
-                <button type='button' onClick={nextFromDates} className={primaryButtonClasses}>
+                <button type='button' disabled={calendar.disabled || pricingPending || pricingError || (nights >= 2 && estimatedTotal === null)} onClick={nextFromDates} className={primaryButtonClasses}>
                   {t('booking.next')}
                 </button>
               </div>
@@ -171,7 +183,7 @@ export default function Booking() {
           ) : null}
 
           {step === 2 ? (
-            <form className='mt-10 grid gap-5 rounded-[32px] bg-surface-container-lowest p-6 md:grid-cols-2 md:p-8'>
+            <form className='mt-10 grid grid-cols-1 gap-5 rounded-[32px] bg-surface-container-lowest p-6 md:grid-cols-2 md:p-8'>
               <label className='md:col-span-1'>
                 {t('booking.guestName')}
                 <input
@@ -234,7 +246,7 @@ export default function Booking() {
             <section className='mt-10 rounded-[32px] bg-surface-container-lowest p-6 md:p-8'>
               <h2 className='text-headline-sm text-on-surface'>{t('booking.summaryTitle')}</h2>
               <p className='mt-3 text-body-md text-on-surface-variant'>{t('booking.summarySubtitle')}</p>
-              <div className='mt-6 grid gap-4 md:grid-cols-2'>
+              <div className='mt-6 grid grid-cols-1 gap-4 break-words md:grid-cols-2'>
                 <div className='rounded-2xl bg-surface-container p-5'>
                   <p className='text-label-caps uppercase text-on-surface-variant'>{t('booking.summaryDates')}</p>
                   <p className='mt-2 text-on-surface'>{form.checkIn} → {form.checkOut}</p>
@@ -250,15 +262,15 @@ export default function Booking() {
                 </div>
                 <div className='rounded-2xl bg-primary-container p-5 text-on-primary-container md:col-span-2'>
                   <p className='text-label-caps uppercase'>{t('booking.summaryPrice')}</p>
-                  <p className='mt-2 text-headline-sm'>{t('booking.total')}: {form.totalPrice} PLN</p>
+                  <p className='mt-2 text-headline-sm'>{t('booking.total')}: {displayedEstimate} PLN</p>
                 </div>
               </div>
               <div className='mt-6 flex flex-wrap gap-3'>
                 <button type='button' onClick={() => setStep(2)} className={secondaryButtonClasses}>
                   {t('booking.prev')}
                 </button>
-                <button type='button' onClick={submitBookingRequest} className={primaryButtonClasses}>
-                  {t('booking.sendRequest')}
+                <button type='button'                 disabled={sending || pricingUnavailable} onClick={submitBookingRequest} className={primaryButtonClasses}>
+                  {t(sending ? 'links.working' : 'booking.sendRequest')}
                 </button>
               </div>
             </section>
@@ -266,15 +278,16 @@ export default function Booking() {
 
           {step === 4 ? (
             <section className='mt-10 rounded-[32px] bg-surface-container-lowest p-6 md:p-8'>
-              <h2 className='text-headline-sm text-on-surface'>{t('booking.confirmation')}</h2>
-              <p className='mt-3 text-body-lg text-on-surface-variant'>{t('booking.confirmationMessage')}</p>
-              <div className='mt-6 grid gap-4 md:grid-cols-2'>
+              <h2 className='text-headline-sm text-on-surface'>{t('links.checkEmail')}</h2>
+              <p className='mt-3 text-body-lg text-on-surface-variant'>{t('links.checkEmailHelp')}</p>
+              <div className='mt-6 grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <div className='rounded-2xl bg-surface-container p-5'>
-                  <p>{t('booking.bookingIdLabel')} {form.reference}</p>
+                  <p className="break-all">{form.guestEmail}</p>
+                  <p>{t('links.deadline')}: {new Date(verificationDeadline).toLocaleString(i18n.language === 'en' ? 'en-GB' : 'pl-PL')}</p>
                 </div>
                 <div className='rounded-2xl bg-primary-container p-5 text-on-primary-container'>
                   <p>{t('booking.nights')}: {nights}</p>
-                  <p className='mt-2 font-semibold'>{t('booking.total')}: {form.totalPrice} PLN</p>
+                  <p className='mt-2 font-semibold'>{t('booking.total')}: {formatPrice(form.totalPrice, i18n.language)} PLN</p>
                 </div>
               </div>
             </section>
@@ -307,13 +320,13 @@ export default function Booking() {
             <span className='text-label-caps uppercase tracking-widest text-primary'>{t('booking.contactLabel')}</span>
             <h2 className='mt-4 text-headline-md text-on-surface'>{t('booking.writeToUs')}</h2>
           </div>
-          <div className='grid gap-10 lg:grid-cols-[1.1fr_0.9fr]'>
+          <div className='grid grid-cols-1 gap-10 lg:grid-cols-[1.1fr_0.9fr]'>
             <ContactSection />
             <div className='rounded-[32px] bg-surface-container-low overflow-hidden min-h-[500px] relative'>
               <div className='absolute inset-0 bg-gradient-to-br from-[#e4e9e0] to-[#cdd6c5]' />
               <div className='h-full w-full'>
                 <iframe
-                  title='Lagom Masuria map'
+                  title='Domek na Mazurskiej - mapa'
                   src='https://www.google.com/maps?q=53.91005862515826,22.162065817720844&z=15&output=embed'
                   className='h-full w-full border-0 min-h-[500px] mix-blend-multiply opacity-70 grayscale'
                 />
@@ -321,7 +334,7 @@ export default function Booking() {
               <div className='absolute inset-0 flex items-center justify-center pointer-events-none'>
                 <div className='flex flex-col items-center'>
                   <span className='material-symbols-outlined text-primary drop-shadow-md' style={{ fontSize: '48px', fontVariationSettings: "'FILL' 1" }}>location_on</span>
-                  <div className='bg-surface px-4 py-2 rounded-full shadow-sm mt-2 text-label-caps text-primary tracking-widest'>LAGOM MASURIA</div>
+                  <div className='bg-surface px-4 py-2 rounded-full shadow-sm mt-2 text-label-caps text-primary tracking-widest'>DOMEK NA MAZURSKIEJ</div>
                 </div>
               </div>
             </div>
@@ -344,7 +357,7 @@ function ContactSection() {
 
   return (
     <div className='rounded-[32px] bg-surface-container-lowest p-6'>
-      <div className='grid gap-6'>
+      <div className='grid grid-cols-1 gap-6'>
         <label>
           <span className='text-label-caps uppercase tracking-widest text-on-surface-variant'>{t('booking.contactName')}</span>
           <input
@@ -372,14 +385,14 @@ function ContactSection() {
             onChange={(event) => setForm((current) => ({ ...current, message: event.target.value }))}
           />
         </label>
-        <button type='button' onClick={submit} className={`${primaryButtonClasses} w-fit`}>
+        <button type='button' onClick={submit} className={`${primaryButtonClasses} w-fit max-w-full`}>
           {t('booking.sendMessage')}
         </button>
         {success ? <p className='text-body-md text-primary'>{success}</p> : null}
       </div>
-      <div className='mt-10 flex flex-col gap-3 text-body-md text-on-surface-variant'>
+      <div className='mt-10 flex flex-col gap-3 break-all text-body-md text-on-surface-variant'>
         <a href='tel:+48123456789' className='transition-colors hover:text-primary'>+48 123 456 789</a>
-        <a href='mailto:hello@lagommasuria.pl' className='transition-colors hover:text-primary'>hello@lagommasuria.pl</a>
+        <a href='mailto:domeknamazurskiej@gmail.com' className='transition-colors hover:text-primary'>domeknamazurskiej@gmail.com</a>
       </div>
     </div>
   );

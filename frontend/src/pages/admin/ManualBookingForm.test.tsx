@@ -28,6 +28,7 @@ describe('ManualBookingForm', () => {
     fireEvent.change(screen.getByLabelText('Imię i nazwisko'), { target: { value: 'Jan Kowalski' } });
     fireEvent.change(screen.getByLabelText('Telefon'), { target: { value: '+48600000000' } });
     fireEvent.change(screen.getByLabelText('Cena za noc (PLN)'), { target: { value: '1000' } });
+    await waitFor(() => expect(screen.getByText('Zapisz rezerwację')).toBeEnabled());
     fireEvent.click(screen.getByText('Zapisz rezerwację'));
 
     await waitFor(() => expect(screen.getByText('Wybierz zakres dat')).toBeInTheDocument());
@@ -46,12 +47,12 @@ describe('ManualBookingForm', () => {
     fireEvent.change(screen.getByLabelText('Telefon'), { target: { value: '+48600000000' } });
     fireEvent.change(screen.getByLabelText('Cena za noc (PLN)'), { target: { value: '1100' } });
 
-    // BookingCalendar renders a visual day-grid (no plain date inputs); select a range by
-    // clicking real day cells. Day 5 and day 8 exist in every month and appear in both the
-    // left (current) and right (next) month grids, so we take the first match (left month,
-    // rendered first in the DOM) to pick a deterministic, always-valid check-in/check-out pair.
-    fireEvent.click(screen.getAllByText('5')[0]);
-    fireEvent.click(screen.getAllByText('8')[0]);
+    await waitFor(() => expect(screen.getByText('Zapisz rezerwację')).toBeEnabled());
+    const next = new Date();
+    next.setMonth(next.getMonth() + 1, 1);
+    const month = `${next.getFullYear()}-${String(next.getMonth() + 1).padStart(2, '0')}`;
+    fireEvent.click(screen.getByRole('button', { name: new RegExp(`${month}-05 —`) }));
+    fireEvent.click(screen.getByRole('button', { name: new RegExp(`${month}-08 —`) }));
 
     fireEvent.click(screen.getByText('Zapisz rezerwację'));
 

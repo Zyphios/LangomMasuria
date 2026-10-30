@@ -11,7 +11,6 @@ import {
   isSameDay,
   isWithinInterval,
   isBefore,
-  isAfter,
   parseISO
 } from 'date-fns';
 import { pl, enUS } from 'date-fns/locale';
@@ -21,6 +20,11 @@ type VisibleMonth = { month: number; year: number };
 
 type Props = {
   blockedDates: string[];
+  pendingDates?: string[];
+  confirmedDates?: string[];
+  manualBlockedDates?: string[];
+  disabled?: boolean;
+  readOnly?: boolean;
   checkIn: string;
   checkOut: string;
   onCheckInChange: (value: string) => void;
@@ -43,6 +47,11 @@ function getCalendarDays(month: Date) {
 
 export default function BookingCalendar({
   blockedDates,
+  pendingDates = [],
+  confirmedDates = [],
+  manualBlockedDates = [],
+  disabled = false,
+  readOnly = false,
   checkIn,
   checkOut,
   onCheckInChange,
@@ -62,14 +71,17 @@ export default function BookingCalendar({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [leftMonth]);
 
-  const blockedSet = new Set(blockedDates);
+  const blockedSet = new Set([...blockedDates, ...pendingDates, ...confirmedDates, ...manualBlockedDates]);
+  const stateFor = (iso: string) => manualBlockedDates.includes(iso) ? 'manual'
+    : confirmedDates.includes(iso) ? 'confirmed' : pendingDates.includes(iso) ? 'pending'
+      : blockedSet.has(iso) ? 'unavailable' : 'available';
   const checkInDate = checkIn ? parseISO(checkIn) : null;
   const checkOutDate = checkOut ? parseISO(checkOut) : null;
   const today = startOfMonth(new Date());
 
   const handleDayClick = (day: Date) => {
     const iso = format(day, 'yyyy-MM-dd');
-    if (blockedSet.has(iso)) return;
+    if (disabled || readOnly || (blockedSet.has(iso) && !canCheckOut(day))) return;
 
     if (!checkIn || (checkIn && checkOut)) {
       onCheckInChange(iso);
@@ -97,6 +109,10 @@ export default function BookingCalendar({
     }
   };
 
+  const canCheckOut = (day: Date) => Boolean(checkIn && !checkOut && day > parseISO(checkIn) &&
+    eachDayOfInterval({ start: parseISO(checkIn), end: day }).slice(0, -1)
+      .every((night) => !blockedSet.has(format(night, 'yyyy-MM-dd'))));
+
   const getDayClasses = (day: Date, month: Date) => {
     const iso = format(day, 'yyyy-MM-dd');
     const isCurrentMonth = isSameMonth(day, month);
@@ -110,10 +126,14 @@ export default function BookingCalendar({
 
     if (!isCurrentMonth) return 'invisible pointer-events-none';
 
-    let cls = 'relative w-9 h-9 rounded-full flex items-center justify-center text-sm cursor-pointer transition-colors select-none ';
+    let cls = 'relative h-10 w-full max-w-10 rounded-full flex items-center justify-center text-sm transition-colors select-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ';
 
     if (isBlocked) {
-      cls += 'bg-primary/20 text-primary font-medium cursor-not-allowed';
+      const state = stateFor(iso);
+      cls += state === 'pending' ? 'bg-amber-200 text-amber-950 font-medium'
+        : state === 'confirmed' ? 'bg-primary text-on-primary font-medium'
+          : 'bg-stone-300 text-stone-900 font-medium';
+      if (isCheckOut) cls += ' ring-2 ring-primary ring-offset-2';
     } else if (isCheckIn || isCheckOut) {
       cls += 'bg-primary text-on-primary font-semibold';
     } else if (inRange) {
@@ -139,14 +159,17 @@ export default function BookingCalendar({
             </div>
           ))}
           {days.map((day) => (
-            <div
-              key={day.toISOString()}
-              className='flex items-center justify-center'
-              onClick={() => isSameMonth(day, month) && handleDayClick(day)}
-            >
-              <span className={getDayClasses(day, month)}>
+            <div key={day.toISOString()} className='flex items-center justify-center'>
+              <button
+                type="button"
+                aria-hidden={!isSameMonth(day, month)}
+                aria-label={`${format(day, 'yyyy-MM-dd')} — ${t(`calendar.${stateFor(format(day, 'yyyy-MM-dd'))}`)}`}
+                disabled={disabled || readOnly || !isSameMonth(day, month) || (blockedSet.has(format(day, 'yyyy-MM-dd')) && !canCheckOut(day))}
+                onClick={() => handleDayClick(day)}
+                className={getDayClasses(day, month)}
+              >
                 {isSameMonth(day, month) ? format(day, 'd') : ''}
-              </span>
+              </button>
             </div>
           ))}
         </div>
@@ -155,13 +178,13 @@ export default function BookingCalendar({
   };
 
   return (
-    <div className='rounded-[32px] border border-outline-variant/40 bg-surface-container-lowest p-6 shadow-sm md:p-8'>
+    <div className='rounded-[32px] border border-outline-variant/40 bg-surface-container-lowest p-3 shadow-sm sm:p-6 md:p-8'>
       <div className='flex items-center justify-between mb-6'>
         <button
           type='button'
           aria-label={t('calendar.prevMonth')}
           onClick={() => setLeftMonth((m) => addMonths(m, -1))}
-          disabled={!isBefore(addMonths(leftMonth, -1), today) && isSameDay(leftMonth, today)}
+          disabled={isSameMonth(leftMonth, today)}
           className='flex h-9 w-9 items-center justify-center rounded-full border border-outline text-on-surface transition-colors hover:bg-surface-container disabled:opacity-40'
         >
           <span className='material-symbols-outlined' style={{ fontSize: 20 }}>chevron_left</span>
@@ -178,6 +201,14 @@ export default function BookingCalendar({
       <div className='grid gap-8 md:grid-cols-2'>
         {renderMonth(leftMonth)}
         {renderMonth(rightMonth)}
+      </div>
+      <div className="mt-6 flex flex-wrap gap-3 text-sm" aria-label={t('calendar.legend')}>
+        {(['pending', 'confirmed', 'manual'] as const).map((state) => (
+          <span key={state} className="flex items-center gap-2">
+            <span aria-hidden="true" className={`h-3 w-3 rounded-full ${state === 'pending' ? 'bg-amber-200' : state === 'confirmed' ? 'bg-primary' : 'bg-stone-300'}`} />
+            {t(`calendar.${state}`)}
+          </span>
+        ))}
       </div>
       {(checkIn || checkOut) && (
         <div className='mt-6 flex flex-wrap gap-4 text-body-md text-on-surface-variant border-t border-outline-variant/30 pt-5'>

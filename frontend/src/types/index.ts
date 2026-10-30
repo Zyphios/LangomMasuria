@@ -1,6 +1,10 @@
 export type Locale = 'pl' | 'en';
 
-export type BookingStatus = 'PENDING' | 'CONFIRMED' | 'CANCELLED';
+export type BookingStatus = 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'EXPIRED';
+export type ConfirmationView = {
+  status: 'QUEUED' | 'SENDING' | 'SENT' | 'FAILED' | 'CANCELLED' | 'NOT_APPLICABLE' | 'NOT_RECORDED';
+  attempts: number; sentAt: string | null; lastError: string | null;
+};
 
 export type BookingSource = 'WEBSITE' | 'MANUAL';
 
@@ -15,7 +19,20 @@ export type AdminBookingRow = {
   checkIn: string;
   checkOut: string;
   totalPrice: string;
+  originalTotalPrice: string | null;
+  discountPercent: string | null;
   depositAmount: string;
+  expiresAt: string | null;
+  confirmation: ConfirmationView;
+};
+
+export type BookingPriceInput =
+  | { mode: 'amount'; totalPrice: number }
+  | { mode: 'discount'; discountPercent: number };
+export type BookingPriceResult = {
+  totalPrice: string;
+  originalTotalPrice: string;
+  discountPercent: string | null;
 };
 
 export type GalleryImage = {
@@ -65,16 +82,27 @@ export type BookingResponse = {
   reference: string;
   status: BookingStatus;
   totalPrice: number;
+  expiresAt: string | null;
 };
+export type VerificationResponse = { status: 'EMAIL_VERIFICATION_REQUIRED'; expiresAt: string };
+export type BookingLinkPreview = { checkIn: string; checkOut: string; guestsCount: number; totalPrice: string; expiresAt: string };
 
 export type AvailabilityResponse = {
   blockedDates: string[];
+  pendingDates: string[];
+  confirmedDates: string[];
+  manualBlockedDates: string[];
 };
 
 export type ContactPayload = {
   name: string;
   email: string;
   message: string;
+};
+
+export type AdminMessage = ContactPayload & {
+  id: string;
+  isRead: boolean;
 };
 
 export type BookingWizardForm = BookingPayload & {

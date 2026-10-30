@@ -10,8 +10,8 @@ describe('home page', () => {
       </MemoryRouter>
     );
     expect(screen.getByText('Twój azyl na Mazurach')).toBeInTheDocument();
-    expect(screen.getByText('Jacuzzi pod gwiazdami')).toBeInTheDocument();
-    expect(screen.getByText('Las za progiem')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Jacuzzi i Bania' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Otoczenie Lasu' })).toBeInTheDocument();
     expect(screen.getByText('Wnętrze pełne światła')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'ZOBACZ GALERIĘ' })).toBeInTheDocument();
   });

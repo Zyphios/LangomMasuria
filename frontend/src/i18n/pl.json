@@ -6,7 +6,11 @@
     "rates": "Cennik",
     "attractions": "Atrakcje",
     "contact": "Kontakt",
-    "bookNow": "Rezerwuj"
+    "bookNow": "Rezerwuj",
+    "menu": "Menu",
+    "openMenu": "Otw\u00f3rz menu",
+    "closeMenu": "Zamknij menu",
+    "navigation": "Menu g\u0142\u00f3wne"
   },
   "footer": {
     "tagline": "Twoje miejsce na ziemi, gdzie czas p\u0142ynie wolniej."
@@ -115,6 +119,7 @@
     }
   },
   "pricing": {
+    "loading": "\u0141adowanie cennika\u2026",
     "title": "Cennik",
     "subtitle": "Przejrzyste zasady dla Twojego komfortu.",
     "popular": "POPULARNY",
@@ -140,6 +145,7 @@
     "dates": "Daty pobytu",
     "datesSubtitle": "Minimalna d\u0142ugo\u015b\u0107 pobytu to 2 noce. Cena orientacyjna aktualizuje si\u0119 automatycznie.",
     "estimatedCost": "Szacunkowy koszt pobytu:",
+    "noPricing": "Brak cennika dla ca\u0142ego wybranego pobytu. Wybierz inny termin lub skontaktuj si\u0119 z nami.",
     "guestDetails": "Dane go\u015bci",
     "guestName": "Imi\u0119 i nazwisko",
     "email": "Email",
@@ -179,7 +185,42 @@
     "next": "Dalej",
     "prev": "Wstecz"
   },
+  "links": {
+    "verifyTitle": "Potwierdzenie zg\u0142oszenia",
+    "decisionTitle": "Decyzja o rezerwacji",
+    "verifyAction": "Potwierdzam zg\u0142oszenie",
+    "confirmAction": "Potwierdzam rezerwacj\u0119",
+    "rejectAction": "Odrzucam zg\u0142oszenie",
+    "verifyHelp": "Sprawd\u017a termin i kwot\u0119. Dopiero ten przycisk za\u0142o\u017cy wst\u0119pn\u0105 blokad\u0119 na 24 godziny. To jeszcze nie ostateczne potwierdzenie pobytu.",
+    "decisionHelp": "Decyzja zostanie zapisana dopiero po naci\u015bni\u0119ciu przycisku. Potwierdzenie uruchomi wysy\u0142k\u0119 maila do klienta; odrzucenie zwolni termin.",
+    "pendingResult": "Zg\u0142oszenie przyj\u0119te. Termin jest wst\u0119pnie blokowany na 24 godziny i czeka na decyzj\u0119 w\u0142a\u015bciciela.",
+    "confirmedResult": "Rezerwacja potwierdzona. Potwierdzenie dla klienta oczekuje na wysy\u0142k\u0119.",
+    "rejectedResult": "Zg\u0142oszenie odrzucone. Jego blokada terminu zosta\u0142a zwolniona.",
+    "deadline": "Wa\u017cne do",
+    "loading": "\u0141adowanie\u2026",
+    "working": "Przetwarzanie\u2026",
+    "invalid": "Ten link jest nieprawid\u0142owy, wygas\u0142 lub zg\u0142oszenie zosta\u0142o ju\u017c obs\u0142u\u017cone.",
+    "error": "Nie uda\u0142o si\u0119 potwierdzi\u0107 wyniku operacji. Sprawd\u017a po\u0142\u0105czenie; ponowienie nie utworzy drugiej rezerwacji.",
+    "priceChanged": "Cena uleg\u0142a zmianie. Sprawd\u017a now\u0105 kwot\u0119 i potwierd\u017a ponownie, je\u015bli j\u0105 akceptujesz.",
+    "reopen": "Aby spr\u00f3bowa\u0107 ponownie, otw\u00f3rz jeszcze raz link z wiadomo\u015bci.",
+    "backBooking": "Wr\u00f3\u0107 do kalendarza i kontaktu",
+    "backPanel": "Przejd\u017a do panelu administratora",
+    "checkEmail": "Sprawd\u017a swoj\u0105 poczt\u0119",
+    "checkEmailHelp": "Wys\u0142ali\u015bmy link wa\u017cny 15 minut. Potwierd\u017a adres e-mail, aby zg\u0142osi\u0107 rezerwacj\u0119. Termin nie jest jeszcze blokowany; sprawdzimy ponownie dost\u0119pno\u015b\u0107 i cen\u0119.",
+    "rateLimited": "Osi\u0105gni\u0119to limit zg\u0142osze\u0144. Odczekaj przed ponowieniem lub skontaktuj si\u0119 z nami telefonicznie.",
+    "retryAfter": "Spr\u00f3buj ponownie za oko\u0142o {{minutes}} min lub skontaktuj si\u0119 telefonicznie.",
+    "datesUnavailable": "Termin jest ju\u017c niedost\u0119pny. Wr\u00f3\u0107 do kalendarza i wybierz inny pobyt.",
+    "emailFailed": "Serwer poczty nie potwierdzi\u0142 wys\u0142ania wiadomo\u015bci. Termin nie zosta\u0142 zaj\u0119ty. Odczekaj przed ponowieniem lub skontaktuj si\u0119 telefonicznie.",
+    "availabilityError": "Nie uda\u0142o si\u0119 sprawdzi\u0107 dost\u0119pno\u015bci. Od\u015bwie\u017c kalendarz.",
+    "retry": "Pon\u00f3w"
+  },
   "calendar": {
+    "legend": "Legenda kalendarza",
+    "pending": "Wst\u0119pnie zarezerwowany",
+    "confirmed": "Potwierdzony pobyt",
+    "manual": "Blokada w\u0142a\u015bciciela",
+    "unavailable": "Niedost\u0119pny",
+    "available": "Dost\u0119pny",
     "prevMonth": "Poprzedni miesi\u0105c",
     "nextMonth": "Nast\u0119pny miesi\u0105c",
     "checkIn": "Check-in",
@@ -195,6 +236,66 @@
     }
   },
   "admin": {
+    "priceEdit": {
+      "edit": "Edytuj cenę",
+      "manual": "Kwota ręczna",
+      "percent": "Rabat procentowy",
+      "amount": "Cena końcowa (PLN)",
+      "discount": "Rabat (%)",
+      "original": "Cena pierwotna: {{amount}} PLN",
+      "final": "Cena końcowa: {{amount}} PLN",
+      "paid": "Wpłacona zaliczka: {{amount}} PLN",
+      "remaining": "Do dopłaty na miejscu: {{amount}} PLN",
+      "overpayment": "Nadpłata: {{amount}} PLN",
+      "save": "Zapisz cenę",
+      "saved": "Zapisano cenę",
+      "cancel": "Anuluj zmiany",
+      "invalid": "Podaj poprawną kwotę od 0 do 99999999,99 PLN lub rabat od 0 do 100%, z maksymalnie dwoma miejscami po przecinku.",
+      "error": "Nie udało się zapisać ceny. Rezerwacja mogła już zostać obsłużona lub wygasnąć. Odśwież listę i spróbuj ponownie.",
+      "unsaved": "Zapisz lub anuluj zmiany ceny i zapisz zaliczkę przed potwierdzeniem."
+    },
+    "pricingEditor": {
+      "help": "Zapisane ceny i daty s\u0105 u\u017cywane na stronie i przy nowych wycenach. Daty graniczne s\u0105 w\u0142\u0105czone w sezon, a \u015bwi\u0119ta maj\u0105 pierwsze\u0144stwo. Ceny ju\u017c utworzonych rezerwacji pozostaj\u0105 bez zmian.",
+      "price": "Cena za noc (PLN)",
+      "from": "Data od",
+      "to": "Data do",
+      "save": "Zapisz zmiany",
+      "invalidPrice": "Podaj poprawn\u0105 cen\u0119 wi\u0119ksz\u0105 od zera, maksymalnie 99999999,99 PLN i dwa miejsca po przecinku.",
+      "invalidDates": "Uzupe\u0142nij obie daty. Data ko\u0144cowa nie mo\u017ce by\u0107 wcze\u015bniejsza od pocz\u0105tkowej.",
+      "overlap": "Sezon niski i wysoki nie mog\u0105 si\u0119 nak\u0142ada\u0107. Popraw daty sezon\u00f3w.",
+      "saveError": "Nie uda\u0142o si\u0119 zapisa\u0107 cennika. Sprawd\u017a po\u0142\u0105czenie i spr\u00f3buj ponownie."
+    },
+    "messageList": {
+      "unread": "Nieodczytane",
+      "read": "Odczytane",
+      "markRead": "Oznacz jako odczytan\u0105",
+      "marking": "Oznaczanie\u2026",
+      "loading": "\u0141adowanie wiadomo\u015bci\u2026",
+      "emptyUnread": "Brak nieodczytanych wiadomo\u015bci.",
+      "emptyRead": "Brak odczytanych wiadomo\u015bci.",
+      "loadError": "Nie uda\u0142o si\u0119 pobra\u0107 wiadomo\u015bci. Spr\u00f3buj od\u015bwie\u017cy\u0107 stron\u0119.",
+      "markError": "Nie uda\u0142o si\u0119 oznaczy\u0107 wiadomo\u015bci jako odczytanej. Spr\u00f3buj ponownie."
+    },
+    "deposit": {
+      "label": "Zaliczka {{name}}",
+      "save": "Zapisz zaliczk\u0119",
+      "saving": "Zapisuj\u0119\u2026",
+      "saved": "Zapisano",
+      "invalid": "Zaliczka musi by\u0107 liczb\u0105 nieujemn\u0105",
+      "error": "Nie uda\u0142o si\u0119 zapisa\u0107 zaliczki. Spr\u00f3buj ponownie."
+    },
+    "decisionBy": "Decyzja do",
+    "confirmBooking": "Potwierd\u017a",
+    "rejectBooking": "Odrzu\u0107",
+    "cancelBooking": "Anuluj rezerwacj\u0119",
+    "retryConfirmation": "Pon\u00f3w wysy\u0142k\u0119",
+    "deliveryUnknown": "Nie mo\u017cna ustali\u0107, czy wiadomo\u015b\u0107 dotar\u0142a. Ponowienie mo\u017ce wys\u0142a\u0107 duplikat.",
+    "bookingStates": { "PENDING": "Wst\u0119pna", "CONFIRMED": "Potwierdzona", "CANCELLED": "Odrzucona / anulowana", "EXPIRED": "Wygas\u0142a" },
+    "bookingFilters": { "PENDING": "Oczekuj\u0105ce", "CONFIRMED": "Potwierdzone", "CANCELLED": "Odrzucone / anulowane", "EXPIRED": "Wygas\u0142e" },
+    "bookingMail": {
+      "QUEUED": "Potwierdzenie oczekuje na wysy\u0142k\u0119", "SENDING": "Wysy\u0142anie potwierdzenia", "SENT": "Przekazano do serwera poczty",
+      "FAILED": "B\u0142\u0105d wysy\u0142ki", "CANCELLED": "Wysy\u0142ka anulowana", "NOT_APPLICABLE": "Nie dotyczy", "NOT_RECORDED": "Brak historii wysy\u0142ki"
+    },
     "bookings": "Rezerwacje",
     "calendar": "Kalendarz",
     "messages": "Wiadomo\u015bci",

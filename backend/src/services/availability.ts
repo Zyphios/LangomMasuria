@@ -1,5 +1,6 @@
-import { differenceInCalendarDays, endOfMonth, isWithinInterval, startOfMonth } from 'date-fns';
-import { BookingStatus, Prisma, PrismaClient, type PricingSeason } from '@prisma/client';
+import { isWithinInterval } from 'date-fns';
+import { Prisma, type PricingSeason } from '@prisma/client';
+import { BookingOperationError } from './bookingTransaction';
 
 export const MIN_STAY_NIGHTS = 2;
 // checkIn/checkOut are parsed as UTC midnight (e.g. new Date('2026-09-10') = 2026-09-10T00:00:00Z).
@@ -8,62 +9,72 @@ export const MIN_STAY_NIGHTS = 2;
 // and comparisons. Keep this arithmetic in UTC.
 const toIsoDate = (value: Date) => value.toISOString().slice(0, 10);
 
-export const getBlockedDatesForMonth = async (prisma: PrismaClient, month: number, year: number) => {
-  const rangeStart = startOfMonth(new Date(year, month - 1, 1));
-  const rangeEnd = endOfMonth(rangeStart);
+export type Availability = { blockedDates: string[]; pendingDates: string[]; confirmedDates: string[]; manualBlockedDates: string[] };
+export const activeBookings = (now: Date): Prisma.BookingWhereInput => ({
+  OR: [{ status: 'CONFIRMED' }, { status: 'PENDING', expiresAt: { gt: now } }]
+});
+export const getAvailabilityForMonth = async (prisma: Prisma.TransactionClient, month: number, year: number, now: Date): Promise<Availability> => {
+  const rangeStart = new Date(Date.UTC(year, month - 1, 1));
+  const rangeEnd = new Date(Date.UTC(year, month, 1));
 
   const blockedDates = await prisma.blockedDate.findMany({
-    where: { date: { gte: rangeStart, lte: rangeEnd } },
+    where: { date: { gte: rangeStart, lt: rangeEnd } },
     orderBy: { date: 'asc' }
   });
 
-  const confirmedBookings = await prisma.booking.findMany({
-    where: { status: BookingStatus.CONFIRMED, checkIn: { lte: rangeEnd }, checkOut: { gte: rangeStart } },
+  const bookings = await prisma.booking.findMany({
+    where: { ...activeBookings(now), checkIn: { lt: rangeEnd }, checkOut: { gt: rangeStart } },
+    select: { checkIn: true, checkOut: true, status: true },
     orderBy: { checkIn: 'asc' }
   });
 
-  const bookingDates = confirmedBookings.flatMap((booking) => getNightDates(booking.checkIn, booking.checkOut).map(toIsoDate));
-
-  return Array.from(new Set([...blockedDates.map((entry) => toIsoDate(entry.date)), ...bookingDates])).sort();
+  const datesFor = (status: 'PENDING' | 'CONFIRMED') => Array.from(new Set(bookings
+    .filter((booking) => booking.status === status)
+    .flatMap((booking) => getNightDates(booking.checkIn, booking.checkOut))
+    .filter((date) => date >= rangeStart && date < rangeEnd).map(toIsoDate))).sort();
+  const pendingDates = datesFor('PENDING');
+  const confirmedDates = datesFor('CONFIRMED');
+  const manualBlockedDates = blockedDates.map((entry) => toIsoDate(entry.date));
+  return { pendingDates, confirmedDates, manualBlockedDates,
+    blockedDates: Array.from(new Set([...manualBlockedDates, ...pendingDates, ...confirmedDates])).sort() };
 };
+export const getBlockedDatesForMonth = async (db: Prisma.TransactionClient, month: number, year: number) =>
+  (await getAvailabilityForMonth(db, month, year, new Date())).blockedDates;
 
-export const getNightCount = (checkIn: Date, checkOut: Date) => differenceInCalendarDays(checkOut, checkIn);
+export const getNightCount = (checkIn: Date, checkOut: Date) => Math.round((checkOut.getTime() - checkIn.getTime()) / 86400000);
 export const getNightDates = (checkIn: Date, checkOut: Date) =>
   Array.from({ length: getNightCount(checkIn, checkOut) }, (_, index) => new Date(Date.UTC(checkIn.getUTCFullYear(), checkIn.getUTCMonth(), checkIn.getUTCDate() + index)));
 
 export const assertMinimumStay = (checkIn: Date, checkOut: Date) => {
   const nights = getNightCount(checkIn, checkOut);
-  if (nights < MIN_STAY_NIGHTS) throw new Error('Minimum stay is 2 nights');
+  if (nights < MIN_STAY_NIGHTS) throw new BookingOperationError(400, 'MINIMUM_STAY', 'Minimum stay is 2 nights');
   return nights;
 };
 
+export const isHolidaySeason = (season: Pick<PricingSeason, 'namePl'>) => season.namePl.includes('Święta');
+
 export const pickSeasonForDate = (seasons: PricingSeason[], date: Date) => {
-  const season = seasons.find((item) => isWithinInterval(date, { start: item.dateFrom, end: item.dateTo }));
-  if (!season) throw new Error(`No pricing season found for ${toIsoDate(date)}`);
+  const matching = seasons.filter((item) => isWithinInterval(date, { start: item.dateFrom, end: item.dateTo }));
+  const season = matching.find(isHolidaySeason) ?? matching[0];
+  if (!season) throw new BookingOperationError(400, 'NO_PRICING', `No pricing season found for ${toIsoDate(date)}`);
   return season;
 };
 
-export const assertDatesAvailable = async (prisma: PrismaClient, checkIn: Date, checkOut: Date) => {
+export const assertDatesAvailable = async (prisma: Prisma.TransactionClient, checkIn: Date, checkOut: Date, options: { now?: Date; excludeBookingId?: string } = {}) => {
+  if (!Number.isFinite(getNightCount(checkIn, checkOut)) || checkOut <= checkIn) throw new BookingOperationError(400, 'INVALID_DATES');
   const nightDates = getNightDates(checkIn, checkOut);
   const blocked = await prisma.blockedDate.findMany({ where: { date: { in: nightDates } } });
-  if (blocked.length > 0) throw new Error('Selected dates are not available');
+  if (blocked.length > 0) throw new BookingOperationError(409, 'DATES_UNAVAILABLE', 'Selected dates are not available');
 
   const conflictingBooking = await prisma.booking.findFirst({
-    where: { status: BookingStatus.CONFIRMED, checkIn: { lt: checkOut }, checkOut: { gt: checkIn } }
+    where: { ...activeBookings(options.now ?? new Date()), id: { not: options.excludeBookingId }, checkIn: { lt: checkOut }, checkOut: { gt: checkIn } }
   });
-  if (conflictingBooking) throw new Error('Selected dates are not available');
+  if (conflictingBooking) throw new BookingOperationError(409, 'DATES_UNAVAILABLE', 'Selected dates are not available');
 };
 
-export const calculateTotalPrice = async (prisma: PrismaClient, checkIn: Date, checkOut: Date) => {
+export const calculateTotalPrice = async (prisma: Prisma.TransactionClient, checkIn: Date, checkOut: Date) => {
   const seasons = await prisma.pricingSeason.findMany({ orderBy: { dateFrom: 'asc' } });
-  const subtotal = getNightDates(checkIn, checkOut).reduce((sum, date) => sum + pickSeasonForDate(seasons, date).pricePerNight.toNumber(), 0);
-  return new Prisma.Decimal(subtotal);
-};
-
-export const blockDatesForBooking = async (prisma: PrismaClient, booking: { checkIn: Date; checkOut: Date }, reason = 'Confirmed booking') => {
-  for (const date of getNightDates(booking.checkIn, booking.checkOut)) {
-    await prisma.blockedDate.upsert({ where: { date }, update: { reason }, create: { date, reason } });
-  }
+  return getNightDates(checkIn, checkOut).reduce((sum, date) => sum.plus(pickSeasonForDate(seasons, date).pricePerNight), new Prisma.Decimal(0));
 };
 
 export const calculateManualPrice = (pricePerNight: number, nights: number, discountPercent: number) => {

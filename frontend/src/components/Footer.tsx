@@ -8,7 +8,16 @@ export default function Footer() {
     <footer className="w-full border-t border-surface-container-high bg-surface-container-low">
       <div className="mx-auto flex max-w-container-max flex-col items-start justify-between gap-gutter px-8 py-16 md:flex-row md:px-margin-desktop">
         <div className="flex flex-col gap-4">
-          <span className="text-label-caps uppercase tracking-widest text-primary">LAGOM MASURIA</span>
+          <Link to="/" className="self-start rounded transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">
+            <img
+              src="/logo-mazurska.jpg"
+              alt="Domek na Mazurskiej"
+              width={680}
+              height={270}
+              className="h-auto w-56 rounded"
+              loading="lazy"
+            />
+          </Link>
           <p className="max-w-xs text-body-md text-secondary">{t('footer.tagline')}</p>
         </div>
         <div className="flex flex-wrap gap-8 md:gap-12">
@@ -24,7 +33,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="mx-auto max-w-container-max border-t border-surface-container-high/50 px-8 pb-8 pt-4 md:px-margin-desktop">
-        <span className="text-body-md text-secondary opacity-70">© 2024 Lagom Masuria. Just enough. All rights reserved.</span>
+        <span className="text-body-md text-secondary opacity-70">&copy; {new Date().getFullYear()} Domek na Mazurskiej. All rights reserved.</span>
       </div>
     </footer>
   );

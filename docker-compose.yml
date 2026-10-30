@@ -17,11 +17,20 @@ services:
     environment:
       DATABASE_URL: postgresql://lagom:lagom_pass@db:5432/lagom
       JWT_SECRET: ${JWT_SECRET:-change_me_in_production}
-      SMTP_HOST: ${SMTP_HOST:-smtp.example.com}
+      PUBLIC_SITE_URL: ${PUBLIC_SITE_URL:-http://localhost:3000}
+      BOOKING_ABUSE_SECRET: ${BOOKING_ABUSE_SECRET:?Set BOOKING_ABUSE_SECRET in .env}
+      BOOKING_PENDING_LIMIT: ${BOOKING_PENDING_LIMIT:-1}
+      BOOKING_DAILY_LIMIT: ${BOOKING_DAILY_LIMIT:-3}
+      BOOKING_EMAIL_DAILY_LIMIT: ${BOOKING_EMAIL_DAILY_LIMIT:-5}
+      BOOKING_EMAIL_COOLDOWN_SECONDS: ${BOOKING_EMAIL_COOLDOWN_SECONDS:-120}
+      BOOKING_IP_HOURLY_LIMIT: ${BOOKING_IP_HOURLY_LIMIT:-10}
+      BOOKING_IP_DAILY_LIMIT: ${BOOKING_IP_DAILY_LIMIT:-30}
+      BOOKING_LINK_MINUTE_LIMIT: ${BOOKING_LINK_MINUTE_LIMIT:-30}
+      SMTP_HOST: ${SMTP_HOST:-}
       SMTP_PORT: ${SMTP_PORT:-587}
-      SMTP_USER: ${SMTP_USER:-}
+      SMTP_USER: ${SMTP_USER:-domeknamazurskiej@gmail.com}
       SMTP_PASS: ${SMTP_PASS:-}
-      OWNER_EMAIL: ${OWNER_EMAIL:-hello@lagommasuria.pl}
+      OWNER_EMAIL: ${OWNER_EMAIL:-domeknamazurskiej@gmail.com}
       ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@lagommasuria.pl}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Lagom123!}
       PAYU_MERCHANT_ID: stub

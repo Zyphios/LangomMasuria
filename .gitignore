@@ -9,6 +9,7 @@ build/
 # Environment files with real secrets — never commit these; copy .env.example instead
 .env
 .env.local
+.env.vps
 .env.*.local
 backend/.env
 frontend/.env
@@ -22,3 +23,4 @@ frontend/probe-booking.mjs
 frontend/probe-booking.png
 /screenshot-*.png
 /glowne foto.jpg
+/deploy/*.tar.gz

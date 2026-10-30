@@ -1,0 +1,18 @@
+name: lagommasuria-test
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: lagom_test
+      POSTGRES_USER: lagom_test
+      POSTGRES_PASSWORD: lagom_test
+    ports:
+      - "127.0.0.1:55432:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lagom_test -d lagom_test"]
+      interval: 2s
+      timeout: 2s
+      retries: 30

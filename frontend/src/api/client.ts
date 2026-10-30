@@ -1,11 +1,11 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
 
 // Carries the HTTP status alongside the message so callers can distinguish e.g. an expired
 // admin session (401) from a validation error (400) and react accordingly (redirect to login
 // vs. show an inline message).
 export class ApiError extends Error {
   status: number;
-  constructor(message: string, status: number) {
+  constructor(message: string, status: number, public code?: string, public retryAfter?: number) {
     super(message);
     this.status = status;
   }
@@ -38,7 +38,7 @@ export async function apiClient<T>(path: string, init?: RequestInit): Promise<T>
       const field = Array.isArray(firstIssue.path) ? firstIssue.path[0] : undefined;
       throw new ApiError((field && fieldMessages[field]) || firstIssue.message || body.message || 'Request failed', response.status);
     }
-    throw new ApiError(body.message || 'Request failed', response.status);
+    throw new ApiError(body.message || 'Request failed', response.status, body.code, body.retryAfter);
   }
   
   if (response.status === 204) return undefined as T;

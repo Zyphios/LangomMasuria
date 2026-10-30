@@ -10,7 +10,7 @@ export default function Home() {
         <div className="absolute inset-0 z-0">
           <img
             src="/glowne-foto.jpg"
-            alt="Lagom Masuria - dom na Mazurach"
+            alt="Domek na Mazurskiej - dom na Mazurach"
             className="h-full w-full object-cover"
           />
           <div className="absolute inset-0 bg-black/40" />
@@ -70,7 +70,7 @@ export default function Home() {
             <div className="relative h-[500px] overflow-hidden rounded-xl">
               <img
                 src="/IMG_20260705_163047.jpg"
-                alt="Lagom Masuria - wnętrze salonu"
+                alt="Domek na Mazurskiej - wnętrze salonu"
                 className="h-full w-full object-cover"
               />
             </div>

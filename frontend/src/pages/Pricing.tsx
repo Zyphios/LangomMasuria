@@ -2,25 +2,14 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { getPricingSeasons } from '../api/pricing';
-import type { PricingSeason } from '../types';
+import { formatPrice, getSeasonKind, sortPricingSeasons } from '../utils/pricing';
 
 export default function Pricing() {
-  const { t } = useTranslation();
-  const { data: pricing = [], isError, isSuccess } = useQuery({ queryKey: ['pricing'], queryFn: getPricingSeasons });
-
-  const sortedPricing = [...pricing].sort((a, b) => {
-    if (a.isFeatured) return 0;
-    if (b.isFeatured) return -1;
-    return 1;
+  const { t, i18n } = useTranslation();
+  const { data: pricing = [], isError, isSuccess } = useQuery({
+    queryKey: ['pricing'], queryFn: getPricingSeasons, refetchInterval: 30000, refetchOnWindowFocus: true
   });
-
-  const orderedPricing = pricing.length === 3
-    ? [
-        pricing.find((season) => !season.isFeatured && !season.namePl.includes('Święta')),
-        pricing.find((season) => season.isFeatured),
-        pricing.find((season) => season.namePl.includes('Święta'))
-      ].filter((season): season is PricingSeason => Boolean(season))
-    : sortedPricing;
+  const orderedPricing = sortPricingSeasons(pricing);
 
   return (
     <div className="bg-background pt-[var(--site-header-height)]">
@@ -42,16 +31,16 @@ export default function Pricing() {
                     </div>
                   ) : null}
                   <span className={`mb-4 text-label-caps uppercase tracking-widest ${season.isFeatured ? 'text-primary' : 'text-on-surface-variant'}`}>
-                    {t(`pricing.${season.isFeatured ? 'high' : season.namePl.includes('Święta') ? 'holidays' : 'low'}`)}
+                    {t(`pricing.${getSeasonKind(season)}`)}
                   </span>
                   <div className="mb-2 flex items-baseline gap-1">
                     <span className={`text-headline-lg-mobile md:text-headline-lg ${season.isFeatured ? 'text-primary' : 'text-on-surface'}`}>
-                      {Math.round(Number(season.pricePerNight))}
+                      {formatPrice(season.pricePerNight, i18n.language)}
                     </span>
                     <span className="text-body-md text-on-surface-variant">{t('pricing.perNight')}</span>
                   </div>
                   <p className="whitespace-pre-line text-center text-body-md text-on-surface-variant">
-                    {season.isFeatured ? t('pricing.highDates') : season.namePl.includes('Święta') ? t('pricing.holidayDates') : t('pricing.lowDates')}
+                    {season.dateFrom.slice(0, 10)} – {season.dateTo.slice(0, 10)}
                   </p>
                 </div>
               ))}

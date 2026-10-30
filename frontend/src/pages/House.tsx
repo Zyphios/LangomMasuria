@@ -4,7 +4,7 @@ export default function House() {
   const { t } = useTranslation();
 
   return (
-    <div className="bg-background pt-20">
+    <div className="bg-background pt-[var(--site-header-height)]">
       <div className="pb-section-gap pt-16">
         <section className="mx-auto max-w-container-max px-8 md:px-margin-desktop">
           <div className="grid grid-cols-1 items-center gap-gutter md:grid-cols-12">
@@ -28,7 +28,7 @@ export default function House() {
             <div className="w-full rounded-xl overflow-hidden md:col-span-7">
               <img
                 src="/glowne-foto.jpg"
-                alt="Dom Lagom Masuria"
+                alt="Domek na Mazurskiej"
                 className="block max-h-[32rem] w-full rounded-2xl object-cover"
               />
             </div>

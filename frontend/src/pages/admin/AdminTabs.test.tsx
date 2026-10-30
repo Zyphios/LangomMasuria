@@ -1,10 +1,12 @@
-import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
+import { act, render, screen, fireEvent, waitFor, within } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
 import AdminBookings from './AdminBookings';
 import * as adminApi from '../../api/admin';
 import * as bookingsApi from '../../api/bookings';
 import { vi } from 'vitest';
+import { ApiError } from '../../api/client';
+import i18n from '../../i18n';
 
 localStorage.setItem('adminToken', 'jwt-token');
 
@@ -47,6 +49,32 @@ const renderAdminBookings = () =>
   );
 
 describe('admin tabs', () => {
+  it('distinguishes pending decisions, expired holds and failed confirmation delivery', async () => {
+    vi.mocked(adminApi.getAdminBookings).mockResolvedValueOnce([
+      { id: 'pending', reference: 'P1', guestName: 'Pending', guestEmail: 'p@example.invalid', guestPhone: '0',
+        status: 'PENDING', source: 'WEBSITE', checkIn: '2030-06-10', checkOut: '2030-06-12', totalPrice: '1000', depositAmount: '0',
+        expiresAt: '2030-06-02T10:00:00Z', confirmation: { status: 'NOT_APPLICABLE', attempts: 0, sentAt: null, lastError: null } },
+      { id: 'expired', reference: 'E1', guestName: 'Expired', guestEmail: 'e@example.invalid', guestPhone: '0',
+        status: 'EXPIRED', source: 'WEBSITE', checkIn: '2030-07-10', checkOut: '2030-07-12', totalPrice: '1000', depositAmount: '0',
+        expiresAt: '2020-01-01T10:00:00Z', confirmation: { status: 'NOT_APPLICABLE', attempts: 0, sentAt: null, lastError: null } },
+      { id: 'failed', reference: 'F1', guestName: 'Failed', guestEmail: 'f@example.invalid', guestPhone: '0',
+        status: 'CONFIRMED', source: 'WEBSITE', checkIn: '2030-08-10', checkOut: '2030-08-12', totalPrice: '1000', depositAmount: '0',
+        expiresAt: null, confirmation: { status: 'FAILED', attempts: 3, sentAt: null, lastError: 'DELIVERY_UNKNOWN' } }
+    ]);
+    renderAdminBookings();
+    expect(await screen.findByRole('button', { name: 'Potwierdź' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Odrzuć' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Ponów wysyłkę' })).toBeInTheDocument();
+    expect(screen.getByText(/Ponowienie może wysłać duplikat/)).toBeInTheDocument();
+    expect(within(screen.getByText('Expired').closest('tr')!).queryByRole('button', { name: 'Potwierdź' })).not.toBeInTheDocument();
+    await act(async () => { await i18n.changeLanguage('en'); });
+    expect(screen.getByRole('button', { name: 'Confirm' })).toBeInTheDocument();
+    expect(screen.getByText(/Decision by:/)).toBeInTheDocument();
+    await act(async () => { await i18n.changeLanguage('pl'); });
+    vi.spyOn(adminApi, 'retryBookingConfirmation').mockRejectedValueOnce(new ApiError('Unavailable', 503));
+    fireEvent.click(screen.getByRole('button', { name: 'Ponów wysyłkę' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('Nie udało się wykonać operacji');
+  });
   it('renders bookings returned by the admin API', async () => {
     renderAdminBookings();
     expect(await screen.findByText('Anna')).toBeInTheDocument();

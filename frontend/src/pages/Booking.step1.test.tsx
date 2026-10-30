@@ -18,10 +18,13 @@ describe('booking step 1', () => {
       </QueryClientProvider>
     );
     
-    await user.type(screen.getByLabelText('Check-in'), '2026-06-12');
-    await user.type(screen.getByLabelText('Check-out'), '2026-06-13');
+    const next = new Date();
+    next.setMonth(next.getMonth() + 1, 1);
+    const month = `${next.getFullYear()}-${String(next.getMonth() + 1).padStart(2, '0')}`;
+    await user.click(await screen.findByRole('button', { name: new RegExp(`${month}-12 —`) }));
+    await user.click(screen.getByRole('button', { name: new RegExp(`${month}-13 —`) }));
     await user.click(screen.getByRole('button', { name: 'Dalej' }));
     
-    expect(await screen.findByText('Minimum stay is 2 nights')).toBeInTheDocument();
+    expect(await screen.findByText('Minimalna długość pobytu to 2 noce')).toBeInTheDocument();
   });
 });

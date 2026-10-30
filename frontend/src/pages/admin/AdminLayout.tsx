@@ -9,9 +9,9 @@ export default function AdminLayout() {
   if (!auth.isAuthenticated) return <Navigate to='/admin/login' replace />;
   
   return (
-    <div className='mx-auto flex max-w-6xl gap-8 px-6 py-10'>
-      <aside className='w-64 rounded-2xl bg-white p-6 shadow-sm'>
-        <nav className='flex flex-col gap-3'>
+    <div className='mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 sm:px-6 md:flex-row'>
+      <aside className='w-full shrink-0 rounded-2xl bg-white p-6 shadow-sm md:w-48 lg:w-64'>
+        <nav className='grid grid-cols-2 gap-3 md:flex md:flex-col'>
           <Link to='/admin/bookings'>{t('admin.bookings')}</Link>
           <Link to='/admin/calendar'>{t('admin.calendar')}</Link>
           <Link to='/admin/messages'>{t('admin.messages')}</Link>
@@ -26,7 +26,7 @@ export default function AdminLayout() {
           </button>
         </nav>
       </aside>
-      <section className='flex-1'>
+      <section className='min-w-0 flex-1'>
         <Outlet />
       </section>
     </div>

@@ -13,10 +13,13 @@ import AdminCalendar from './pages/admin/AdminCalendar';
 import AdminMessages from './pages/admin/AdminMessages';
 import AdminGallery from './pages/admin/AdminGallery';
 import AdminPricing from './pages/admin/AdminPricing';
+import BookingLink from './pages/BookingLink';
 
 export default function App() {
   return (
     <Routes>
+      <Route path='/verify-booking' element={<BookingLink kind="verification" />} />
+      <Route path='/booking-decision' element={<BookingLink kind="decision" />} />
       <Route element={<Layout />}>
         <Route path='/' element={<Home />} />
         <Route path='/house' element={<House />} />

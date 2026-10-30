@@ -5,15 +5,17 @@ import Booking from './Booking';
 import * as bookingsApi from '../api/bookings';
 import * as pricingApi from '../api/pricing';
 import { vi } from 'vitest';
+import { ApiError } from '../api/client';
 
 vi.spyOn(bookingsApi, 'getAvailability').mockResolvedValue({ blockedDates: [] });
 vi.spyOn(pricingApi, 'getPricingSeasons').mockResolvedValue([
-  { id: 's1', namePl: 'Sezon wysoki', nameEn: 'High season', pricePerNight: '1200', dateFrom: '2026-05-01', dateTo: '2026-09-30', isFeatured: true }
+  { id: 's1', namePl: 'Sezon wysoki', nameEn: 'High season', pricePerNight: '1200', dateFrom: '2020-01-01', dateTo: '2099-12-31', isFeatured: true }
 ]);
-vi.spyOn(bookingsApi, 'createBooking').mockResolvedValue({ id: 'booking-1', reference: 'LM-20260101-ANN1A2B', status: 'PENDING', totalPrice: 3600 });
+vi.spyOn(bookingsApi, 'createBooking').mockResolvedValue({ status: 'EMAIL_VERIFICATION_REQUIRED', expiresAt: '2030-01-01T10:15:00Z' });
 
 describe('booking wizard', () => {
-  it('shows a review step before submitting, then the confirmation with a friendly reference', async () => {
+  it('shows review, then requests email verification without claiming a reservation or hold', async () => {
+    vi.mocked(bookingsApi.createBooking).mockRejectedValueOnce(new ApiError('BOOKING_RATE_LIMIT', 429, 'BOOKING_RATE_LIMIT', 3600));
     const user = userEvent.setup();
     render(
       <QueryClientProvider client={new QueryClient()}>
@@ -21,8 +23,12 @@ describe('booking wizard', () => {
       </QueryClientProvider>
     );
     
-    await user.type(screen.getByLabelText('Check-in'), '2026-06-12');
-    await user.type(screen.getByLabelText('Check-out'), '2026-06-15');
+    await screen.findByRole('button', { name: /Dalej/ });
+    const next = new Date();
+    next.setMonth(next.getMonth() + 1, 1);
+    const month = `${next.getFullYear()}-${String(next.getMonth() + 1).padStart(2, '0')}`;
+    await user.click(await screen.findByRole('button', { name: new RegExp(`${month}-12 —`) }));
+    await user.click(screen.getByRole('button', { name: new RegExp(`${month}-15 —`) }));
     await user.click(screen.getByRole('button', { name: 'Dalej' }));
     
     await user.type(screen.getByLabelText('Imię i nazwisko'), 'Anna Nowak');
@@ -36,9 +42,11 @@ describe('booking wizard', () => {
     expect(await screen.findByText('Anna Nowak')).toBeInTheDocument();
     expect(bookingsApi.createBooking).not.toHaveBeenCalled();
     await user.click(screen.getByRole('button', { name: 'Wyślij prośbę o rezerwację' }));
+    expect(await screen.findByText(/60 min/)).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Wyślij prośbę o rezerwację' }));
 
-    expect(await screen.findByText(/LM-20260101-ANN1A2B/)).toBeInTheDocument();
+    expect(await screen.findByText('Sprawdź swoją pocztę')).toBeInTheDocument();
+    expect(screen.queryByText(/LM-20260101-ANN1A2B/)).not.toBeInTheDocument();
+    expect(screen.getByText(/15 minut/)).toBeInTheDocument();
   });
 });
-
-

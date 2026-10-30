@@ -2,7 +2,8 @@ import { useMemo, useRef, useState } from 'react';
 import { differenceInCalendarDays } from 'date-fns';
 import BookingCalendar from '../../components/BookingCalendar';
 import { createManualBooking } from '../../api/admin';
-import { useAvailability } from '../../hooks/useAvailability';
+import { initialVisibleMonths, useCalendarAvailability } from '../../hooks/useAvailability';
+import { useQueryClient } from '@tanstack/react-query';
 
 type Props = {
   token: string;
@@ -34,17 +35,11 @@ const toNumberOrZero = (raw: string): number => {
 export default function ManualBookingForm({ token, onCreated, onCancel }: Props) {
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
-  const now = new Date();
-  const [visibleMonths, setVisibleMonths] = useState({
-    left: { month: now.getMonth() + 1, year: now.getFullYear() },
-    right: { month: now.getMonth() + 2 > 12 ? 1 : now.getMonth() + 2, year: now.getMonth() + 2 > 12 ? now.getFullYear() + 1 : now.getFullYear() }
-  });
-  const { data: leftAvailability } = useAvailability(visibleMonths.left.month, visibleMonths.left.year);
-  const { data: rightAvailability } = useAvailability(visibleMonths.right.month, visibleMonths.right.year);
-  const blockedDates = useMemo(
-    () => Array.from(new Set([...(leftAvailability?.blockedDates || []), ...(rightAvailability?.blockedDates || [])])),
-    [leftAvailability, rightAvailability]
-  );
+  const client = useQueryClient();
+  const [visibleMonths, setVisibleMonths] = useState(initialVisibleMonths);
+  const { isError, retry, ...calendar } = useCalendarAvailability(visibleMonths);
+  const blockedDates = calendar.blockedDates;
+  const [sending, setSending] = useState(false);
   const [guestName, setGuestName] = useState('');
   const [guestEmail, setGuestEmail] = useState('');
   const [guestPhone, setGuestPhone] = useState('');
@@ -78,6 +73,8 @@ export default function ManualBookingForm({ token, onCreated, onCancel }: Props)
   const total = Math.max(0, subtotal - discountAmount);
 
   const submit = async () => {
+    if (sending) return;
+    if (calendar.disabled) { setError('Nie można potwierdzić dostępności terminów. Odśwież kalendarz.'); return; }
     setError('');
 
     const resolvedName = (guestNameRef.current?.value || guestName).trim();
@@ -125,6 +122,7 @@ export default function ManualBookingForm({ token, onCreated, onCancel }: Props)
       return;
     }
 
+    setSending(true);
     try {
       await createManualBooking(token, {
         guestName: resolvedName,
@@ -138,10 +136,11 @@ export default function ManualBookingForm({ token, onCreated, onCancel }: Props)
         discountPercent,
         depositAmount
       });
+      await client.invalidateQueries({ queryKey: ['availability'] });
       onCreated();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Nie udało się zapisać rezerwacji');
-    }
+    } finally { setSending(false); }
   };
 
   return (
@@ -149,13 +148,16 @@ export default function ManualBookingForm({ token, onCreated, onCancel }: Props)
       <h2 className='text-2xl font-semibold'>Nowa rezerwacja telefoniczna</h2>
       <div className='mt-6'>
         <BookingCalendar
-          blockedDates={blockedDates}
+          {...calendar}
           checkIn={checkIn}
           checkOut={checkOut}
           onCheckInChange={setCheckIn}
           onCheckOutChange={setCheckOut}
           onVisibleMonthsChange={setVisibleMonths}
         />
+        {calendar.disabled && <p role="alert" className="mt-4">{isError ? 'Nie udało się pobrać terminów.' : 'Ładowanie terminów…'}
+          {isError && <button type="button" className="ml-3 underline" onClick={retry}>Ponów</button>}
+        </p>}
       </div>
       <div className='mt-6 grid gap-4 md:grid-cols-2'>
         <label>
@@ -254,9 +256,10 @@ export default function ManualBookingForm({ token, onCreated, onCancel }: Props)
         <button
           type='button'
           onClick={submit}
+          disabled={sending || calendar.disabled}
           className='rounded bg-pine px-4 py-2 font-medium text-white transition-colors hover:bg-pine-dark'
         >
-          Zapisz rezerwację
+          {sending ? 'Zapisywanie…' : 'Zapisz rezerwację'}
         </button>
         <button
           type='button'

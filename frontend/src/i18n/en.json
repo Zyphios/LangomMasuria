@@ -6,7 +6,11 @@
     "rates": "Rates",
     "attractions": "Attractions",
     "contact": "Contact",
-    "bookNow": "Book now"
+    "bookNow": "Book now",
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "navigation": "Main navigation"
   },
   "footer": {
     "tagline": "Your place on earth, where time moves a little slower."
@@ -115,6 +119,7 @@
     }
   },
   "pricing": {
+    "loading": "Loading pricing\u2026",
     "title": "Pricing",
     "subtitle": "Clear rules for your comfort.",
     "popular": "POPULAR",
@@ -140,6 +145,7 @@
     "dates": "Stay dates",
     "datesSubtitle": "Minimum stay is 2 nights. The estimated price updates automatically.",
     "estimatedCost": "Estimated stay cost:",
+    "noPricing": "No pricing is available for the entire selected stay. Choose different dates or contact us.",
     "guestDetails": "Guest details",
     "guestName": "Full name",
     "email": "Email",
@@ -179,7 +185,42 @@
     "next": "Next",
     "prev": "Previous"
   },
+  "links": {
+    "verifyTitle": "Verify your request",
+    "decisionTitle": "Booking decision",
+    "verifyAction": "Verify my request",
+    "confirmAction": "Confirm booking",
+    "rejectAction": "Reject request",
+    "verifyHelp": "Check the dates and price. Only this button creates a provisional 24-hour hold. This is not a final booking confirmation.",
+    "decisionHelp": "Your decision is saved only after pressing the button. Confirmation queues an email to the guest; rejection releases the hold.",
+    "pendingResult": "Request received. Your dates are provisionally held for 24 hours, awaiting the owner's decision.",
+    "confirmedResult": "Booking confirmed. The guest confirmation email is queued for delivery.",
+    "rejectedResult": "Request rejected. Its provisional date hold has been released.",
+    "deadline": "Valid until",
+    "loading": "Loading...",
+    "working": "Processing...",
+    "invalid": "This link is invalid, expired or the request has already been processed.",
+    "error": "We could not confirm the result. Check your connection; retrying will not create a second booking.",
+    "priceChanged": "The price has changed. Check the updated amount and confirm again if you accept it.",
+    "reopen": "To try again, reopen the link from your email.",
+    "backBooking": "Return to availability and contact",
+    "backPanel": "Go to the admin panel",
+    "checkEmail": "Check your email",
+    "checkEmailHelp": "We sent a link valid for 15 minutes. Verify your email to request a booking. Dates are not held yet; availability and price will be checked again.",
+    "rateLimited": "The request limit was reached. Please wait before retrying or contact us by phone.",
+    "retryAfter": "Try again in about {{minutes}} min, or contact us by phone.",
+    "datesUnavailable": "These dates are no longer available. Return to the calendar and choose a different stay.",
+    "emailFailed": "The mail server did not confirm sending the message. Dates have not been held. Wait before retrying or contact us by phone.",
+    "availabilityError": "We could not check availability. Please refresh the calendar.",
+    "retry": "Retry"
+  },
   "calendar": {
+    "legend": "Calendar legend",
+    "pending": "Provisionally held",
+    "confirmed": "Confirmed stay",
+    "manual": "Owner's block",
+    "unavailable": "Unavailable",
+    "available": "Available",
     "prevMonth": "Previous month",
     "nextMonth": "Next month",
     "checkIn": "Check-in",
@@ -195,6 +236,66 @@
     }
   },
   "admin": {
+    "priceEdit": {
+      "edit": "Edit price",
+      "manual": "Manual amount",
+      "percent": "Percentage discount",
+      "amount": "Final total (PLN)",
+      "discount": "Discount (%)",
+      "original": "Original total: {{amount}} PLN",
+      "final": "Final total: {{amount}} PLN",
+      "paid": "Deposit paid: {{amount}} PLN",
+      "remaining": "Remaining on arrival: {{amount}} PLN",
+      "overpayment": "Overpayment: {{amount}} PLN",
+      "save": "Save price",
+      "saved": "Price saved",
+      "cancel": "Cancel changes",
+      "invalid": "Enter a valid amount from 0 to 99999999.99 PLN or discount from 0 to 100%, with at most two decimal places.",
+      "error": "Could not save the price. The booking may have been handled or expired. Refresh the list and try again.",
+      "unsaved": "Save or cancel price changes and save the deposit before confirming."
+    },
+    "pricingEditor": {
+      "help": "Saved prices and dates are used on the website and for new quotes. Season boundary dates are inclusive, and holidays take priority. Existing booking prices remain unchanged.",
+      "price": "Price per night (PLN)",
+      "from": "From date",
+      "to": "To date",
+      "save": "Save changes",
+      "invalidPrice": "Enter a valid price above zero, up to 99999999.99 PLN, with at most two decimal places.",
+      "invalidDates": "Enter both dates. The end date must not precede the start date.",
+      "overlap": "Low and high seasons must not overlap. Correct the season dates.",
+      "saveError": "Could not save pricing. Check your connection and try again."
+    },
+    "messageList": {
+      "unread": "Unread",
+      "read": "Read",
+      "markRead": "Mark as read",
+      "marking": "Marking\u2026",
+      "loading": "Loading messages\u2026",
+      "emptyUnread": "No unread messages.",
+      "emptyRead": "No read messages.",
+      "loadError": "Could not load messages. Please refresh the page.",
+      "markError": "Could not mark the message as read. Please try again."
+    },
+    "deposit": {
+      "label": "Deposit {{name}}",
+      "save": "Save deposit",
+      "saving": "Saving\u2026",
+      "saved": "Saved",
+      "invalid": "Deposit must be a non-negative number",
+      "error": "Could not save the deposit. Please try again."
+    },
+    "decisionBy": "Decision by",
+    "confirmBooking": "Confirm",
+    "rejectBooking": "Reject",
+    "cancelBooking": "Cancel booking",
+    "retryConfirmation": "Retry email",
+    "deliveryUnknown": "Delivery could not be established. Retrying may send a duplicate.",
+    "bookingStates": { "PENDING": "Provisional", "CONFIRMED": "Confirmed", "CANCELLED": "Rejected / cancelled", "EXPIRED": "Expired" },
+    "bookingFilters": { "PENDING": "Pending", "CONFIRMED": "Confirmed", "CANCELLED": "Rejected / cancelled", "EXPIRED": "Expired" },
+    "bookingMail": {
+      "QUEUED": "Confirmation queued", "SENDING": "Sending confirmation", "SENT": "Accepted by mail server",
+      "FAILED": "Email delivery failed", "CANCELLED": "Email cancelled", "NOT_APPLICABLE": "Not applicable", "NOT_RECORDED": "No delivery history"
+    },
     "bookings": "Bookings",
     "calendar": "Calendar",
     "messages": "Messages",

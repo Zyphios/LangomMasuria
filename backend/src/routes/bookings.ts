@@ -1,54 +1,31 @@
 import { Router } from 'express';
-import { BookingStatus, Prisma } from '@prisma/client';
 import { z } from 'zod';
 import { prisma } from '../index';
 import { validate } from '../middleware/validate';
-import { calculateTotalPrice, assertDatesAvailable, assertMinimumStay } from '../services/availability';
-import { generateBookingReference } from '../services/bookingReference';
-import { sendOwnerBookingEmail } from '../services/email';
+import { requestBookingVerification } from '../services/bookingVerification';
+import { sendBookingVerificationEmail } from '../services/email';
+import { BookingOperationError } from '../services/bookingTransaction';
 
 const bookingSchema = z.object({
-  guestName: z.string().min(1),
-  guestEmail: z.string().email(),
-  guestPhone: z.string().min(1),
-  checkIn: z.string().date(),
-  checkOut: z.string().date(),
-  guestsCount: z.number().int().min(1).max(8),
-  notes: z.string().optional(),
+  guestName: z.string().trim().min(1).max(200),
+  guestEmail: z.string().trim().email().max(254),
+  guestPhone: z.string().trim().min(1).max(50),
+  checkIn: z.string().date(), checkOut: z.string().date(),
+  guestsCount: z.number().int().min(1).max(8), notes: z.string().max(4000).optional(),
   locale: z.enum(['pl', 'en']).default('pl')
 });
 
 export const bookingsRouter = Router();
 bookingsRouter.post('/', validate(bookingSchema), async (req, res, next) => {
   try {
-    const payload = bookingSchema.parse(req.body);
-    const checkIn = new Date(payload.checkIn);
-    const checkOut = new Date(payload.checkOut);
-    assertMinimumStay(checkIn, checkOut);
-    await assertDatesAvailable(prisma, checkIn, checkOut);
-    const totalPrice = await calculateTotalPrice(prisma, checkIn, checkOut);
-
-    // The reference includes a random suffix, so a collision is extremely unlikely; retry a
-    // few times with a freshly generated one instead of failing the whole booking on a clash.
-    let booking;
-    for (let attempt = 0; attempt < 5; attempt += 1) {
-      const reference = generateBookingReference(payload.guestEmail);
-      try {
-        booking = await prisma.booking.create({
-          data: { ...payload, checkIn, checkOut, totalPrice, reference, status: BookingStatus.PENDING }
-        });
-        break;
-      } catch (error) {
-        const isDuplicateReference = error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002';
-        if (!isDuplicateReference || attempt === 4) throw error;
-      }
+    const input = bookingSchema.parse(req.body);
+    const link = await requestBookingVerification(prisma, input, req.ip || req.socket.remoteAddress || 'unknown');
+    try {
+      await sendBookingVerificationEmail(input, link.token, link.expiresAt);
+    } catch {
+      console.error('Booking verification delivery failed; SMTP did not confirm delivery.');
+      throw new BookingOperationError(503, 'VERIFICATION_EMAIL_FAILED');
     }
-
-    await sendOwnerBookingEmail(booking!);
-    res.status(201).json({ id: booking!.id, reference: booking!.reference, status: booking!.status, totalPrice: booking!.totalPrice.toNumber() });
-  } catch (error) {
-    if (error instanceof Error) return res.status(400).json({ message: error.message });
-    next(error);
-  }
+    res.status(202).json({ status: 'EMAIL_VERIFICATION_REQUIRED', expiresAt: link.expiresAt });
+  } catch (error) { next(error); }
 });
-

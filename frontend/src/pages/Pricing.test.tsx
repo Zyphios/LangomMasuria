@@ -53,6 +53,15 @@ describe('pricing page', () => {
     expect(screen.getByRole('link', { name: 'BOOK YOUR STAY' })).toHaveAttribute('href', '/booking');
   });
 
+  it('shows actual configured dates and preserves fractional nightly prices', async () => {
+    getPricing.mockResolvedValueOnce([{ ...seasons[0], pricePerNight: '900.50', dateFrom: '2026-10-02T00:00:00.000Z',
+      dateTo: '2027-04-29T00:00:00.000Z' }, ...seasons.slice(1)]);
+    renderPricing();
+    expect(await screen.findByText('900,50')).toBeInTheDocument();
+    expect(screen.getByText('2026-10-02 – 2027-04-29')).toBeInTheDocument();
+    expect(screen.getByText('2026-12-20 – 2027-01-06')).toBeInTheDocument();
+  });
+
   it('shows a visible error instead of an apparently empty price list', async () => {
     getPricing.mockRejectedValueOnce(new Error('Network unavailable'));
     renderPricing();

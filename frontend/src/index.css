@@ -4,7 +4,14 @@
 
 @layer base {
   html {
+    --site-header-height: 88px;
     font-family: 'DM Sans', sans-serif;
+  }
+
+  @screen md {
+    html {
+      --site-header-height: 112px;
+    }
   }
 
   body {

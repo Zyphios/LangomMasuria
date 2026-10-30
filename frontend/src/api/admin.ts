@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import type { AdminBookingRow, BookingStatus, GalleryImage, ManualBookingPayload, PricingSeason } from '../types';
+import type { AdminBookingRow, AdminMessage, BookingStatus, BookingPriceInput, BookingPriceResult, GalleryImage, ManualBookingPayload, PricingSeason } from '../types';
 
 const withAuth = (token: string) => ({ Authorization: `Bearer ${token}` });
 
@@ -26,6 +26,19 @@ export const updateBookingDeposit = (token: string, id: string, depositAmount: n
     body: JSON.stringify({ depositAmount })
   });
 
+export const updateBookingPrice = (token: string, id: string, input: BookingPriceInput) =>
+  apiClient<BookingPriceResult>(`/api/admin/bookings/${id}/price`, {
+    method: 'PATCH', headers: withAuth(token), body: JSON.stringify(input)
+  });
+
+export const retryBookingConfirmation = (token: string, id: string) =>
+  apiClient<void>(`/api/admin/bookings/${id}/confirmation/retry`, { method: 'POST', headers: withAuth(token) });
+export type AdminBlockedDate = { id: string; date: string; reason: string | null };
+export const getAdminBlockedDates = (token: string, month: number, year: number) =>
+  apiClient<AdminBlockedDate[]>(`/api/admin/blocked-dates?month=${month}&year=${year}`, { headers: withAuth(token) });
+export const deleteAdminBlockedDate = (token: string, id: string) =>
+  apiClient<void>(`/api/admin/blocked-dates/${id}`, { method: 'DELETE', headers: withAuth(token) });
+
 export const updateAdminBooking = (token: string, id: string, status: BookingStatus) =>
   apiClient<{ status: BookingStatus }>(`/api/admin/bookings/${id}`, {
     method: 'PATCH',
@@ -34,7 +47,7 @@ export const updateAdminBooking = (token: string, id: string, status: BookingSta
   });
 
 export const getAdminMessages = (token: string) =>
-  apiClient<any[]>('/api/admin/messages', { headers: withAuth(token) });
+  apiClient<AdminMessage[]>('/api/admin/messages', { headers: withAuth(token) });
 
 export const markMessageRead = (token: string, id: string) =>
   apiClient<{ isRead: true }>(`/api/admin/messages/${id}`, {

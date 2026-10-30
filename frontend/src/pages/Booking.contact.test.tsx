@@ -12,6 +12,17 @@ vi.spyOn(pricingApi, 'getPricingSeasons').mockResolvedValue([]);
 vi.spyOn(contactApi, 'sendContactMessage').mockResolvedValue({ success: true });
 
 describe('contact section', () => {
+  it('links to the current contact mailbox', () => {
+    render(
+      <QueryClientProvider client={new QueryClient()}>
+        <Booking />
+      </QueryClientProvider>
+    );
+
+    expect(screen.getByRole('link', { name: 'domeknamazurskiej@gmail.com' }))
+      .toHaveAttribute('href', 'mailto:domeknamazurskiej@gmail.com');
+  });
+
   it('submits the embedded contact form', async () => {
     const user = userEvent.setup();
     render(

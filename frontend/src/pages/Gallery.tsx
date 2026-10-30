@@ -36,7 +36,7 @@ export default function Gallery() {
   }, [selectedImageId, selectedIndex]);
 
   return (
-    <div className="bg-background pt-20">
+    <div className="bg-background pt-[var(--site-header-height)]">
       <main className="pb-section-gap pt-16">
         <section className="mx-auto mb-24 max-w-container-max px-8 text-center md:px-margin-desktop">
           <h1 className="mb-6 text-headline-lg-mobile text-on-surface md:text-headline-lg">{t('gallery.title')}</h1>
