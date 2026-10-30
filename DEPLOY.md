@@ -4,13 +4,17 @@ Stan opisany na 30.10.2026. Pełna instrukcja instalacji, aktualizacji i odtwarz
 
 **Aktualizacja rezerwacji, panelu, mobilnego menu i dynamicznego cennika została opublikowana 29.10.2026 wspólnie z backendem, frontendem, migracją i konfiguracją. Nie stosuj do odtwarzania tej wersji poniższej procedury „tylko frontend”.** Instrukcja kontrolowanej aktualizacji znajduje się w sekcji „Rezerwacje wstępne i decyzje z maila” na końcu tego dokumentu.
 
-### Rezerwacja od razu po formularzu — poprawka przygotowana 30.10.2026
+### Rezerwacja od razu po formularzu — wdrożona 30.10.2026
 
 Nowy formularz zapisuje rezerwację oczekującą i blokuje noce na 24 godziny już przy wysłaniu, bez klikania przez klienta. Klient otrzymuje informację o oczekiwaniu na właściciela. Zatwierdzenie wysyła mail z końcową ceną, zaliczką i dopłatą, a odrzucenie/anulowanie z panelu lub linku właściciela wysyła osobną wiadomość i zwalnia blokadę tej rezerwacji.
 
 Wymagana jest wspólna aktualizacja frontendu, backendu i migracja `20261030100000_booking_notification_kind`. Wiersz `ConfirmationEmail` opisuje teraz aktualny typ powiadomienia (`PENDING`, `CONFIRMED`, `CANCELLED`) i jego wysyłkę. Szybka decyzja właściciela zastępuje niezrealizowany, nieaktualny mail oczekujący; nie wysyłamy go po decyzji końcowej. Migracja nie zmienia rezerwacji ani nie rozsyła historycznych odrzuceń.
 
-Przed wdrożeniem wykonano kopie bazy, kodu i prywatnej konfiguracji, zachowano poprzednie obrazy i sprawdzono migrację na odtworzonej, oddzielnej bazie. Po wdrożeniu potwierdzono publiczne strony, API cennika i kategorii kalendarza, nagłówki linków oraz mobilne menu i wycenę mieszanego pobytu. Weryfikacja połączenia i uwierzytelnienia SMTP przeszła, ale **rzeczywisty obieg maili gościa i właściciela pozostaje do sprawdzenia na skrzynkach**.
+Wdrożono commit `d5a2632` i paczkę `~/lagom-booking-flow-20261030.tar.gz`. Kopie bazy, kodu i konfiguracji są w `~/backups/booking-flow-20261030`; poprzednie obrazy mają tag `before-booking-flow-20261030`. Prywatne kopie `database-final.dump` i `.env.vps` pobrano i sprawdzono SHA-256 w `%LOCALAPPDATA%\LangomMasuria\backups\booking-flow-20261030`, poza Git. Migrację przećwiczono na odtworzonej, oddzielnej bazie; porównano pełne dane rezerwacji i dotychczasowe dane kolejki przed/po migracji, także na produkcji przed uruchomieniem backendu.
+
+Weryfikacja: 138 testów backendu, w tym dokładne granice limitów i rzeczywista transmisja do lokalnego SMTP, oraz 135 testów frontendu; oba buildy przeszły. Na produkcji potwierdzono konfigurację limitów: 1 aktywna rezerwacja, 3 zgłoszenia/24h, 5 początkowych maili/24h, odstęp 120s, 10 prób/h i 30/24h na IP; sprawdzono natychmiastową blokadę, odmowę powtórnego zgłoszenia, edycję ceny/zaliczki, potwierdzenie i odrzucenie z panelu oraz odpowiednie zmiany kalendarza. Serwer SMTP przyjął informacyjne maile oczekujące i obie decyzje dla dwóch rezerwacji technicznych; **właściciel potwierdził odbiór wszystkich trzech rodzajów wiadomości w rzeczywistej skrzynce**. Usunięto wyłącznie te dwie rezerwacje techniczne, bez modyfikowania rezerwacji gości. Decyzję z prywatnego linku właściciela, w tym odrzucenie, sprawdzono także w testach backendu.
+
+Przed wcześniejszym wdrożeniem 29.10 wykonano kopie bazy, kodu i prywatnej konfiguracji, zachowano poprzednie obrazy i sprawdzono migrację na odtworzonej, oddzielnej bazie. Po nim potwierdzono publiczne strony, API cennika i kategorii kalendarza, nagłówki linków oraz mobilne menu i wycenę mieszanego pobytu. Wówczas sprawdzono tylko połączenie SMTP; pełny obieg wiadomości potwierdzono dopiero podczas opisanej powyżej poprawki 30.10.
 
 ### Dynamiczny cennik — wdrożony 29.10.2026
 
@@ -28,7 +32,7 @@ Opublikowano backend i frontend z commita `dbe726f` oraz migrację `202610291500
 
 Przed aktualizacją wykonano kopię kodu, prywatnej konfiguracji i bazy w `~/backups/release-20261030`, zachowano poprzednie obrazy jako `lagom-rollback-backend:20261030` i `lagom-rollback-frontend:20261030`. Odtworzono kopię na oddzielnym PostgreSQL i sprawdzono migrację bez zmiany liczby rezerwacji, sum cen ani zaliczek. Tak samo porównano dane po właściwej migracji, przed uruchomieniem backendu. Prywatne kopie `database-final.dump` i `.env.vps` pobrano i porównano sumami SHA-256 poza repozytorium: `%LOCALAPPDATA%\LangomMasuria\backups\release-20261030`. Traktuj je jako poufne; nie dodawaj ich do GitHuba.
 
-Weryfikacja wydania: 113 testów backendu na syntetycznej bazie `lagom_test`, 127 testów frontendu i 8 testów konfiguracji wdrożenia. Po publikacji kontenery osiągnęły `healthy`, publiczny frontend odpowiada obrazowi wydania, a logowanie admina, pola pierwotnej ceny/rabatu, nowy endpoint ceny, walidacja i wymaganie autoryzacji przeszły kontrolę bez modyfikowania rezerwacji gości. Rzeczywista dostawa maili na skrzynki nadal wymaga osobnego sprawdzenia.
+Weryfikacja tego wcześniejszego wydania: 113 testów backendu na syntetycznej bazie `lagom_test`, 127 testów frontendu i 8 testów konfiguracji wdrożenia. Po publikacji kontenery osiągnęły `healthy`, publiczny frontend odpowiadał obrazowi wydania, a logowanie admina, pola pierwotnej ceny/rabatu, nowy endpoint ceny, walidacja i wymaganie autoryzacji przeszły kontrolę bez modyfikowania rezerwacji gości. Rzeczywistą dostawę maili potwierdzono później, podczas poprawki natychmiastowej rezerwacji opisanej powyżej.
 
 Przed kolejnym wdrożeniem ponownie wykonaj świeże kopie i próbę migracji na odtworzonej, oddzielnej bazie, jak w procedurze aktualizacji rezerwacji. Nie przesyłaj danych lokalnego podglądu na produkcję. Starsza paczka `lagom-release-20261029.tar.gz` nie zawiera edytora ceny i nie służy do odtwarzania obecnego wydania.
 

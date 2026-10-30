@@ -6,6 +6,8 @@ Stan: 30.10.2026. Instrukcja dla właściciela, także po utracie VPS.
 
 **Aktualizacja ceny rezerwacji 30.10.2026:** wdrożono edytor kwoty/rabatu z commita `dbe726f` razem z frontendem, backendem i migracją `20261029150000_booking_price_adjustment`. Kod i pliki wdrożenia są już na GitHubie. Lokalna, poufna kopia bazy i konfiguracji z tego wdrożenia znajduje się w `%LOCALAPPDATA%\LangomMasuria\backups\release-20261030`; szczegóły kontroli i kopii na VPS opisuje [DEPLOY.md](DEPLOY.md).
 
+**Najnowsza poprawka obiegu rezerwacji 30.10.2026:** opublikowano commit `d5a2632`, oba obrazy i migrację `20261030100000_booking_notification_kind`. Najnowsza kopia sprzed tej aktualizacji znajduje się w `~/backups/booking-flow-20261030` na VPS oraz prywatnie w `%LOCALAPPDATA%\LangomMasuria\backups\booking-flow-20261030`. Właściciel potwierdził odbiór maili oczekujących, potwierdzenia i odrzucenia z rzeczywistego testu; obie rezerwacje techniczne usunięto.
+
 **PowerShell lokalny** oznacza komputer Windows. **SSH / Ubuntu** oznacza konsolę po zalogowaniu na serwer. Bloków `bash` nie wklejaj bezpośrednio do lokalnego PowerShella.
 
 ## 1. Co trzeba zachować i odnawiać

@@ -60,6 +60,10 @@ The production backend, frontend and migration were deployed together from commi
 
 ## Booking requests and email limits
 
+Deployed 2026-10-30 from `d5a2632`, including both application images and the
+notification-kind migration. The owner confirmed receipt of pending, confirmation
+and rejection messages during a live technical test; its two bookings were removed.
+
 Submitting the website form returns HTTP 201 with the booking reference, `PENDING`
 status and expiry. Dates immediately appear as provisional in the calendar.
 Guests do not need to verify their email or click a link. Their first email only
