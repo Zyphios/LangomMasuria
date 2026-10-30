@@ -16,6 +16,8 @@ describe('house page', () => {
     render(<House />);
     expect(screen.getByText('O Naszym Domu')).toBeInTheDocument();
     expect(screen.getByText('50 m²')).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'Domek na Mazurskiej' }))
+      .toHaveAttribute('src', '/glowne-foto kadr.jpg');
   });
 
   it('presents the amenities with wood and equipment availability terms', () => {

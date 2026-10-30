@@ -9,7 +9,7 @@ export default function Home() {
       <section className="relative flex h-[819px] min-h-[600px] items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src="/glowne-foto.jpg"
+            src="/glowne-foto kadr.jpg"
             alt="Domek na Mazurskiej - dom na Mazurach"
             className="h-full w-full object-cover"
           />

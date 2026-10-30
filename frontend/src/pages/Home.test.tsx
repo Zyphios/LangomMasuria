@@ -10,6 +10,8 @@ describe('home page', () => {
       </MemoryRouter>
     );
     expect(screen.getByText('Twój azyl na Mazurach')).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'Domek na Mazurskiej - dom na Mazurach' }))
+      .toHaveAttribute('src', '/glowne-foto kadr.jpg');
     expect(screen.getByRole('heading', { name: 'Jacuzzi i Bania' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Otoczenie Lasu' })).toBeInTheDocument();
     expect(screen.getByText('Wnętrze pełne światła')).toBeInTheDocument();

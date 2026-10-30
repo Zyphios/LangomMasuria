@@ -92,6 +92,29 @@ sudo docker compose --env-file .env.vps -f docker-compose.vps.yml ps
 
 Po przebudowie odśwież przeglądarkę przez Ctrl+F5. Samo przesłanie plików nie zmienia zawartości działającego obrazu Dockera.
 
+### Ręczna podmiana zdjęć
+
+Zdjęcia strony startowej i podstrony „Dom” są plikami w `frontend/public`, wskazywanymi w kodzie; panel admina nie podmienia tych obrazów. Nowy kadr `glowne-foto kadr.jpg` jest wskazany w `frontend/src/pages/Home.tsx` i `House.tsx`. Galeria nadal wskazuje `glowne-foto.jpg`. Zmiana jednego wspólnego pliku zmienia wszystkie miejsca, które go używają.
+
+1. Zapisz nowe zdjęcie w `frontend\public`. Najlepiej nadaj nową nazwę, np. `glowne-foto-kadr-v2.jpg`, aby przeglądarki nie korzystały ze starej wersji pod tym samym adresem.
+2. W wybranych komponentach zmień `src`, np. na `/glowne-foto-kadr-v2.jpg` (bez `frontend/public` w adresie). Dla obecnego zdjęcia są to `Home.tsx` i `House.tsx`; nie zmieniaj `Gallery.tsx`, jeżeli galeria ma zachować stary kadr. Zaktualizuj odpowiednie oczekiwania testów. Układ używa `object-cover`, więc na różnych ekranach może dodatkowo przycinać krawędzie.
+3. Sprawdź podgląd lokalny na komputerze i telefonie, uruchom testy obu stron oraz build. Zapisz wyłącznie powiązane pliki przez `git add`, `git commit` i `git push`. Sam push nie wdraża strony na VPS.
+4. Przed przesłaniem wykonaj na VPS kopię zmienianych plików i zachowaj poprzedni obraz frontendu. Następnie prześlij zdjęcie i oba komponenty z lokalnego PowerShella:
+
+```powershell
+scp "frontend\public\glowne-foto kadr.jpg" ubuntu@57.128.219.94:~/LangomMasuria/frontend/public/
+scp "frontend\src\pages\Home.tsx" "frontend\src\pages\House.tsx" ubuntu@57.128.219.94:~/LangomMasuria/frontend/src/pages/
+```
+
+W sesji SSH przebuduj tylko frontend:
+
+```bash
+cd ~/LangomMasuria
+sudo docker compose --env-file .env.vps -f docker-compose.vps.yml up --build -d --no-deps --wait --wait-timeout 120 frontend
+```
+
+5. Z komputera uruchom `node deploy\check-images.cjs https://domeknamazurskiej.pl` i otwórz `/` oraz `/house`. Sprawdź poprawny kadr na szerokim i wąskim ekranie. Kontroler porównuje wszystkie lokalne zdjęcia, więc uruchamiaj go z czystej wersji odpowiadającej wdrożeniu; niewdrożone lokalne edycje innych obrazów spowodują błąd zgodności. Samo SCP, commit lub push nie zmienia działającego kontenera. Przy zachowaniu starej nazwy może być potrzebne Ctrl+F5.
+
 ### Logo strony
 
 Publiczna nazwa to **Domek na Mazurskiej**. Nagłówek i stopka używają `frontend\public\logo-mazurska.jpg` — przyciętej wersji oryginału `frontend\public\new logo.jpg` (obszar: x=470, y=290, szerokość=680, wysokość=270 pikseli). Przy zmianie oryginału przygotuj ponownie wersję przyciętą. Przy pierwszym wdrożeniu nowego logo prześlij także zmienione pliki frontendu, w tym `index.html`, i przebuduj frontend.

@@ -27,7 +27,7 @@ export default function House() {
             </div>
             <div className="w-full rounded-xl overflow-hidden md:col-span-7">
               <img
-                src="/glowne-foto.jpg"
+                src="/glowne-foto kadr.jpg"
                 alt="Domek na Mazurskiej"
                 className="block max-h-[32rem] w-full rounded-2xl object-cover"
               />
