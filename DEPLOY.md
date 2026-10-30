@@ -4,6 +4,14 @@ Stan opisany na 30.10.2026. Pełna instrukcja instalacji, aktualizacji i odtwarz
 
 **Aktualizacja rezerwacji, panelu, mobilnego menu i dynamicznego cennika została opublikowana 29.10.2026 wspólnie z backendem, frontendem, migracją i konfiguracją. Nie stosuj do odtwarzania tej wersji poniższej procedury „tylko frontend”.** Instrukcja kontrolowanej aktualizacji znajduje się w sekcji „Rezerwacje wstępne i decyzje z maila” na końcu tego dokumentu.
 
+### Uprawnienia logo i zdjęć — poprawka 30.10.2026
+
+Po wdrożeniu wszystkie 34 publiczne obrazy zwracały 403: pliki źródłowe miały tryb `600`, zachowany podczas budowania, a Nginx nie mógł odczytać plików należących do roota. Potwierdzono to przez `stat` oraz błędy `Permission denied` w logach. Przywrócono odczyt wyłącznie publicznego katalogu `/usr/share/nginx/html`; nie zmieniano uprawnień sekretów, backendu ani bazy.
+
+`frontend/Dockerfile.vps` normalizuje uprawnienia publicznego wyniku przez `chmod -R a+rX /usr/share/nginx/html`. Rozpakowanie kodu wykonuj w podprocesie z `umask 022`, pozostawiając `umask 077` dla prywatnych kopii. Po każdym wdrożeniu wymagane jest lokalne `node deploy\check-images.cjs https://domeknamazurskiej.pl`: kontroluje status HTTP, typ MIME i zgodność SHA-256 wszystkich obrazów z plikami źródłowymi. Po doraźnym przywróceniu uprawnień wynik wyniósł 34/34, zamiast wcześniejszych 0/34.
+
+Następnie przebudowano i odtworzono wyłącznie frontend, pozostawiając źródłowe zdjęcia w trybie `600`, aby sprawdzić trwałą poprawkę. Nowy kontener ma zdjęcia `644`, dostępne dla użytkownika `nginx`; kontrola HTTPS ponownie dała 34/34. W czystej sesji przeglądarki wszystkie 7 elementów obrazów strony głównej, w tym logo i zdjęcie główne, załadowało się z poprawnymi wymiarami. Przeszło także 8 testów konfiguracji wdrożenia. Identyfikatory i czasy uruchomienia backendu oraz bazy nie zmieniły się. Kopia poprzedniego Dockerfile jest w `~/backups/static-assets-20261030`, a poprzedni obraz ma tag `lagom-rollback-frontend:before-static-assets-20261030`; przy cofnięciu do niego trzeba ponownie zapewnić odczyt publicznych plików.
+
 ### Rezerwacja od razu po formularzu — wdrożona 30.10.2026
 
 Nowy formularz zapisuje rezerwację oczekującą i blokuje noce na 24 godziny już przy wysłaniu, bez klikania przez klienta. Klient otrzymuje informację o oczekiwaniu na właściciela. Zatwierdzenie wysyła mail z końcową ceną, zaliczką i dopłatą, a odrzucenie/anulowanie z panelu lub linku właściciela wysyła osobną wiadomość i zwalnia blokadę tej rezerwacji.

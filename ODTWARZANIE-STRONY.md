@@ -124,11 +124,13 @@ Tworzy archiwum kodu zapisanego na `origin/master`, razem z migracjami SQL i zdj
 **SSH / Ubuntu:**
 
 ```bash
-tar -xzf /tmp/lagom-source.tar.gz -C ~/LangomMasuria
+(umask 022; tar --no-same-owner --no-same-permissions -xzf /tmp/lagom-source.tar.gz -C ~/LangomMasuria)
 cd ~/LangomMasuria
 ```
 
 Rozpakowuje kod. Przy aktualizacji istniejącego VPS archiwum nadpisuje pliki o tych samych nazwach, ale nie usuwa plików usuniętych lokalnie. Do małych aktualizacji używaj sekcji 9.
+
+`umask 022` obowiązuje tylko podczas rozpakowania publicznego kodu; nie zmieniaj prywatnych uprawnień backupów ani `.env.vps`. Obraz frontendu dodatkowo zapewnia odczyt wyłącznie zawartości `/usr/share/nginx/html` przez Nginx. Po każdym wdrożeniu uruchom lokalnie `node deploy\check-images.cjs https://domeknamazurskiej.pl`; wszystkie zdjęcia muszą zwrócić poprawny typ obrazu i identyczne bajty jak w `frontend/public`. Sam status 200 strony lub healthcheck nie wystarcza.
 
 Alternatywa **tylko na nowej maszynie i po zapisaniu kompletu plików w GitHubie**:
 
