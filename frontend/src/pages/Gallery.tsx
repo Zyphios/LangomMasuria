@@ -11,7 +11,7 @@ export default function Gallery() {
 
   const galleryImages = images.length > 0 ? images : [
     { id: '1', url: '/glowne-foto.jpg', captionPl: 'Dom o zmierzchu', captionEn: 'House at dusk', sortOrder: 1 },
-    { id: '2', url: '/shared image (19).jpg', captionPl: 'Dom noc\u0105, w \u015bwietle latarni', captionEn: 'The house glowing at night', sortOrder: 2 },
+    { id: '2', url: '/Baner.jpg', captionPl: 'Dom noc\u0105, w \u015bwietle latarni', captionEn: 'The house glowing at night', sortOrder: 2 },
     { id: '3', url: '/shared image (3).jpg', captionPl: 'Dom nad stawem', captionEn: 'The house by the pond', sortOrder: 3 },
     { id: '4', url: '/shared image (13).jpg', captionPl: 'Jacuzzi z widokiem na \u0142\u0105ki', captionEn: 'Hot tub with meadow views', sortOrder: 4 },
     { id: '5', url: '/IMG_20260705_162852.jpg', captionPl: 'Kuchnia', captionEn: 'Kitchen', sortOrder: 5 },

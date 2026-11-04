@@ -17,6 +17,7 @@ export default function AdminLayout() {
           <Link to='/admin/messages'>{t('admin.messages')}</Link>
           <Link to='/admin/gallery'>{t('admin.gallery')}</Link>
           <Link to='/admin/pricing'>{t('admin.pricing')}</Link>
+          <Link to='/admin/settings'>{t('admin.settings')}</Link>
           <button
             type='button'
             onClick={auth.logout}

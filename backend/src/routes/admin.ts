@@ -11,6 +11,7 @@ import { createManualBooking, changeBookingStatus, publicBooking } from '../serv
 import { retryConfirmation } from '../services/confirmationQueue';
 import { BookingOperationError, withBookingTransaction } from '../services/bookingTransaction';
 import { bookingPriceSchema, updateBookingPrice } from '../services/bookingPricing';
+import { socialLinkFields } from './siteSettings';
 
 const loginSchema = z.object({ email: z.string().email(), password: z.string().min(1) });
 const bookingStatusSchema = z.object({ status: z.enum(['CONFIRMED', 'CANCELLED']) });
@@ -22,11 +23,21 @@ const pricingSchema = z.object({
   nameEn: z.string().min(1),
   pricePerNight: z.number().finite().positive().max(99999999.99)
     .refine((value) => new Prisma.Decimal(value).decimalPlaces() <= 2, 'Use at most two decimal places'),
+  minNights: z.number().int().min(2).max(2147483647).optional(),
   dateFrom: z.string().date(),
   dateTo: z.string().date(),
   isFeatured: z.boolean()
 }).refine((value) => value.dateFrom <= value.dateTo, { path: ['dateTo'], message: 'End date must not precede start date' });
 const depositSchema = z.object({ depositAmount: z.number().min(0) });
+const pricingSettingsSchema = z.object({
+  minStayTextPl: z.string().trim().min(1).max(2000),
+  minStayTextEn: z.string().trim().min(1).max(2000)
+});
+const socialLinkSchema = z.string().trim().max(2048).refine(
+  (value) => value === '' || (value.startsWith('https://') && z.string().url().safeParse(value).success),
+  'Use a full HTTPS URL or leave the field empty'
+);
+const siteSettingsSchema = z.object({ facebookUrl: socialLinkSchema, instagramUrl: socialLinkSchema });
 const manualBookingSchema = z.object({
   guestName: z.string().min(1),
   guestEmail: z.string().email().optional().or(z.literal('')).transform((value) => (value ? value : undefined)),
@@ -144,5 +155,17 @@ adminRouter.patch('/pricing/:id', validate(pricingSchema), async (req, res, next
       });
     });
     res.json(updated);
+  } catch (error) { next(error); }
+});
+adminRouter.patch('/pricing-settings', validate(pricingSettingsSchema), async (req, res, next) => {
+  try {
+    res.json(await prisma.pricingSettings.update({ where: { id: 1 }, data: pricingSettingsSchema.parse(req.body) }));
+  } catch (error) { next(error); }
+});
+adminRouter.patch('/site-settings', validate(siteSettingsSchema), async (req, res, next) => {
+  try {
+    res.json(await prisma.siteSettings.update({
+      where: { id: 1 }, data: siteSettingsSchema.parse(req.body), select: socialLinkFields
+    }));
   } catch (error) { next(error); }
 });

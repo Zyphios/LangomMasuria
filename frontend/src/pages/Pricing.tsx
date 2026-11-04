@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { getPricingSeasons } from '../api/pricing';
+import { getPricingSeasons, getPricingSettings } from '../api/pricing';
 import { formatPrice, getSeasonKind, sortPricingSeasons } from '../utils/pricing';
 
 export default function Pricing() {
@@ -10,6 +10,9 @@ export default function Pricing() {
     queryKey: ['pricing'], queryFn: getPricingSeasons, refetchInterval: 30000, refetchOnWindowFocus: true
   });
   const orderedPricing = sortPricingSeasons(pricing);
+  const { data: settings, isPending: settingsPending, isError: settingsError, refetch: retrySettings } = useQuery({
+    queryKey: ['pricing-settings'], queryFn: getPricingSettings, refetchInterval: 30000, refetchOnWindowFocus: true
+  });
 
   return (
     <div className="bg-background pt-[var(--site-header-height)]">
@@ -46,9 +49,15 @@ export default function Pricing() {
               ))}
             </div>
             <div className="flex flex-col items-center justify-between gap-8 border-t border-outline-variant/30 pt-8 lg:flex-row">
-              <div className="flex items-center gap-2 text-body-md text-on-surface-variant">
+              <div className="flex min-w-0 items-center gap-2 text-body-md text-on-surface-variant">
                 <span aria-hidden="true" className="material-symbols-outlined text-xl">calendar_month</span>
-                {t('pricing.minStay')}
+                {settingsPending ? <p role="status">{t('pricing.descriptionLoading')}</p> : settingsError ?
+                  <p role="alert">{t('pricing.descriptionLoadError')}
+                    <button type="button" className="ml-3 underline" onClick={() => { void retrySettings(); }}>{t('links.retry')}</button>
+                  </p> : settings &&
+                  <span className="min-w-0 whitespace-pre-line break-words">
+                    {i18n.language === 'en' ? settings.minStayTextEn : settings.minStayTextPl}
+                  </span>}
               </div>
               <Link
                 to="/booking"
@@ -57,6 +66,52 @@ export default function Pricing() {
                 {t('pricing.cta')}
               </Link>
             </div>
+            <section aria-labelledby="pricing-terms-heading" className="mt-12 border-t border-outline-variant/30 pt-10">
+              <h2 id="pricing-terms-heading" className="text-headline-sm text-on-surface">{t('pricing.terms.title')}</h2>
+              <div className="mt-8 grid gap-8 lg:grid-cols-3">
+                <section aria-labelledby="pricing-hot-tub-heading" className="min-w-0">
+                  <h3 id="pricing-hot-tub-heading" className="text-body-lg font-semibold text-on-surface">{t('pricing.terms.hotTub.title')}</h3>
+                  <dl className="mt-4 text-body-md text-on-surface-variant">
+                    <dt>{t('pricing.terms.hotTub.first')}</dt>
+                    <dd className="mt-1 font-semibold text-on-surface">{t('pricing.terms.hotTub.price')}</dd>
+                  </dl>
+                  <p className="mt-4 text-body-md text-on-surface-variant">{t('pricing.terms.hotTub.selfService')}</p>
+                </section>
+                <section aria-labelledby="pricing-hours-heading" className="min-w-0">
+                  <h3 id="pricing-hours-heading" className="text-body-lg font-semibold text-on-surface">{t('pricing.terms.hours.title')}</h3>
+                  <dl className="mt-4 grid gap-3 text-body-md text-on-surface-variant">
+                    <div>
+                      <dt>{t('pricing.terms.hours.arrival')}</dt>
+                      <dd className="font-semibold text-on-surface">{t('pricing.terms.hours.checkIn')}</dd>
+                    </div>
+                    <div>
+                      <dt>{t('pricing.terms.hours.departure')}</dt>
+                      <dd className="font-semibold text-on-surface">{t('pricing.terms.hours.checkOut')}</dd>
+                    </div>
+                  </dl>
+                  <p className="mt-4 text-body-md text-on-surface-variant">{t('pricing.terms.hours.flexible')}</p>
+                </section>
+                <section aria-labelledby="pricing-payment-heading" className="min-w-0">
+                  <h3 id="pricing-payment-heading" className="text-body-lg font-semibold text-on-surface">{t('pricing.terms.payment.title')}</h3>
+                  <p className="mt-4 text-body-md text-on-surface-variant">{t('pricing.terms.payment.advance')}</p>
+                  <p className="mt-4 text-body-md text-on-surface-variant">{t('pricing.terms.payment.balance')}</p>
+                </section>
+              </div>
+            </section>
+            <section aria-labelledby="pricing-house-rules-heading" className="mt-12 border-t border-outline-variant/30 pt-10">
+              <h2 id="pricing-house-rules-heading" className="text-headline-sm">{t('booking.houseRulesTitle')}</h2>
+              <div className="mt-8 grid gap-6 lg:grid-cols-3">
+                {[
+                  { icon: 'volume_off', title: 'quietHoursTitle', value: 'quietHoursValue' },
+                  { icon: 'pets', title: 'petsTitle', value: 'petsValue' },
+                  { icon: 'smoke_free', title: 'noSmokingTitle', value: 'noSmokingValue' }
+                ].map((rule) => <div key={rule.title} className="rounded-2xl bg-surface-container-lowest p-6">
+                  <span aria-hidden="true" className="material-symbols-outlined text-3xl text-primary">{rule.icon}</span>
+                  <h3 className="mt-4 text-label-caps">{t(`booking.${rule.title}`)}</h3>
+                  <p className="mt-2 text-body-md text-on-surface-variant">{t(`booking.${rule.value}`)}</p>
+                </div>)}
+              </div>
+            </section>
           </div>
         </section>
       </div>

@@ -1,5 +1,6 @@
 {
   "nav": {
+    "directions": "Directions",
     "home": "Home",
     "house": "House",
     "gallery": "Gallery",
@@ -17,97 +18,200 @@
   },
   "home": {
     "hero": {
-      "title": "Your Masurian hideaway",
-      "subtitle": "A minimalist lake house surrounded by forest.",
+      "title": "Holiday cottage in Masuria",
+      "location": "Stare Juchy near Ełk",
+      "subtitle": "A hot tub under the stars. The rolling landscape of the Masurian Hills, three nearby lakes and the scent of the forest. Make yourself at home at Domek na Mazurskiej :)",
       "cta": "Check availability"
     },
+    "intro": {
+      "description": "Looking for a proper reset? Welcome to Stare Juchy near Ełk! Our welcoming holiday cottage offers wide-open space beside a Natura 2000 forest, with lovely views of a pond and meadows. A lake with a peaceful, secluded forest beach is just 500 metres away.",
+      "invitation": "A romantic getaway for two, time with family, a trip with friends, or a quiet solo break by the forest – unwind in the true spirit of Masuria."
+    },
     "amenities": {
-      "title": "Why Lagom Masuria",
-      "subtitle": "Everything you need for deep rest, designed with attention to every detail.",
-      "jacuzzi": "Jacuzzi under the stars",
-      "forest": "Forest at your doorstep",
-      "lake": "Lake within walking distance",
-      "jacuzziDesc": "A private outdoor relaxation zone, perfect for unwinding under the stars in the evening.",
-      "forestDesc": "Immerse yourself in the scent of pine forest. Our plot borders a protected nature reserve.",
-      "lakeDesc": "Only 500m separates you from Garbas Lake, with a wild, scenic path down to the water."
+      "title": "Comforts and activities on your doorstep",
+      "subtitle": "We have thought about the space and facilities so you have everything you need. From relaxing in the hot tub to water sports and a well-equipped kitchen, it is all here for your comfort.",
+      "jacuzzi": "Private hot tub with hydromassage",
+      "forest": "Natura 2000 forest, pond and meadow views",
+      "lake": "500 m to a forest lake & water sports",
+      "terrace": "Campfire, terrace & outdoor dining",
+      "family": "Playground, football goal & a dog-friendly stay",
+      "location": "Convenient location and parking",
+      "jacuzziDesc": "Enjoy a private soak in the bubbles under the open sky. Perfect for cooler evenings, unwinding after a walk and watching the stars.",
+      "forestDesc": "The cottage stands right beside the forest. Large windows and the mezzanine overlook a pond, meadows and the rolling Masurian Hills. With no fences, the surrounding space stays open and natural.",
+      "lakeDesc": "A short walk through the forest takes you to a peaceful, secluded beach. Three lakes are nearby: Jędzelewo, Garbas and Rekąty. SUP boards and a small rowing boat are available on site by prior arrangement.",
+      "terraceDesc": "Gather around the campfire for an evening of roasting sausages and conversation by the crackling flames, or enjoy morning coffee and lazy afternoons on a lounger on the spacious terrace.",
+      "familyDesc": "Children can enjoy a playground, trampoline and football goal on the grass. Your dog is very welcome too – the open space around the cottage is a wonderful place to run and play!",
+      "locationDesc": "Close to nature, with everyday essentials nearby. The centre of Stare Juchy and the Dino supermarket are both 1.3 km from the cottage, an approximately 18-minute walk. A viewing tower is nearby, and free parking is available right by the property."
     },
     "interior": {
-      "title": "An interior full of light",
-      "desc": "Designed in harmony with the Lagom philosophy - neither too little nor too much. A spacious living room with fireplace, fully equipped kitchen, and forest-view bedrooms create a comfortable retreat for up to 6 guests.",
+      "title": "Bright, welcoming interiors with beautiful views",
+      "desc": "We designed Domek na Mazurskiej to be a place where you simply feel at ease. Large living-room windows look out over a pond, meadows and the edge of the forest, so you stay close to nature even while relaxing on the sofa.",
+      "layout": "Inside, you will find a bright, spacious living room for evenings together, a fully equipped kitchenette for preparing meals, a cosy bedroom and an upstairs mezzanine with even lovelier views.",
       "cta": "SEE THE GALLERY"
     }
   },
   "house": {
-    "title": "About Our House",
-    "desc": "Designed around the 'Lagom' philosophy - just right. Our house is a place where Scandinavian minimalism meets the warmth of the Masurian landscape. We offer space to breathe and slow down in the heart of nature in Stare Juchy.",
+    "title": "About Domek na Mazurskiej – Discover the interiors and surroundings",
+    "desc": "Our year-round cottage in Stare Juchy was designed for comfort and closeness to nature. Large living-room windows fill the space with light and open up beautiful views of a pond, meadows and the edge of a Natura 2000 forest. It is an ideal place for a quiet break, a family holiday or time away with friends.",
     "stats": {
       "space": "Space",
-      "bedrooms": "Bedrooms",
+      "bedrooms": "Bedroom + mezzanine",
       "guests": "Guests"
     },
     "amenities": {
       "outdoor": {
         "title": "In the open air",
-        "description": "Slow mornings, shared meals and evenings by the fire. There is room here to unwind at your own pace.",
-        "imageAlt": "Outdoor surroundings of Domek na Mazurskiej",
-        "grill": "Barbecue",
-        "firepit": "Firepit",
-        "jacuzzi": "Jacuzzi and outdoor bathing tub",
+        "subtitle": "Your surroundings and private relaxation",
+        "imageAlt": "Terrace with a hot tub and meadow views at Domek na Mazurskiej",
+        "jacuzziTitle": "Private hot tub with hydromassage",
+        "jacuzziDesc": "Your own relaxation space under the open sky, perfect for unwinding in the evening.",
+        "terraceTitle": "Spacious terrace with a view",
+        "terraceDesc": "Comfortable outdoor furniture and loungers with direct views of a pond, meadows and the edge of the forest.",
+        "firepitTitle": "Campfire and barbecue",
+        "firepitDesc": "A dedicated spot for evening campfires and a gas barbecue on the property, with firewood available on site.",
+        "parkingTitle": "Parking",
+        "parkingDesc": "Free parking spaces right by the cottage.",
         "woodTerms": "The first bag of firewood is included in your stay. Additional bags cost extra \u2014 we will agree the price before arrival."
       },
       "family": {
         "title": "Active days for the family",
-        "description": "A kickabout, time playing in the yard or a trip around the area. Mix quiet moments with outdoor activities.",
-        "imageAlt": "The Masurian landscape around the house",
-        "goal": "Football goal",
-        "yard": "Yard for play",
-        "bikesSup": "Bicycles and SUP",
-        "equipmentTerms": "Bicycles and SUP are available by prior arrangement."
+        "subtitle": "Recreation for children and adults",
+        "imageAlt": "Football goal on the grass beside the cottage",
+        "goalTitle": "Sport and games",
+        "goalDesc": "A football goal on the green lawn.",
+        "yardTitle": "For little ones",
+        "yardDesc": "A playground, sandpit and trampoline.",
+        "waterTitle": "Water sports equipment",
+        "waterDesc": "SUP boards and a small rowing boat are available on site by prior arrangement.",
+        "babyTitle": "Family facilities",
+        "babyDesc": "A cot and high chair are available on request."
       },
       "indoor": {
         "title": "Comfort indoors",
-        "description": "Make your morning coffee in the kitchen, cool down on a warm day and enjoy a relaxed evening in the living room.",
-        "imageAlt": "Kitchen at Domek na Mazurskiej",
-        "coffee": "Drip coffee maker",
-        "ac": "Air conditioning",
-        "tv": "Television",
-        "internet": "Internet"
+        "imageAlt": "Living room and the view from the mezzanine at Domek na Mazurskiej",
+        "sleepingTitle": "Comfortable sleeping spaces (4–6 guests)",
+        "bedroomTitle": "Downstairs bedroom",
+        "bedroomDesc": "A cosy, enclosed room with a double bed and underfloor heating.",
+        "loftTitle": "Cosy mezzanine",
+        "loftDesc": "An upstairs space with a double bed and lovely views over the pond and surrounding meadows.",
+        "sofaTitle": "Downstairs living room",
+        "sofaDesc": "An open living area with a comfortable double sofa bed, providing an additional sleeping space for two.",
+        "equipmentTitle": "Indoor facilities",
+        "kitchenTitle": "Fully equipped kitchenette",
+        "kitchenDesc": "A dishwasher, drip coffee maker, induction hob, fridge-freezer, kettle, and a full set of pots, crockery and cutlery.",
+        "bathroomTitle": "Comfortable bathroom",
+        "bathroomDesc": "A shower, underfloor heating and a hairdryer, with fresh bed linen and towels provided for every guest.",
+        "climateTitle": "Year-round comfort",
+        "climateDesc": "Air conditioning for hot days and underfloor heating in the bedroom and bathroom for the cooler months.",
+        "mediaTitle": "Stay connected",
+        "mediaDesc": "Free Wi-Fi and TV."
+      }
+    },
+    "inventory": {
+      "title": "Full equipment list",
+      "comfort": {
+        "title": "Interior and comfort",
+        "items": {
+          "ac": "Air conditioning",
+          "heating": "Underfloor heating in the bedroom and bathroom",
+          "media": "Wi-Fi and TV",
+          "towels": "Towels for every guest",
+          "linen": "Fresh bed linen"
+        }
+      },
+      "kitchen": {
+        "title": "Kitchen",
+        "items": {
+          "kitchenette": "Fully equipped kitchenette",
+          "dishwasher": "Dishwasher",
+          "hob": "Induction hob",
+          "coffee": "Drip coffee maker",
+          "fridge": "Fridge-freezer",
+          "kettle": "Electric kettle",
+          "cookware": "Pots, pans, crockery and cutlery"
+        }
+      },
+      "family": {
+        "title": "For families and children",
+        "items": {
+          "baby": "Cot and high chair (by prior arrangement)",
+          "playground": "Playground, sandpit and trampoline",
+          "goal": "Football goal"
+        }
+      },
+      "outdoor": {
+        "title": "Outdoors and relaxation",
+        "items": {
+          "hotTub": "Hot tub with hydromassage",
+          "terrace": "Spacious terrace overlooking the pond and meadows",
+          "firepit": "Barbecue and campfire area",
+          "loungers": "Loungers",
+          "water": "Rowing boat and SUP board (by prior arrangement)",
+          "parking": "Free parking on the property",
+          "pets": "Pet-friendly accommodation"
+        }
       }
     },
     "attractions": {
-      "title": "Attractions nearby",
+      "title": "Nearby attractions – what to see around Domek na Mazurskiej",
+      "intro": "Our cottage is a great base for exploring. Enjoy the peace of a neighbouring Natura 2000 forest, with lovely spots, beaches and viewpoints close by.",
       "pond": {
         "distance": "The view nearby",
         "title": "Panorama of the Masurian hills",
         "desc": "Rolling countryside towards the village of Liski, with a private pond in the distance \u2014 the view that comes with your morning coffee on the terrace."
       },
-      "kayak": {
-        "title": "Kayaks & SUP",
-        "desc": "Explore the calm waters of the surrounding lakes at your own pace. SUP is available by prior arrangement."
+      "beach": {
+        "title": "A quiet forest beach – 500 m from the cottage",
+        "desc": "A short, 10-minute walk through the forest takes you to a secluded beach. A peaceful place for a swim and time by the water, away from the crowds.",
+        "imageAlt": "Garbas Lake surrounded by greenery"
+      },
+      "sandHill": {
+        "title": "Sand Hill beside Jędzelewo Lake",
+        "desc": "An unusual sandy hill right beside the lake, with a desert-like landscape. A lovely viewpoint over Stare Juchy and Jędzelewo Lake.",
+        "imageAlt": "Sand Hill beside Jędzelewo Lake"
+      },
+      "lakes": {
+        "title": "Three lakes, fishing and a rowing boat",
+        "desc": "Lakes Jędzelewo, Garbas and Rekąty are nearby. A small rowing boat for early-morning fishing and a SUP board are available on site by prior arrangement.",
+        "imageAlt": "SUP equipment by the water"
+      },
+      "forest": {
+        "title": "Natura 2000 forest paths",
+        "desc": "With the forest right next door, head out for walks, a morning jog or an outing with your dog. In autumn, enjoy mushroom picking and the quiet of nature.",
+        "imageAlt": "The cottage surroundings beside forest and meadows"
+      },
+      "tower": {
+        "title": "Viewing tower in Stare Juchy",
+        "desc": "Take a short trip to a viewpoint overlooking local forests, lakes and the rolling Masurian Hills.",
+        "imageAlt": "Viewing tower in Stare Juchy"
       },
       "bike": {
-        "title": "Cycling trips",
-        "desc": "Hundreds of kilometres of forest paths and scenic trails around Stare Juchy."
+        "title": "Cycling routes in the Masurian Hills",
+        "desc": "Scenic gravel roads, gentle climbs and wide-open views over fields make this a wonderful area to explore on two wheels."
       },
-      "fishing": {
-        "title": "Fishing",
-        "desc": "Take the small rowing boat out at dawn for a quiet catch \u2014 available on site for our guests."
+      "elk": {
+        "title": "A day out in Ełk (around 20 km)",
+        "desc": "A lively promenade with restaurants beside Ełk Lake, a historic narrow-gauge railway and a rope park offer a change of pace during your stay.",
+        "imageAlt": "Panorama of Ełk beside Ełk Lake"
+      },
+      "village": {
+        "title": "Stare Juchy and everyday essentials",
+        "desc": "The centre of Stare Juchy and the Dino supermarket are 1.3 km (approximately 18 minutes on foot) from the cottage. The village has shops, essential services, a railway station and a bus stop. Seasonal events include local festivals and the well-known Piknik Jaćwieski."
+      },
+      "gizycko": {
+        "title": "Giżycko – harbours and sailing (32 km)",
+        "desc": "Around 30 minutes by car takes you to the sailing capital of Masuria. Explore lively harbours and marinas, take a boat cruise or visit Boyen Fortress.",
+        "imageAlt": "Harbour and lakeside panorama of Giżycko"
       },
       "food": {
-        "title": "Local cuisine",
-        "imageAlt": "Kitchen at Domek na Mazurskiej",
-        "desc": "Discover regional flavours with our trusted local hosts."
-      },
-      "garbas": {
-        "distance": "500m from the house",
-        "title": "Garbas Lake",
-        "desc": "A wild, scenic path down to the water, tucked away in nature \u2014 a perfect walk for a summer morning."
+        "title": "Local food – home cooking and fresh fish",
+        "desc": "Gościniec Na Wzgórzu (800 m, a 10-minute walk) serves home-cooked meals in season. The fish restaurant by the beach in Liski (1.5 km) is another favourite. We have tried them ourselves and recommend them!"
       }
     }
   },
   "gallery": {
-    "title": "Gallery",
-    "subtitle": "Discover the harmony of nature and minimalist design. Our interiors and surroundings were created to give you space to truly breathe.",
+    "title": "Make yourself at home at Domek na Mazurskiej",
+    "subtitle": "Browse the photos and discover how lovely a stay in our Masurian cottage can be :)",
     "viewer": {
       "title": "Photo viewer",
       "open": "Enlarge photo: {{caption}}",
@@ -120,8 +224,8 @@
   },
   "pricing": {
     "loading": "Loading pricing\u2026",
-    "title": "Pricing",
-    "subtitle": "Clear rules for your comfort.",
+    "title": "Pricing and booking terms",
+    "subtitle": "Find the key information about your stay and booking conditions.",
     "popular": "POPULAR",
     "perNight": "PLN / night",
     "loadError": "Pricing could not be loaded. Please try again or contact us to confirm the price.",
@@ -132,10 +236,79 @@
     "lowDates": "October - April\n(excluding holidays)",
     "highDates": "May - September\nand long weekends",
     "holidayDates": "Christmas, New Year,\nEaster",
-    "minStay": "Minimum stay: 2 nights",
-    "cta": "BOOK YOUR STAY"
+    "descriptionLoading": "Loading the minimum-stay description…",
+    "descriptionLoadError": "Could not load the minimum-stay description.",
+    "cta": "BOOK YOUR STAY",
+    "terms": {
+      "title": "Stay and booking terms",
+      "hotTub": {
+        "title": "Hot tub with hydromassage",
+        "first": "First preparation",
+        "price": "200 PLN",
+        "selfService": "Prepare the hot tub yourself for subsequent uses."
+      },
+      "hours": {
+        "title": "Check-in and check-out",
+        "arrival": "Check-in",
+        "checkIn": "from 3:00 PM",
+        "departure": "Check-out",
+        "checkOut": "by 11:00 AM",
+        "flexible": "Need different times? Let us know in advance — we will accommodate your arrival or departure time where possible."
+      },
+      "payment": {
+        "title": "Booking and payments",
+        "advance": "A 30% advance payment is due within 24 hours of the owner's approval — pay by bank transfer or BLIK to a phone number.",
+        "balance": "Pay the remaining balance by bank transfer before arrival, or by cash / BLIK on site."
+      }
+    }
+  },
+  "social": {
+    "title": "Find us on social media",
+    "comingSoon": "coming soon",
+    "loading": "Loading social media links…",
+    "loadError": "Social media links could not be loaded."
+  },
+  "directions": {
+    "title": "How to get to Domek na Mazurskiej 31G in Stare Juchy",
+    "intro": "Our cottage is tucked away in a quiet spot right beside the forest. Follow these directions for a stress-free journey, whether you are coming by car, train or bus.",
+    "carTitle": "By car",
+    "gps": "GPS address:",
+    "turn": "Leave the main asphalt road by the Therapy Centre (Ośrodek Terapii) in Stare Juchy and follow the charming Masurian country road.",
+    "forest": "Continue straight along Mazurska Street, pass number 31, then turn left just before the forest.",
+    "parking": "Free private parking awaits you on the property.",
+    "openMap": "Open directions in Google Maps",
+    "transitTitle": "By train or bus",
+    "trainTitle": "Stare Juchy railway station",
+    "train": "The station is 2.2 km from the cottage — around a 30-minute walk. Trains to Stare Juchy run from places including Ełk, Olsztyn and Białystok.",
+    "busTitle": "Stare Juchy bus stop",
+    "bus": "The bus stop is 1.6 km from the cottage, in the village centre at Plac 500-lecia.",
+    "mapTitle": "Map to Domek na Mazurskiej"
+  },
+  "contact": {
+    "title": "Contact – Book your stay in Masuria",
+    "intro": "Questions about availability or facilities? Email us or use the form below — we will be happy to help!",
+    "detailsTitle": "Contact details",
+    "phonePrefix": "Phone",
+    "phoneSoon": "Phone number coming soon",
+    "address": "Address",
+    "formTitle": "Get in touch",
+    "enquiryHint": "This form is for enquiries and does not hold dates. To book your stay, choose:",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone (optional)",
+    "checkIn": "Check-in (optional)",
+    "checkOut": "Check-out (optional)",
+    "datesPrefix": "Stay dates",
+    "message": "Message",
+    "sending": "Sending…",
+    "resultLabel": "Message delivery result",
+    "datesError": "Enter both dates; check-out must be after check-in.",
+    "requiredError": "Enter your name, a valid email address and a message.",
+    "sendError": "Your message could not be sent. Please try again or email us."
   },
   "booking": {
+    "rulesLink": "Pricing and stay rules",
+    "contactLink": "Questions? Get in touch",
     "title": "Check Availability",
     "subtitle": "Choose your dates and send a booking request for your stay in the heart of nature. We'll contact you to confirm the dates.",
     "step1": "1. DATES",
@@ -143,7 +316,7 @@
     "step3": "3. SUMMARY",
     "step4": "4. PROVISIONAL BOOKING",
     "dates": "Stay dates",
-    "datesSubtitle": "Minimum stay is 2 nights. The estimated price updates automatically.",
+    "datesSubtitle": "The minimum stay depends on the season. Select your dates to see the required minimum and estimated price.",
     "estimatedCost": "Estimated stay cost:",
     "noPricing": "No pricing is available for the entire selected stay. Choose different dates or contact us.",
     "guestDetails": "Guest details",
@@ -163,12 +336,13 @@
     "confirmation": "Thank you for your request!",
     "provisionalTitle": "Provisional booking",
     "confirmationMessage": "Your dates are held immediately for up to 24 hours while you wait for the owner's decision. This is not yet a confirmed stay; the hold expires at the deadline below.",
-    "notificationInfo": "An informative email is sent or queued. No action or email verification is required. After the owner's decision, you will receive confirmation with the final price, deposit and balance, or a rejection email.",
+    "notificationInfo": "An informative email is sent or queued. No payment or email verification is required at this stage. After the owner's decision, you will receive confirmation with the final price, deposit and balance, or a rejection email.",
     "holdDeadline": "Dates held until",
     "bookingIdLabel": "Request number:",
     "houseRulesTitle": "House Rules",
-    "checkInTitle": "CHECK-IN",
-    "checkInValue": "from 4:00 PM",
+    "checkInTitle": "CHECK-IN / CHECK-OUT",
+    "checkInValue": "Check-in from 3:00 PM",
+    "checkOutValue": "Check-out by 11:00 AM",
     "quietHoursTitle": "QUIET HOURS",
     "quietHoursValue": "10:00 PM \u2013 6:00 AM",
     "petsTitle": "PETS",
@@ -182,7 +356,11 @@
     "contactMessage": "CONTACT \u2014 MESSAGE",
     "sendMessage": "Send message",
     "messageSent": "Your message has been sent.",
-    "minStayError": "Minimum stay is 2 nights",
+    "minStayError_one": "Minimum stay is {{count}} night",
+    "minStayError_other": "Minimum stay is {{count}} nights",
+    "minimumStay_one": "Minimum for the selected dates: {{count}} night",
+    "minimumStay_other": "Minimum for the selected dates: {{count}} nights",
+    "minimumChanged": "The minimum stay for these dates has changed. Check the current minimum and adjust your dates.",
     "fillDetailsError": "Fill in all required guest details",
     "unavailableError": "Selected dates are unavailable. Please choose different dates.",
     "next": "Next",
@@ -239,6 +417,15 @@
     }
   },
   "admin": {
+    "settings": "Site settings",
+    "siteSettings": {
+      "hint": "These links are shared by the header and Contact page. Enter full HTTPS addresses. An empty field shows a “coming soon” link to the home page.",
+      "facebookUrl": "Facebook — link",
+      "instagramUrl": "Instagram — link",
+      "save": "Save links",
+      "invalidUrl": "Enter a full HTTPS link or leave the field empty.",
+      "saveError": "The links could not be saved. Please try again."
+    },
     "priceEdit": {
       "edit": "Edit price",
       "manual": "Manual amount",
@@ -248,7 +435,7 @@
       "original": "Original total: {{amount}} PLN",
       "final": "Final total: {{amount}} PLN",
       "paid": "Deposit paid: {{amount}} PLN",
-      "remaining": "Remaining on arrival: {{amount}} PLN",
+      "remaining": "Remaining balance: {{amount}} PLN",
       "overpayment": "Overpayment: {{amount}} PLN",
       "save": "Save price",
       "saved": "Price saved",
@@ -258,8 +445,17 @@
       "unsaved": "Save or cancel price changes and save the deposit before confirming."
     },
     "pricingEditor": {
-      "help": "Saved prices and dates are used on the website and for new quotes. Season boundary dates are inclusive, and holidays take priority. Existing booking prices remain unchanged.",
+      "help": "Saved prices, dates and minimum stays apply to new bookings. Season boundary dates are inclusive, and holidays take priority. A stay spanning multiple seasons uses the highest minimum across occupied nights, excluding checkout. Existing bookings remain unchanged.",
       "price": "Price per night (PLN)",
+      "minNights": "Minimum nights",
+      "invalidMinimum": "Enter a whole number of nights from 2 to 2147483647.",
+      "descriptionTitle": "Minimum-stay description",
+      "descriptionHelp": "This is explanatory text on the Pricing page only — it does not set calendar restrictions. Keep both languages consistent and configure the actual minimums in the seasons above.",
+      "descriptionPl": "Polish description",
+      "descriptionEn": "English description",
+      "saveDescription": "Save description",
+      "invalidDescription": "Fill in both descriptions (1 to 2000 characters each).",
+      "descriptionSaveError": "Could not save the description. Check your connection and try again.",
       "from": "From date",
       "to": "To date",
       "save": "Save changes",

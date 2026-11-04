@@ -1,5 +1,6 @@
 ﻿{
   "nav": {
+    "directions": "Jak dojechać?",
     "home": "Start",
     "house": "Dom",
     "gallery": "Galeria",
@@ -17,97 +18,200 @@
   },
   "home": {
     "hero": {
-      "title": "Tw\u00f3j azyl na Mazurach",
-      "subtitle": "Odkryj harmoni\u0119 w duchu Lagom. Minimalistyczny dom zatopiony w naturze, oferuj\u0105cy blisko\u015b\u0107 jeziora Garbas (500m) i spok\u00f3j z dala od codzienno\u015bci.",
+      "title": "Domek do wynajęcia na Mazurach",
+      "location": "Stare Juchy k. Ełku",
+      "subtitle": "Gorąca balia pod gwiazdami. Falowany krajobraz Mazur Garbatych, 3 jeziora w sąsiedztwie i zapach lasu. Rozgość się w Domku na Mazurskiej :)",
       "cta": "ZAREZERWUJ TERAZ"
     },
+    "intro": {
+      "description": "Szukasz miejsca na prawdziwy reset? Zapraszamy do Starych Juch k. Ełku! Nasz klimatyczny domek na wynajem oferuje bezkresną, otwartą przestrzeń tuż przy lesie Natura 2000 oraz malowniczy widok na staw i łąki. Zaledwie 500 metrów dzieli Cię od jeziora z urokliwą, kameralną plażą leśną.",
+      "invitation": "Romantyczny wyjazd we dwójkę, czas z rodziną, wypad z przyjaciółmi czy samotny reset przy lesie – odpocznij w prawdziwym mazurskim klimacie."
+    },
     "amenities": {
-      "title": "Udogodnienia",
-      "subtitle": "Wszystko, czego potrzebujesz do pe\u0142nego relaksu, zaprojektowane z dba\u0142o\u015bci\u0105 o ka\u017cdy detal.",
-      "jacuzzi": "Jacuzzi i Bania",
-      "forest": "Otoczenie Lasu",
-      "lake": "Blisko\u015b\u0107 Jeziora",
-      "jacuzziDesc": "Prywatna strefa relaksu na \u015bwie\u017cym powietrzu, idealna na wieczorne odpr\u0119\u017cenie pod gwiazdami.",
-      "forestDesc": "Zanurz si\u0119 w zapachu sosnowego lasu. Nasza dzia\u0142ka graniczy bezpo\u015brednio z rezerwatem przyrody.",
-      "lakeDesc": "Zaledwie 500m dzieli Ci\u0119 od jeziora Garbas z dzikim, malowniczym zej\u015bciem do wody. Spacer idealny na letnie poranki."
+      "title": "Udogodnienia i atrakcje na miejscu",
+      "subtitle": "Zadbaliśmy o wyposażenie i przestrzeń tak, aby niczego Ci nie brakowało. Od relaksu w balii po sprzęt wodny i wygodną kuchnię – wszystko z myślą o Twojej wygodzie.",
+      "jacuzzi": "Gorąca balia z hydromasażem",
+      "forest": "Tuż przy lesie Natura 2000, staw i widok na łąki",
+      "lake": "500 m do leśnego jeziora & sprzęt wodny",
+      "terrace": "Ognisko, taras & biesiadowanie",
+      "family": "Plac zabaw, bramka & raj dla psa",
+      "location": "Wygodna lokalizacja i parking",
+      "jacuzziDesc": "Prywatny relaks w bąbelkach pod gołym niebem. Idealna opcja na chłodniejsze wieczory, regenerację po spacerach i obserwację gwiazd.",
+      "forestDesc": "Domek stoi przy samym lesie, a z wielkich okien i antresoli rozpościera się panorama na staw, łąki i falujące pagórki Mazur Garbatych. Brak ogrodzeń sprawia, że przestrzeń pozostaje otwarta i naturalna.",
+      "lakeDesc": "Zaledwie kilkuminutowy spacer przez las dzieli Cię od urokliwej, kameralnej plaży. W sąsiedztwie masz 3 jeziora (Jędzelewo, Garbas, Rekąty), a na miejscu udostępniamy deski SUP oraz małą łódkę wiosłową (po wcześniejszym ustaleniu).",
+      "terraceDesc": "Klimatyczne miejsce na ognisko na wieczorne pieczenie kiełbasek i rozmowy przy trzaskającym ogniu, a także przestronny taras na poranną kawę i popołudniowe leniuchowanie na leżaku.",
+      "familyDesc": "Dla dzieci przygotowaliśmy plac zabaw, trampolinę i bramkę do piłki nożnej na zielonej trawie. Twój pies też jest u nas bardzo mile widziany – przestrzeń wokół domku to dla niego idealny teren do biegania!",
+      "locationDesc": "Blisko natury, ale z szybkim dostępem do wszystkiego. Centrum Starych Juch i sklep Dino dzieli od domku 1,3 km – około 18 minut spacerem. W pobliżu znajduje się wieża widokowa. Bezpłatny parking tuż przy obiekcie."
     },
     "interior": {
-      "title": "Wn\u0119trze pe\u0142ne \u015bwiat\u0142a",
-      "desc": "Zaprojektowane w zgodzie z filozofi\u0105 Lagom - ani za ma\u0142o, ani za du\u017co. Przestronny salon z kominkiem, w pe\u0142ni wyposa\u017cona kuchnia i sypialnie z widokiem na las zapewniaj\u0105 komfortowy wypoczynek dla maksymalnie 6 os\u00f3b.",
+      "title": "Jasne, klimatyczne wnętrze z przepięknym widokiem",
+      "desc": "Urządziliśmy Domek na Mazurskiej tak, żeby po prostu dobrze się w nim przebywało. Z dużych okien salonu roztacza się widok na staw, łąki i skraj lasu, dzięki czemu nawet siedząc w środku na kanapie, nie tracisz kontaktu z naturą.",
+      "layout": "Wewnątrz czeka na Ciebie przestronny, jasny salon na wspólne wieczory, w pełni wyposażony aneks kuchenny, w którym wygodnie przygotujesz posiłki, przytulna sypialnia oraz antresola na górze – skąd widok jest jeszcze piękniejszy.",
       "cta": "ZOBACZ GALERI\u0118"
     }
   },
   "house": {
-    "title": "O Naszym Domu",
-    "desc": "Zaprojektowany z my\u015bl\u0105 o filozofii 'Lagom' \u2013 w sam raz. Nasz dom to przestrze\u0144, gdzie skandynawski minimalizm spotyka si\u0119 z ciep\u0142em mazurskiego krajobrazu. Oferujemy miejsce do oddechu i wyciszenia w samym sercu natury w miejscowo\u015bci Stare Juchy.",
+    "title": "O Domku na Mazurskiej – Poznaj nasze wnętrza i otoczenie",
+    "desc": "Nasz całoroczny domek w Starych Juchach został zaprojektowany z myślą o pełnym komforcie i bliskości natury. Wielkie okna salonu wpuszczają mnóstwo światła i otwierają piękny widok na staw, łąki oraz skraj lasu Natura 2000. To idealne miejsce na wyciszenie, rodzinne wakacje lub wypad z przyjaciółmi.",
     "stats": {
       "space": "Przestrzeni",
-      "bedrooms": "Sypialnie",
+      "bedrooms": "Sypialnia + antresola",
       "guests": "Os\u00f3b"
     },
     "amenities": {
       "outdoor": {
         "title": "Na \u015bwie\u017cym powietrzu",
-        "description": "Spokojne poranki, wsp\u00f3lne posi\u0142ki i wieczory przy ogniu. Tutaj jest miejsce na odpoczynek we w\u0142asnym rytmie.",
-        "imageAlt": "Otoczenie Domku na Mazurskiej",
-        "grill": "Grill",
-        "firepit": "Miejsce na ognisko",
-        "jacuzzi": "Jacuzzi i bania",
+        "subtitle": "Otoczenie i prywatny relaks",
+        "imageAlt": "Taras z balią i widokiem na łąki przy Domku na Mazurskiej",
+        "jacuzziTitle": "Gorąca balia z hydromasażem",
+        "jacuzziDesc": "Prywatna strefa relaksu pod gołym niebem – idealna na wieczorny odpoczynek.",
+        "terraceTitle": "Duży taras z widokiem",
+        "terraceDesc": "Wygodne meble ogrodowe i leżaki z bezpośrednim widokiem na staw, łąki i skraj lasu.",
+        "firepitTitle": "Ognisko i grill",
+        "firepitDesc": "Wyznaczone miejsce na wieczorne ognisko oraz grill gazowy do dyspozycji na posesji (drewno na miejscu).",
+        "parkingTitle": "Parking",
+        "parkingDesc": "Bezpłatne miejsca parkingowe tuż przy domku.",
         "woodTerms": "Pierwszy worek drewna w cenie pobytu. Kolejne worki dodatkowo p\u0142atne \u2014 cen\u0119 ustalimy przed przyjazdem."
       },
       "family": {
         "title": "Aktywnie i rodzinnie",
-        "description": "Mecz w pi\u0142k\u0119, zabawa na podw\u00f3rku albo wycieczka po okolicy. Po\u0142\u0105cz chwile spokoju z ruchem na \u015bwie\u017cym powietrzu.",
-        "imageAlt": "Mazurski krajobraz wok\u00f3\u0142 domu",
-        "goal": "Bramka do gry w pi\u0142k\u0119",
-        "yard": "Podw\u00f3rko do zabawy",
-        "bikesSup": "Rowery i SUP",
-        "equipmentTerms": "Rowery i SUP dost\u0119pne po wcze\u015bniejszym uzgodnieniu."
+        "subtitle": "Rekreacja dla dzieci i dorosłych",
+        "imageAlt": "Bramka do piłki nożnej na trawie przy domku",
+        "goalTitle": "Strefa sportowa",
+        "goalDesc": "Bramka do piłki nożnej na zielonej trawie.",
+        "yardTitle": "Dla najmłodszych",
+        "yardDesc": "Plac zabaw, piaskownica oraz trampolina.",
+        "waterTitle": "Sprzęt wodny",
+        "waterDesc": "Na miejscu udostępniamy deski SUP oraz małą łódkę wiosłową (po wcześniejszym ustaleniu).",
+        "babyTitle": "Udogodnienia dla rodzin",
+        "babyDesc": "Na życzenie przygotowujemy łóżeczko dziecięce oraz krzesełko do karmienia."
       },
       "indoor": {
         "title": "Komfort wewn\u0105trz",
-        "description": "Poranna kawa w kuchni, przyjemny ch\u0142\u00f3d w ciep\u0142y dzie\u0144 i spokojny wiecz\u00f3r w salonie. Pod r\u0119k\u0105 masz to, co u\u0142atwia codzienny wypoczynek.",
-        "imageAlt": "Kuchnia w Domku na Mazurskiej",
-        "coffee": "Ekspres przelewowy",
-        "ac": "Klimatyzacja",
-        "tv": "Telewizor",
-        "internet": "Internet"
+        "imageAlt": "Salon i widok z antresoli w Domku na Mazurskiej",
+        "sleepingTitle": "Wygodne miejsca do spania (4–6 osób)",
+        "bedroomTitle": "Sypialnia na dole",
+        "bedroomDesc": "Zamknięty, przytulny pokój z podwójnym łóżkiem małżeńskim oraz ogrzewaniem podłogowym.",
+        "loftTitle": "Klimatyczna antresola",
+        "loftDesc": "Górna przestrzeń z podwójnym łóżkiem małżeńskim i pięknym widokiem z okien na staw oraz okoliczne łąki.",
+        "sofaTitle": "Salon na dole",
+        "sofaDesc": "Otwarta przestrzeń z wygodną rozkładaną kanapą, która po rozłożeniu stanowi dodatkowe podwójne miejsce do spania.",
+        "equipmentTitle": "Wyposażenie wnętrza",
+        "kitchenTitle": "W pełni wyposażony aneks kuchenny",
+        "kitchenDesc": "Zmywarka, przelewowy ekspres do kawy, płyta indukcyjna, lodówka z zamrażalnikiem, czajnik oraz komplet garnków, naczyń i sztućców.",
+        "bathroomTitle": "Komfortowa łazienka",
+        "bathroomDesc": "Prysznic, ogrzewanie podłogowe, suszarka do włosów, komplet pościeli oraz ręczników dla każdego gościa.",
+        "climateTitle": "Całoroczny komfort",
+        "climateDesc": "Klimatyzacja na upalne dni oraz ogrzewanie podłogowe w sypialni i łazience na chłodniejsze miesiące.",
+        "mediaTitle": "Media",
+        "mediaDesc": "Bezpłatne Wi-Fi oraz TV."
+      }
+    },
+    "inventory": {
+      "title": "Pełna lista wyposażenia",
+      "comfort": {
+        "title": "Wnętrze i komfort",
+        "items": {
+          "ac": "Klimatyzacja",
+          "heating": "Ogrzewanie podłogowe w sypialni i łazience",
+          "media": "Wi-Fi oraz TV",
+          "towels": "Komplet ręczników dla gości",
+          "linen": "Świeża pościel"
+        }
+      },
+      "kitchen": {
+        "title": "Kuchnia",
+        "items": {
+          "kitchenette": "W pełni wyposażony aneks kuchenny",
+          "dishwasher": "Zmywarka",
+          "hob": "Płyta indukcyjna",
+          "coffee": "Ekspres przelewowy",
+          "fridge": "Lodówka z zamrażalnikiem",
+          "kettle": "Czajnik elektryczny",
+          "cookware": "Komplet garnków, patelni, naczyń i sztućców"
+        }
+      },
+      "family": {
+        "title": "Dla rodzin i dzieci",
+        "items": {
+          "baby": "Łóżeczko dziecięce i krzesełko do karmienia (po uzgodnieniu)",
+          "playground": "Plac zabaw, piaskownica i trampolina",
+          "goal": "Bramka do piłki nożnej"
+        }
+      },
+      "outdoor": {
+        "title": "Otoczenie i relaks",
+        "items": {
+          "hotTub": "Balia z hydromasażem",
+          "terrace": "Duży taras z widokiem na staw i łąki",
+          "firepit": "Grill i miejsce na ognisko",
+          "loungers": "Leżaki",
+          "water": "Łódka wiosłowa i deska SUP (po uzgodnieniu)",
+          "parking": "Bezpłatny parking na posesji",
+          "pets": "Obiekt przyjazny zwierzętom"
+        }
       }
     },
     "attractions": {
-      "title": "Atrakcje w okolicy",
+      "title": "Atrakcje w okolicy – co warto zobaczyć wokół Domku na Mazurskiej?",
+      "intro": "Nasz domek to świetna baza wypadowa. Z jednej strony masz bezpośrednie sąsiedztwo lasu Natura 2000 i ciszę, z drugiej – urokliwe zakątki, plaże i punkty widokowe tuż obok.",
       "pond": {
         "distance": "Widok z okolicy",
         "title": "Panorama mazurskich pag\u00f3rk\u00f3w",
         "desc": "Falisty krajobraz w stron\u0119 miejscowo\u015bci Liski i prywatny staw w tle \u2013 widok, kt\u00f3ry towarzyszy porannej kawie na tarasie."
       },
-      "kayak": {
-        "title": "Kajaki i SUP",
-        "desc": "Eksploruj spokojne wody okolicznych jezior w swoim tempie. SUP dost\u0119pny po wcze\u015bniejszym uzgodnieniu."
+      "beach": {
+        "title": "Kameralna plaża leśna – 500 m od domku",
+        "desc": "Krótki, 10-minutowy spacer przez las prowadzi do ustronnej plaży. Ciche miejsce na spokojną kąpiel i relaks nad wodą bez tłumów.",
+        "imageAlt": "Jezioro Garbas w otoczeniu zieleni"
+      },
+      "sandHill": {
+        "title": "Góra Piaskowa nad jeziorem Jędzelewo",
+        "desc": "Niezwykła piaskowa góra tuż nad brzegiem jeziora z pustynnym krajobrazem. Świetny punkt widokowy na Stare Juchy i jezioro Jędzelewo.",
+        "imageAlt": "Góra Piaskowa nad jeziorem Jędzelewo"
+      },
+      "lakes": {
+        "title": "3 jeziora, wędkarstwo i łódka wiosłowa",
+        "desc": "Jeziora Jędzelewo, Garbas i Rekąty w sąsiedztwie. Na miejscu udostępniamy małą łódkę wiosłową na poranny połów oraz deskę SUP (po wcześniejszym ustaleniu).",
+        "imageAlt": "Sprzęt SUP nad wodą"
+      },
+      "forest": {
+        "title": "Leśne ścieżki Natura 2000",
+        "desc": "Bezpośrednie sąsiedztwo lasu to zaproszenie na spacery, poranny jogging i wyprawy z psem. Jesienią warto wybrać się na grzyby i cieszyć się spokojem natury.",
+        "imageAlt": "Otoczenie domku przy lesie i łąkach"
+      },
+      "tower": {
+        "title": "Wieża widokowa w Starych Juchach",
+        "desc": "Krótka wycieczka na punkt widokowy z panoramą na okoliczne lasy, jeziora i falujące pagórki Mazur Garbatych.",
+        "imageAlt": "Wieża widokowa w Starych Juchach"
       },
       "bike": {
-        "title": "Wycieczki rowerowe",
-        "desc": "Setki kilometr\u00f3w le\u015bnych \u015bcie\u017cek i malowniczych tras wok\u00f3\u0142 Starych Juch."
+        "title": "Trasy rowerowe Mazur Garbatych",
+        "desc": "Malownicze szutrowe drogi, łagodne podjazdy i bezkresne widoki na pola – idealne tereny na wyprawy na dwóch kółkach."
       },
-      "fishing": {
-        "title": "W\u0119dkarstwo",
-        "desc": "Zabierz ma\u0142\u0105 \u0142\u00f3dk\u0119 wios\u0142ow\u0105 i wyp\u0142y\u0144 o poranku na po\u0142\u00f3w \u2013 dost\u0119pna na miejscu dla naszych go\u015bci."
+      "elk": {
+        "title": "Wypad do Ełku (ok. 20 km)",
+        "desc": "Tętniąca życiem promenada z restauracjami nad Jeziorem Ełckim, zabytkowa kolej wąskotorowa oraz park linowy – pomysł na urozmaicenie pobytu.",
+        "imageAlt": "Panorama Ełku nad Jeziorem Ełckim"
+      },
+      "village": {
+        "title": "Stare Juchy i wygoda na co dzień",
+        "desc": "Centrum Starych Juch i sklep Dino dzieli od domku 1,3 km (około 18 minut pieszo). W miejscowości znajdziesz sklepy, podstawowe punkty usługowe oraz stację PKP i przystanek PKS. W sezonie odbywają się tu festyny oraz słynny Piknik Jaćwieski."
+      },
+      "gizycko": {
+        "title": "Wypad do Giżycka – porty i żeglowanie (32 km)",
+        "desc": "Około 30 minut jazdy dzieli Cię od żeglarskiej stolicy Mazur. Czekają tu tętniące życiem porty, mariny, rejsy statkami oraz Twierdza Boyen.",
+        "imageAlt": "Port i panorama Giżycka nad jeziorem"
       },
       "food": {
-        "title": "Lokalna kuchnia",
-        "imageAlt": "Kuchnia w Domku na Mazurskiej",
-        "desc": "Odkryj smaki regionu u zaprzyja\u017anionych gospodarzy."
-      },
-      "garbas": {
-        "distance": "500m od domu",
-        "title": "Jezioro Garbas",
-        "desc": "Dzikie, malownicze zej\u015bcie do wody w\u015br\u00f3d natury \u2013 spacer w sam raz na letni poranek."
+        "title": "Lokalna kuchnia – domowe obiady i świeża ryba",
+        "desc": "Gościniec Na Wzgórzu (800 m, 10 minut spacerem) serwuje domowe obiady w sezonie, a smażalnia ryb przy plaży w Liskach (1,5 km) zaprasza na świeżą rybę. Sprawdziliśmy osobiście – polecamy!"
       }
     }
   },
   "gallery": {
-    "title": "Galeria",
-    "subtitle": "Odkryj harmoni\u0119 natury i minimalistycznego designu. Nasze wn\u0119trza i otoczenie zosta\u0142y zaprojektowane, aby zaoferowa\u0107 Ci przestrze\u0144 do prawdziwego oddechu.",
+    "title": "Rozgość się w Domku na Mazurskiej",
+    "subtitle": "Przejrzyj zdjęcia i przekonaj się, jak przyjemnie można spędzić czas w naszym mazurskim domku :)",
     "viewer": {
       "title": "Podgl\u0105d zdj\u0119\u0107",
       "open": "Powi\u0119ksz zdj\u0119cie: {{caption}}",
@@ -120,8 +224,8 @@
   },
   "pricing": {
     "loading": "\u0141adowanie cennika\u2026",
-    "title": "Cennik",
-    "subtitle": "Przejrzyste zasady dla Twojego komfortu.",
+    "title": "Cennik i zasady rezerwacji",
+    "subtitle": "Sprawdź najważniejsze informacje dotyczące pobytu oraz warunków rezerwacji.",
     "popular": "POPULARNY",
     "perNight": "z\u0142 / noc",
     "loadError": "Nie uda\u0142o si\u0119 wczyta\u0107 cennika. Spr\u00f3buj ponownie lub skontaktuj si\u0119 z nami, aby ustali\u0107 cen\u0119.",
@@ -132,10 +236,79 @@
     "lowDates": "Pa\u017adziernik - Kwiecie\u0144\n(z wy\u0142\u0105czeniem \u015bwi\u0105t)",
     "highDates": "Maj - Wrzesie\u0144\noraz d\u0142ugie weekendy",
     "holidayDates": "Bo\u017ce Narodzenie, Sylwester,\nWielanoc",
-    "minStay": "Min. d\u0142ugo\u015b\u0107 pobytu: 2 noce",
-    "cta": "ZAREZERWUJ SW\u00d3J POBYT"
+    "descriptionLoading": "Wczytywanie opisu minimalnego pobytu…",
+    "descriptionLoadError": "Nie udało się wczytać opisu minimalnego pobytu.",
+    "cta": "ZAREZERWUJ SW\u00d3J POBYT",
+    "terms": {
+      "title": "Zasady pobytu i rezerwacji",
+      "hotTub": {
+        "title": "Gorąca balia z hydromasażem",
+        "first": "Pierwsze przygotowanie",
+        "price": "200 zł",
+        "selfService": "Kolejne przygotowania we własnym zakresie."
+      },
+      "hours": {
+        "title": "Doba hotelowa",
+        "arrival": "Przyjazd",
+        "checkIn": "od 15:00",
+        "departure": "Wyjazd",
+        "checkOut": "do 11:00",
+        "flexible": "Potrzebujesz innych godzin? Daj znać wcześniej — w miarę możliwości dopasujemy czas przyjazdu lub wyjazdu."
+      },
+      "payment": {
+        "title": "Rezerwacja i płatności",
+        "advance": "Zaliczka 30% jest płatna w ciągu 24 godzin od zatwierdzenia rezerwacji przez właściciela — BLIK-iem na telefon lub przelewem tradycyjnym.",
+        "balance": "Pozostałą kwotę możesz wpłacić przelewem przed przyjazdem lub rozliczyć gotówką / BLIK-iem na miejscu."
+      }
+    }
+  },
+  "social": {
+    "title": "Znajdziesz nas również tutaj",
+    "comingSoon": "wkrótce",
+    "loading": "Wczytywanie linków do social mediów…",
+    "loadError": "Nie udało się wczytać linków do social mediów."
+  },
+  "directions": {
+    "title": "Jak dojechać do Domku na Mazurskiej 31G w Starych Juchach?",
+    "intro": "Nasz domek leży w ustronnej okolicy tuż przy lesie. Przygotowaliśmy dokładne wskazówki, jak bezstresowo do nas trafić — zarówno samochodem, jak i pociągiem czy autobusem.",
+    "carTitle": "Samochodem",
+    "gps": "Adres do nawigacji GPS:",
+    "turn": "Z głównej drogi asfaltowej zjeżdżasz w klimatyczną, prawdziwą mazurską drogę tuż przy Ośrodku Terapii w Starych Juchach.",
+    "forest": "Jedziesz prosto ul. Mazurską, mijasz numer 31 i przed samym lasem skręcasz w lewo.",
+    "parking": "Na miejscu czeka na Ciebie bezpłatny parking na posesji.",
+    "openMap": "Otwórz trasę w Google Maps",
+    "transitTitle": "Pociągiem lub autobusem",
+    "trainTitle": "Stacja PKP Stare Juchy",
+    "train": "Stacja znajduje się 2,2 km od domku — około 30 minut spacerem. Do Starych Juch kursują pociągi m.in. z Ełku, Olsztyna czy Białegostoku.",
+    "busTitle": "Przystanek PKS Stare Juchy",
+    "bus": "Przystanek znajduje się 1,6 km od domku, w centrum miejscowości przy placu 500-lecia.",
+    "mapTitle": "Mapa dojazdu do Domku na Mazurskiej"
+  },
+  "contact": {
+    "title": "Kontakt – Zarezerwuj swój pobyt na Mazurach",
+    "intro": "Masz pytania dotyczące wolnych terminów lub wyposażenia? Napisz do nas e-mailowo lub przez formularz poniżej — chętnie odpowiemy!",
+    "detailsTitle": "Dane kontaktowe",
+    "phonePrefix": "Telefon",
+    "phoneSoon": "Numer telefonu podamy wkrótce",
+    "address": "Adres",
+    "formTitle": "Napisz do nas",
+    "enquiryHint": "Formularz służy do zapytań i nie blokuje terminu. Aby zarezerwować pobyt, wybierz:",
+    "name": "Imię",
+    "email": "E-mail",
+    "phone": "Telefon (opcjonalnie)",
+    "checkIn": "Przyjazd (opcjonalnie)",
+    "checkOut": "Wyjazd (opcjonalnie)",
+    "datesPrefix": "Termin pobytu",
+    "message": "Wiadomość",
+    "sending": "Wysyłanie…",
+    "resultLabel": "Wynik wysłania wiadomości",
+    "datesError": "Podaj obie daty; wyjazd musi być po przyjeździe.",
+    "requiredError": "Uzupełnij imię, poprawny e-mail i wiadomość.",
+    "sendError": "Nie udało się wysłać wiadomości. Spróbuj ponownie lub napisz do nas e-mailowo."
   },
   "booking": {
+    "rulesLink": "Cennik i zasady pobytu",
+    "contactLink": "Masz pytania? Napisz do nas",
     "title": "Sprawd\u017a Dost\u0119pno\u015b\u0107",
     "subtitle": "Wybierz dogodny termin i wy\u015blij zapytanie o rezerwacj\u0119 pobytu w sercu natury. Skontaktujemy si\u0119, aby potwierdzi\u0107 termin.",
     "step1": "1. DATY",
@@ -143,7 +316,7 @@
     "step3": "3. PODSUMOWANIE",
     "step4": "4. REZERWACJA WSTĘPNA",
     "dates": "Daty pobytu",
-    "datesSubtitle": "Minimalna d\u0142ugo\u015b\u0107 pobytu to 2 noce. Cena orientacyjna aktualizuje si\u0119 automatycznie.",
+    "datesSubtitle": "Minimalna liczba nocy zależy od sezonu. Wybierz daty, aby sprawdzić wymagane minimum i orientacyjną cenę.",
     "estimatedCost": "Szacunkowy koszt pobytu:",
     "noPricing": "Brak cennika dla ca\u0142ego wybranego pobytu. Wybierz inny termin lub skontaktuj si\u0119 z nami.",
     "guestDetails": "Dane go\u015bci",
@@ -163,12 +336,13 @@
     "confirmation": "Dzi\u0119kujemy za zg\u0142oszenie!",
     "provisionalTitle": "Rezerwacja wstępna",
     "confirmationMessage": "Termin został od razu zablokowany na maksymalnie 24 godziny w oczekiwaniu na decyzję właściciela. To jeszcze nie jest potwierdzony pobyt; blokada wygasa w podanym poniżej terminie.",
-    "notificationInfo": "Powiadomienie informacyjne jest wysłane lub oczekuje w kolejce. Nie musisz nic robić ani potwierdzać adresu e-mail. Po decyzji właściciela otrzymasz potwierdzenie z ostateczną ceną, zaliczką i pozostałą kwotą do zapłaty albo wiadomość o odrzuceniu.",
+    "notificationInfo": "Powiadomienie informacyjne jest wysłane lub oczekuje w kolejce. Na tym etapie nie musisz nic płacić ani potwierdzać adresu e-mail. Po decyzji właściciela otrzymasz potwierdzenie z ostateczną ceną, zaliczką i pozostałą kwotą do zapłaty albo wiadomość o odrzuceniu.",
     "holdDeadline": "Termin zablokowany do",
     "bookingIdLabel": "Numer zg\u0142oszenia:",
     "houseRulesTitle": "Zasady Domu",
-    "checkInTitle": "ZAMELDOWANIE",
-    "checkInValue": "od 16:00",
+    "checkInTitle": "DOBA HOTELOWA",
+    "checkInValue": "Przyjazd od 15:00",
+    "checkOutValue": "Wyjazd do 11:00",
     "quietHoursTitle": "CISZA NOCNA",
     "quietHoursValue": "22:00 \u2013 06:00",
     "petsTitle": "ZWIERZ\u0118TA",
@@ -182,7 +356,15 @@
     "contactMessage": "KONTAKT \u2014 WIADOMO\u015a\u0106",
     "sendMessage": "Wy\u015blij wiadomo\u015b\u0107",
     "messageSent": "Wiadomo\u015b\u0107 zosta\u0142a wys\u0142ana.",
-    "minStayError": "Minimalna d\u0142ugo\u015b\u0107 pobytu to 2 noce",
+    "minStayError_one": "Minimalna długość pobytu to {{count}} noc",
+    "minStayError_few": "Minimalna długość pobytu to {{count}} noce",
+    "minStayError_many": "Minimalna długość pobytu to {{count}} nocy",
+    "minStayError_other": "Minimalna długość pobytu to {{count}} nocy",
+    "minimumStay_one": "Minimum w wybranym terminie: {{count}} noc",
+    "minimumStay_few": "Minimum w wybranym terminie: {{count}} noce",
+    "minimumStay_many": "Minimum w wybranym terminie: {{count}} nocy",
+    "minimumStay_other": "Minimum w wybranym terminie: {{count}} nocy",
+    "minimumChanged": "Minimalna długość pobytu dla tego terminu uległa zmianie. Sprawdź aktualne minimum i popraw daty pobytu.",
     "fillDetailsError": "Uzupe\u0142nij wszystkie wymagane dane go\u015bcia",
     "unavailableError": "Wybrany termin jest niedost\u0119pny. Wybierz inne daty.",
     "next": "Dalej",
@@ -239,6 +421,15 @@
     }
   },
   "admin": {
+    "settings": "Ustawienia strony",
+    "siteSettings": {
+      "hint": "Linki są wspólne dla nagłówka i strony Kontakt. Podaj pełne adresy HTTPS. Puste pole oznacza link „wkrótce” prowadzący na stronę główną.",
+      "facebookUrl": "Facebook — link",
+      "instagramUrl": "Instagram — link",
+      "save": "Zapisz linki",
+      "invalidUrl": "Podaj pełny link HTTPS lub zostaw puste pole.",
+      "saveError": "Nie udało się zapisać linków. Spróbuj ponownie."
+    },
     "priceEdit": {
       "edit": "Edytuj cenę",
       "manual": "Kwota ręczna",
@@ -248,7 +439,7 @@
       "original": "Cena pierwotna: {{amount}} PLN",
       "final": "Cena końcowa: {{amount}} PLN",
       "paid": "Wpłacona zaliczka: {{amount}} PLN",
-      "remaining": "Do dopłaty na miejscu: {{amount}} PLN",
+      "remaining": "Pozostało do zapłaty: {{amount}} PLN",
       "overpayment": "Nadpłata: {{amount}} PLN",
       "save": "Zapisz cenę",
       "saved": "Zapisano cenę",
@@ -258,8 +449,17 @@
       "unsaved": "Zapisz lub anuluj zmiany ceny i zapisz zaliczkę przed potwierdzeniem."
     },
     "pricingEditor": {
-      "help": "Zapisane ceny i daty s\u0105 u\u017cywane na stronie i przy nowych wycenach. Daty graniczne s\u0105 w\u0142\u0105czone w sezon, a \u015bwi\u0119ta maj\u0105 pierwsze\u0144stwo. Ceny ju\u017c utworzonych rezerwacji pozostaj\u0105 bez zmian.",
+      "help": "Zapisane ceny, daty i minima pobytu obowiązują dla nowych rezerwacji. Daty graniczne są włączone w sezon, a święta mają pierwszeństwo. Przy pobycie na przełomie sezonów obowiązuje najwyższe minimum z noclegów, bez dnia wyjazdu. Istniejące rezerwacje pozostają bez zmian.",
       "price": "Cena za noc (PLN)",
+      "minNights": "Minimalna liczba nocy",
+      "invalidMinimum": "Podaj całkowitą liczbę nocy od 2 do 2147483647.",
+      "descriptionTitle": "Opis minimalnego pobytu",
+      "descriptionHelp": "To wyłącznie opis na stronie Cennik — nie ustawia ograniczeń kalendarza. Wpisz zgodne zasady w obu językach, a rzeczywiste minima ustaw powyżej przy sezonach.",
+      "descriptionPl": "Opis po polsku",
+      "descriptionEn": "Opis po angielsku",
+      "saveDescription": "Zapisz opis",
+      "invalidDescription": "Uzupełnij opis w obu językach (od 1 do 2000 znaków).",
+      "descriptionSaveError": "Nie udało się zapisać opisu. Sprawdź połączenie i spróbuj ponownie.",
       "from": "Data od",
       "to": "Data do",
       "save": "Zapisz zmiany",

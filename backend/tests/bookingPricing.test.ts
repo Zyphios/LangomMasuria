@@ -109,6 +109,6 @@ describe('pending booking price editing', () => {
     })).toBe(true);
     expect(text).toContain('Łącznie: 2700.00 PLN');
     expect(text).toContain('Wpłacona zaliczka: 600.00 PLN');
-    expect(text).toContain('Do dopłaty na miejscu: 2100.00 PLN');
+    expect(text).toContain('Pozostało do zapłaty: 2100.00 PLN');
   });
 });

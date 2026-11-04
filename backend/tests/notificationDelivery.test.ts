@@ -85,7 +85,7 @@ it('delivers pending then final adjusted price/deposit messages through SMTP aft
   expect(messages).toHaveLength(2);
   expect(messages[1]).toContain('Total: 750.00 PLN');
   expect(messages[1]).toContain('Deposit paid: 200.00 PLN');
-  expect(messages[1]).toContain('Remaining on arrival: 550.00 PLN');
+  expect(messages[1]).toContain('Remaining balance: 550.00 PLN');
   expect(await db.confirmationEmail.findUnique({ where: { bookingId: booking.id } }))
     .toMatchObject({ kind: 'CONFIRMED', status: 'SENT' });
 });

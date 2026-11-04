@@ -2,13 +2,15 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import LanguageToggle from './LanguageToggle';
+import SocialLinks from './SocialLinks';
 
 const navLinks = [
   { to: '/house', labelKey: 'nav.house' },
   { to: '/attractions', labelKey: 'nav.attractions' },
   { to: '/gallery', labelKey: 'nav.gallery' },
   { to: '/pricing', labelKey: 'nav.rates' },
-  { to: '/booking', labelKey: 'nav.contact' }
+  { to: '/directions', labelKey: 'nav.directions' },
+  { to: '/contact', labelKey: 'nav.contact' }
 ];
 
 export default function Navbar() {
@@ -42,9 +44,7 @@ export default function Navbar() {
     if (isMenuOpen) menuButtonRef.current?.focus();
   };
 
-  // Both "Contact" and "Book now" point to /booking. If the guest is already on that page
-  // (often scrolled down past the calendar), react-router's Link does nothing on click since
-  // the location doesn't change - making the button look broken. Force a scroll-to-top instead.
+  // Re-selecting the booking page should bring a scrolled calendar back into view.
   const handleBookNowClick = () => {
     closeMenu();
     if (location.pathname === '/booking') {
@@ -61,7 +61,7 @@ export default function Navbar() {
             alt="Domek na Mazurskiej"
             width={680}
             height={270}
-            className="h-auto w-44 lg:w-64 xl:w-[280px]"
+            className="h-auto w-44 xl:w-56 2xl:w-64"
           />
         </Link>
         <button
@@ -71,7 +71,7 @@ export default function Navbar() {
           aria-expanded={isMenuOpen}
           aria-controls={menuId}
           onClick={() => setIsMenuOpen((open) => !open)}
-          className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded border border-primary/40 px-3 text-sm font-medium text-primary transition-colors hover:bg-primary/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary md:hidden"
+          className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded border border-primary/40 px-3 text-sm font-medium text-primary transition-colors hover:bg-primary/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary xl:hidden"
         >
           <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
             <path d={isMenuOpen ? 'M6 6l12 12M6 18 18 6' : 'M4 6h16M4 12h16M4 18h16'} />
@@ -80,9 +80,9 @@ export default function Navbar() {
         </button>
         <div
           id={menuId}
-          className={`${isMenuOpen ? 'flex' : 'hidden'} absolute inset-x-0 top-full max-h-[calc(100dvh-var(--site-header-height))] flex-col gap-4 overflow-y-auto overscroll-contain border-b border-primary/15 bg-[#bac5b5] px-margin-mobile py-4 shadow-lg md:contents`}
+          className={`${isMenuOpen ? 'flex' : 'hidden'} absolute inset-x-0 top-full max-h-[calc(100dvh-var(--site-header-height))] flex-col gap-4 overflow-y-auto overscroll-contain border-b border-primary/15 bg-[#bac5b5] px-margin-mobile py-4 shadow-lg xl:contents`}
         >
-          <nav aria-label={t('nav.navigation')} className="flex flex-col gap-1 md:flex-row md:items-center md:gap-4 lg:gap-6 xl:gap-8">
+          <nav aria-label={t('nav.navigation')} className="flex flex-col gap-1 xl:flex-row xl:items-center xl:gap-4">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.to;
 
@@ -90,11 +90,11 @@ export default function Navbar() {
                 <Link
                   key={link.to}
                   to={link.to}
-                  onClick={link.to === '/booking' ? handleBookNowClick : closeMenu}
+                  onClick={closeMenu}
                   aria-current={isActive ? 'page' : undefined}
-                  className={`flex min-h-11 items-center rounded px-3 py-2 text-base transition-colors duration-300 md:min-h-0 md:rounded-none md:px-0 md:py-0 md:text-sm lg:text-body-md ${
+                  className={`flex min-h-11 items-center rounded px-3 py-2 text-base transition-colors duration-300 xl:min-h-0 xl:rounded-none xl:px-0 xl:py-0 xl:text-sm ${
                     isActive
-                      ? 'bg-primary/10 font-medium text-primary md:border-b md:border-primary md:bg-transparent md:pb-1'
+                      ? 'bg-primary/10 font-medium text-primary xl:border-b xl:border-primary xl:bg-transparent xl:pb-1'
                       : 'text-on-surface-variant hover:text-primary'
                   }`}
                 >
@@ -103,7 +103,8 @@ export default function Navbar() {
               );
             })}
           </nav>
-          <div className="flex items-center justify-between gap-2 border-t border-primary/15 pt-4 [&_button]:min-h-11 md:justify-start md:border-0 md:pt-0 md:[&_button]:min-h-0 lg:gap-4">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-primary/15 pt-4 [&_button]:min-h-11 xl:flex-nowrap xl:justify-start xl:border-0 xl:pt-0 xl:[&_button]:min-h-0">
+            <SocialLinks compact onNavigate={closeMenu} />
             <LanguageToggle />
             <Link
               to="/booking"

@@ -141,9 +141,16 @@ model PricingSeason {
   namePl        String
   nameEn        String
   pricePerNight Decimal  @db.Decimal(10, 2)
+  minNights     Int      @default(2)
   dateFrom      DateTime @db.Date
   dateTo        DateTime @db.Date
   isFeatured    Boolean  @default(false)
+}
+
+model PricingSettings {
+  id            Int    @id @default(1)
+  minStayTextPl String @default("Min. długość pobytu: 2 noce") @db.VarChar(2000)
+  minStayTextEn String @default("Minimum stay: 2 nights") @db.VarChar(2000)
 }
 
 model AdminUser {
@@ -151,4 +158,10 @@ model AdminUser {
   email        String   @unique
   passwordHash String
   createdAt    DateTime @default(now())
+}
+
+model SiteSettings {
+  id           Int    @id @default(1)
+  facebookUrl  String @default("") @db.VarChar(2048)
+  instagramUrl String @default("") @db.VarChar(2048)
 }

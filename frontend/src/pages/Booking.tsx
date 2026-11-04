@@ -3,12 +3,12 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import BookingCalendar from '../components/BookingCalendar';
-import { sendContactMessage } from '../api/contact';
+import { Link } from 'react-router-dom';
 import { createBooking } from '../api/bookings';
 import { ApiError } from '../api/client';
 import { getPricingSeasons } from '../api/pricing';
 import { initialVisibleMonths, useCalendarAvailability } from '../hooks/useAvailability';
-import { estimateStayPrice, formatPrice } from '../utils/pricing';
+import { estimateStayPrice, formatPrice, getMinimumStay, MIN_STAY_NIGHTS } from '../utils/pricing';
 import type { BookingWizardForm, ProvisionalBookingResponse } from '../types';
 
 const baseState: BookingWizardForm = {
@@ -51,26 +51,42 @@ export default function Booking() {
     () => estimateStayPrice(pricingSeasons, form.checkIn, form.checkOut),
     [form.checkIn, form.checkOut, pricingSeasons]
   );
-  const pricingUnavailable = pricingPending || pricingError || estimatedTotal === null;
+  const requiredMinimum = useMemo(
+    () => getMinimumStay(pricingSeasons, form.checkIn, form.checkOut),
+    [form.checkIn, form.checkOut, pricingSeasons]
+  );
+  const pricingUnavailable = pricingPending || pricingError || estimatedTotal === null || requiredMinimum === null;
   const pricingMessage = pricingPending ? 'pricing.loading' : pricingError ? 'pricing.loadError' : 'booking.noPricing';
   const displayedEstimate = pricingUnavailable ? '—' : formatPrice(estimatedTotal, i18n.language);
 
-  const nextFromDates = () => {
-    if (calendar.disabled) { setError(t('links.availabilityError')); return; }
-    if (nights < 2) {
-      setError(t('booking.minStayError'));
-      return;
+  const validateStay = (): number | null => {
+    if (nights < MIN_STAY_NIGHTS) {
+      setError(t('booking.minStayError', { count: MIN_STAY_NIGHTS }));
+      return null;
     }
-    if (pricingPending || pricingError || estimatedTotal === null) {
+    if (pricingPending || pricingError || estimatedTotal === null || requiredMinimum === null) {
       setError(t(pricingMessage));
-      return;
+      return null;
     }
-    setForm((current) => ({ ...current, totalPrice: estimatedTotal, locale: i18n.language === 'en' ? 'en' : 'pl' }));
+    if (nights < requiredMinimum) {
+      setError(t('booking.minStayError', { count: requiredMinimum }));
+      return null;
+    }
+    return estimatedTotal;
+  };
+
+  const nextFromDates = () => {
+    if (sending) return;
+    if (calendar.disabled) { setError(t('links.availabilityError')); return; }
+    const totalPrice = validateStay();
+    if (totalPrice === null) return;
+    setForm((current) => ({ ...current, totalPrice, locale: i18n.language === 'en' ? 'en' : 'pl' }));
     setError('');
     setStep(2);
   };
 
   const nextFromGuestDetails = () => {
+    if (validateStay() === null) { setStep(1); return; }
     if (!form.guestName || !form.guestEmail || !form.guestPhone || form.guestsCount < 1 || form.guestsCount > 8) {
       setError(t('booking.fillDetailsError'));
       return;
@@ -81,11 +97,9 @@ export default function Booking() {
 
   const submitBookingRequest = async () => {
     if (sending) return;
-    if (pricingPending || pricingError || estimatedTotal === null) {
-      setError(t(pricingMessage));
-      return;
-    }
-    setForm((current) => ({ ...current, totalPrice: estimatedTotal }));
+    const totalPrice = validateStay();
+    if (totalPrice === null) { setStep(1); return; }
+    setForm((current) => ({ ...current, totalPrice }));
     setSending(true);
     try {
       const booking = await createBooking({
@@ -103,6 +117,12 @@ export default function Booking() {
       setStep(4);
       void client.invalidateQueries({ queryKey: ['availability'] });
     } catch (err) {
+      if (err instanceof ApiError && err.code === 'MINIMUM_STAY') {
+        setStep(1);
+        setError(t('booking.minimumChanged'));
+        await client.invalidateQueries({ queryKey: ['pricing'] });
+        return;
+      }
       // The backend re-validates date availability as the final safeguard against overlapping
       // stays; surface its rejection instead of leaving the wizard silently stuck on step 3.
       const key = err instanceof Error && err.message === 'BOOKING_RATE_LIMIT' ? 'links.rateLimited' : '';
@@ -150,7 +170,7 @@ export default function Booking() {
             })}
           </div>
 
-          {step < 4 && (pricingPending || pricingError || (nights >= 2 && estimatedTotal === null)) &&
+          {step < 4 && (pricingPending || pricingError || (nights >= MIN_STAY_NIGHTS && pricingUnavailable)) &&
             <p role={pricingPending ? 'status' : 'alert'} className="mt-4 text-error">{t(pricingMessage)}
               {pricingError && <button type="button" className="ml-3 underline" onClick={() => { void retryPricing(); }}>{t('links.retry')}</button>}
             </p>}
@@ -165,18 +185,22 @@ export default function Booking() {
                 {...calendar}
                 checkIn={form.checkIn}
                 checkOut={form.checkOut}
-                onCheckInChange={(value) => setForm((current) => ({ ...current, checkIn: value }))}
-                onCheckOutChange={(value) => setForm((current) => ({ ...current, checkOut: value }))}
+                onCheckInChange={(value) => { setError(''); setForm((current) => ({ ...current, checkIn: value })); }}
+                onCheckOutChange={(value) => { setError(''); setForm((current) => ({ ...current, checkOut: value })); }}
                 onVisibleMonthsChange={setVisibleMonths}
               />
               {calendar.disabled && <p role="alert" className="mt-4">{t(availabilityError ? 'links.availabilityError' : 'links.loading')}
                 {availabilityError && <button type="button" className="ml-3 underline" onClick={retryAvailability}>{t('links.retry')}</button>}
               </p>}
+              {nights > 0 && !pricingUnavailable && requiredMinimum !== null &&
+                <p aria-live="polite" className="mt-4 text-body-md text-on-surface-variant">
+                  {t('booking.minimumStay', { count: requiredMinimum })}
+                </p>}
               <div className='mt-6 flex flex-wrap items-center justify-between gap-4'>
                 <div className='rounded-2xl bg-surface-container-lowest px-5 py-4 text-body-md text-on-surface-variant'>
                   {t('booking.estimatedCost')} <span className='font-medium text-on-surface'>{displayedEstimate} PLN</span>
                 </div>
-                <button type='button' disabled={calendar.disabled || pricingPending || pricingError || (nights >= 2 && estimatedTotal === null)} onClick={nextFromDates} className={primaryButtonClasses}>
+                <button type='button' disabled={sending || calendar.disabled || pricingPending || pricingError || (nights >= MIN_STAY_NIGHTS && pricingUnavailable)} onClick={nextFromDates} className={primaryButtonClasses}>
                   {t('booking.next')}
                 </button>
               </div>
@@ -297,106 +321,14 @@ export default function Booking() {
           ) : null}
 
 
-          {error ? <p className='mt-6 text-body-md text-error'>{error}</p> : null}
+          {error ? <p role="alert" className='mt-6 text-body-md text-error'>{error}</p> : null}
         </section>
 
-        <section className='mt-16'>
-          <h2 className='text-headline-md text-on-surface text-center mb-12'>{t('booking.houseRulesTitle')}</h2>
-          <div className='grid gap-gutter md:grid-cols-2 xl:grid-cols-4'>
-            {[
-              { icon: 'schedule', title: t('booking.checkInTitle'), value: t('booking.checkInValue') },
-              { icon: 'volume_off', title: t('booking.quietHoursTitle'), value: t('booking.quietHoursValue') },
-              { icon: 'pets', title: t('booking.petsTitle'), value: t('booking.petsValue') },
-              { icon: 'smoke_free', title: t('booking.noSmokingTitle'), value: t('booking.noSmokingValue') }
-            ].map((rule) => (
-              <div key={rule.title} className='flex flex-col items-center text-center rounded-xl bg-surface-container-low p-6'>
-                <span className='material-symbols-outlined text-primary mb-4' style={{ fontSize: '40px' }}>{rule.icon}</span>
-                <h3 className='text-label-caps uppercase text-on-surface mb-2'>{rule.title}</h3>
-                <p className='text-body-md text-on-surface-variant'>{rule.value}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className='mt-section-gap rounded-[32px] bg-surface-container-low p-6 md:p-10'>
-          <div className='mb-10'>
-            <span className='text-label-caps uppercase tracking-widest text-primary'>{t('booking.contactLabel')}</span>
-            <h2 className='mt-4 text-headline-md text-on-surface'>{t('booking.writeToUs')}</h2>
-          </div>
-          <div className='grid grid-cols-1 gap-10 lg:grid-cols-[1.1fr_0.9fr]'>
-            <ContactSection />
-            <div className='rounded-[32px] bg-surface-container-low overflow-hidden min-h-[500px] relative'>
-              <div className='absolute inset-0 bg-gradient-to-br from-[#e4e9e0] to-[#cdd6c5]' />
-              <div className='h-full w-full'>
-                <iframe
-                  title='Domek na Mazurskiej - mapa'
-                  src='https://www.google.com/maps?q=53.91005862515826,22.162065817720844&z=15&output=embed'
-                  className='h-full w-full border-0 min-h-[500px] mix-blend-multiply opacity-70 grayscale'
-                />
-              </div>
-              <div className='absolute inset-0 flex items-center justify-center pointer-events-none'>
-                <div className='flex flex-col items-center'>
-                  <span className='material-symbols-outlined text-primary drop-shadow-md' style={{ fontSize: '48px', fontVariationSettings: "'FILL' 1" }}>location_on</span>
-                  <div className='bg-surface px-4 py-2 rounded-full shadow-sm mt-2 text-label-caps text-primary tracking-widest'>DOMEK NA MAZURSKIEJ</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <div className="mt-10 flex flex-wrap justify-center gap-x-8 gap-y-4 text-body-md text-primary">
+          <Link to="/pricing" className="inline-flex min-h-11 items-center underline">{t('booking.rulesLink')}</Link>
+          <Link to="/contact" className="inline-flex min-h-11 items-center underline">{t('booking.contactLink')}</Link>
+        </div>
       </main>
-    </div>
-  );
-}
-
-function ContactSection() {
-  const { t } = useTranslation();
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
-  const [success, setSuccess] = useState('');
-
-  const submit = async () => {
-    await sendContactMessage(form);
-    setSuccess(t('booking.messageSent'));
-  };
-
-  return (
-    <div className='rounded-[32px] bg-surface-container-lowest p-6'>
-      <div className='grid grid-cols-1 gap-6'>
-        <label>
-          <span className='text-label-caps uppercase tracking-widest text-on-surface-variant'>{t('booking.contactName')}</span>
-          <input
-            aria-label={t('booking.contactName')}
-            className='mt-2 w-full border-b border-outline bg-transparent px-0 py-3 text-on-surface outline-none transition-colors focus:border-primary'
-            value={form.name}
-            onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))}
-          />
-        </label>
-        <label>
-          <span className='text-label-caps uppercase tracking-widest text-on-surface-variant'>{t('booking.contactEmail')}</span>
-          <input
-            aria-label={t('booking.contactEmail')}
-            className='mt-2 w-full border-b border-outline bg-transparent px-0 py-3 text-on-surface outline-none transition-colors focus:border-primary'
-            value={form.email}
-            onChange={(event) => setForm((current) => ({ ...current, email: event.target.value }))}
-          />
-        </label>
-        <label>
-          <span className='text-label-caps uppercase tracking-widest text-on-surface-variant'>{t('booking.contactMessage')}</span>
-          <textarea
-            aria-label={t('booking.contactMessage')}
-            className='mt-2 min-h-28 w-full border-b border-outline bg-transparent px-0 py-3 text-on-surface outline-none transition-colors focus:border-primary'
-            value={form.message}
-            onChange={(event) => setForm((current) => ({ ...current, message: event.target.value }))}
-          />
-        </label>
-        <button type='button' onClick={submit} className={`${primaryButtonClasses} w-fit max-w-full`}>
-          {t('booking.sendMessage')}
-        </button>
-        {success ? <p className='text-body-md text-primary'>{success}</p> : null}
-      </div>
-      <div className='mt-10 flex flex-col gap-3 break-all text-body-md text-on-surface-variant'>
-        <a href='tel:+48123456789' className='transition-colors hover:text-primary'>+48 123 456 789</a>
-        <a href='mailto:domeknamazurskiej@gmail.com' className='transition-colors hover:text-primary'>domeknamazurskiej@gmail.com</a>
-      </div>
     </div>
   );
 }

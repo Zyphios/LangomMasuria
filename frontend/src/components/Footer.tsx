@@ -28,7 +28,9 @@ export default function Footer() {
           </nav>
           <nav className="flex flex-col gap-3">
             <Link to="/pricing" className="text-body-md text-on-surface-variant transition-colors hover:text-primary">{t('nav.rates')}</Link>
-            <Link to="/booking" className="text-body-md text-on-surface-variant transition-colors hover:text-primary">{t('nav.contact')}</Link>
+            <Link to="/directions" className="text-body-md text-on-surface-variant transition-colors hover:text-primary">{t('nav.directions')}</Link>
+            <Link to="/contact" className="text-body-md text-on-surface-variant transition-colors hover:text-primary">{t('nav.contact')}</Link>
+            <Link to="/booking" className="text-body-md text-on-surface-variant transition-colors hover:text-primary">{t('nav.bookNow')}</Link>
           </nav>
         </div>
       </div>

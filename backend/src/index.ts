@@ -9,6 +9,7 @@ import { contactRouter } from './routes/contact';
 import { galleryRouter } from './routes/gallery';
 import { paymentRouter } from './routes/payment';
 import { pricingRouter } from './routes/pricing';
+import { siteSettingsRouter } from './routes/siteSettings';
 import { z } from 'zod';
 import { bookingLinksRouter } from './routes/bookingLinks';
 import { BookingOperationError } from './services/bookingTransaction';
@@ -38,6 +39,7 @@ export const createApp = () => {
   app.use('/api/contact', contactRouter);
   app.use('/api/gallery', galleryRouter);
   app.use('/api/pricing', pricingRouter);
+  app.use('/api/site-settings', siteSettingsRouter);
   app.use('/api/payment', paymentRouter);
   app.use('/api/admin', adminRouter);
 

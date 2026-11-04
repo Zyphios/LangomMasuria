@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import type { AdminBookingRow, AdminMessage, BookingStatus, BookingPriceInput, BookingPriceResult, GalleryImage, ManualBookingPayload, PricingSeason } from '../types';
+import type { AdminBookingRow, AdminMessage, BookingStatus, BookingPriceInput, BookingPriceResult, GalleryImage, ManualBookingPayload, PricingSeason, PricingSettings, SiteSettings } from '../types';
 
 const withAuth = (token: string) => ({ Authorization: `Bearer ${token}` });
 
@@ -78,8 +78,19 @@ export const updatePricingSeason = (token: string, pricing: PricingSeason) =>
       namePl: pricing.namePl,
       nameEn: pricing.nameEn,
       pricePerNight: Number(pricing.pricePerNight),
+      minNights: pricing.minNights,
       dateFrom: pricing.dateFrom,
       dateTo: pricing.dateTo,
       isFeatured: pricing.isFeatured
     })
+  });
+
+export const updatePricingSettings = (token: string, settings: PricingSettings) =>
+  apiClient<PricingSettings>('/api/admin/pricing-settings', {
+    method: 'PATCH', headers: withAuth(token), body: JSON.stringify(settings)
+  });
+
+export const updateSiteSettings = (token: string, settings: SiteSettings) =>
+  apiClient<SiteSettings>('/api/admin/site-settings', {
+    method: 'PATCH', headers: withAuth(token), body: JSON.stringify(settings)
   });

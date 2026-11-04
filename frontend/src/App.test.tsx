@@ -5,11 +5,17 @@ import App from './App';
 import * as galleryApi from './api/gallery';
 import * as pricingApi from './api/pricing';
 import i18n from './i18n';
+import * as siteSettingsApi from './api/siteSettings';
+
+vi.spyOn(siteSettingsApi, 'getSiteSettings').mockResolvedValue({ facebookUrl: '', instagramUrl: '' });
 
 vi.spyOn(galleryApi, 'getGalleryImages').mockResolvedValue([]);
 vi.spyOn(pricingApi, 'getPricingSeasons').mockResolvedValue([
-  { id: 'high', namePl: 'Sezon wysoki', nameEn: 'High season', pricePerNight: '1200', dateFrom: '2026-05-01', dateTo: '2026-09-30', isFeatured: true }
+  { id: 'high', namePl: 'Sezon wysoki', nameEn: 'High season', pricePerNight: '1200', minNights: 2, dateFrom: '2026-05-01', dateTo: '2026-09-30', isFeatured: true }
 ]);
+vi.spyOn(pricingApi, 'getPricingSettings').mockResolvedValue({
+  minStayTextPl: 'Min. długość pobytu: 2 noce', minStayTextEn: 'Minimum stay: 2 nights'
+});
 
 function RouteProbe() {
   const { pathname, hash } = useLocation();
@@ -40,7 +46,10 @@ describe('app shell', () => {
 
   it('renders the Polish home route by default', () => {
     renderRoute('/');
-    expect(screen.getByText('Twój azyl na Mazurach')).toBeInTheDocument();
+    expect(screen.getByRole('heading', {
+      level: 1,
+      name: 'Domek do wynajęcia na Mazurach Stare Juchy k. Ełku'
+    })).toBeInTheDocument();
   });
 
   it.each([
@@ -53,32 +62,42 @@ describe('app shell', () => {
 
   it('keeps gallery and house content separate from pricing and attractions', () => {
     const gallery = renderRoute('/gallery');
-    expect(screen.getByRole('heading', { name: 'Galeria' })).toBeInTheDocument();
-    expect(screen.queryByRole('heading', { name: 'Cennik' })).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', {
+      name: 'Rozgość się w Domku na Mazurskiej'
+    })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'Cennik i zasady rezerwacji' })).not.toBeInTheDocument();
     gallery.unmount();
     renderRoute('/house');
-    expect(screen.getByRole('heading', { name: 'O Naszym Domu' })).toBeInTheDocument();
-    expect(screen.queryByRole('heading', { name: 'Atrakcje w okolicy' })).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', {
+      name: 'O Domku na Mazurskiej – Poznaj nasze wnętrza i otoczenie'
+    })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', {
+      name: 'Atrakcje w okolicy – co warto zobaczyć wokół Domku na Mazurskiej?'
+    })).not.toBeInTheDocument();
   });
 
   it('renders API prices and booking action at the pricing address', async () => {
     renderRoute('/pricing');
-    expect(screen.getByRole('heading', { level: 1, name: 'Cennik' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'Cennik i zasady rezerwacji' })).toBeInTheDocument();
     expect(await screen.findByText('1200')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'ZAREZERWUJ SWÓJ POBYT' })).toHaveAttribute('href', '/booking');
   });
 
   it('renders local attractions at their own address', () => {
     renderRoute('/attractions');
-    expect(screen.getByRole('heading', { level: 1, name: 'Atrakcje w okolicy' })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Jezioro Garbas' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', {
+      level: 1, name: 'Atrakcje w okolicy – co warto zobaczyć wokół Domku na Mazurskiej?'
+    })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Kameralna plaża leśna – 500 m od domku' })).toBeInTheDocument();
   });
 
   it.each([
     ['/house', 'Dom'],
     ['/attractions', 'Atrakcje'],
     ['/gallery', 'Galeria'],
-    ['/pricing', 'Cennik']
+    ['/pricing', 'Cennik'],
+    ['/directions', 'Jak dojechać?'],
+    ['/contact', 'Kontakt']
   ])('marks only the matching navigation link at %s', (entry, label) => {
     renderRoute(entry);
     const nav = within(within(screen.getByRole('banner')).getByRole('navigation'));

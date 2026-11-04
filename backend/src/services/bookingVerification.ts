@@ -1,6 +1,6 @@
 import { Prisma, PrismaClient, type BookingVerification } from '@prisma/client';
 import type { BookingCreateInput } from '../types';
-import { assertDatesAvailable, assertMinimumStay, calculateTotalPrice } from './availability';
+import { assertDatesAvailable, assertSeasonalMinimumStay, calculateTotalPrice } from './availability';
 import { bookingConfig, hashBookingIp, hashBookingSecret, newBookingSecret, normalizeEmail } from './bookingLinks';
 import { generateBookingReference } from './bookingReference';
 import { decideBooking } from './bookingLifecycle';
@@ -48,7 +48,7 @@ export async function createWebsiteBooking(db: PrismaClient, input: BookingCreat
     const checkOut = new Date(input.checkOut);
     let totalPrice: Prisma.Decimal;
     try {
-      assertMinimumStay(checkIn, checkOut);
+      await assertSeasonalMinimumStay(tx, checkIn, checkOut);
       await assertDatesAvailable(tx, checkIn, checkOut, { now });
       totalPrice = await calculateTotalPrice(tx, checkIn, checkOut);
     } catch (error) {
@@ -99,7 +99,7 @@ export async function requestBookingVerification(db: PrismaClient, input: Bookin
     if (error) return { error };
     const checkIn = new Date(input.checkIn);
     const checkOut = new Date(input.checkOut);
-    assertMinimumStay(checkIn, checkOut);
+    await assertSeasonalMinimumStay(tx, checkIn, checkOut);
     await assertDatesAvailable(tx, checkIn, checkOut, { now });
     const totalPrice = await calculateTotalPrice(tx, checkIn, checkOut);
     const secret = newBookingSecret();
@@ -127,6 +127,7 @@ export const previewBookingVerification = (db: PrismaClient, token: string) =>
   withBookingTransaction(db, async (tx, now) => {
     const row = await tx.bookingVerification.findUnique({ where: { tokenHash: hashBookingSecret(token) } });
     assertVerification(row, now);
+    await assertSeasonalMinimumStay(tx, row.checkIn, row.checkOut);
     await assertDatesAvailable(tx, row.checkIn, row.checkOut, { now });
     return preview({ ...row, totalPrice: await calculateTotalPrice(tx, row.checkIn, row.checkOut) });
   });
@@ -137,7 +138,7 @@ export const completeBookingVerification = (db: PrismaClient, token: string, exp
     assertVerification(row, now);
     const capacity = await emailCapacity(tx, row.guestEmail, now);
     if (capacity) throw capacity;
-    assertMinimumStay(row.checkIn, row.checkOut);
+    await assertSeasonalMinimumStay(tx, row.checkIn, row.checkOut);
     await assertDatesAvailable(tx, row.checkIn, row.checkOut, { now });
     const totalPrice = await calculateTotalPrice(tx, row.checkIn, row.checkOut);
     if (!/^\d+(\.\d{1,2})?$/.test(expectedTotalPrice) || !totalPrice.equals(expectedTotalPrice)) {

@@ -45,9 +45,9 @@ export const getNightCount = (checkIn: Date, checkOut: Date) => Math.round((chec
 export const getNightDates = (checkIn: Date, checkOut: Date) =>
   Array.from({ length: getNightCount(checkIn, checkOut) }, (_, index) => new Date(Date.UTC(checkIn.getUTCFullYear(), checkIn.getUTCMonth(), checkIn.getUTCDate() + index)));
 
-export const assertMinimumStay = (checkIn: Date, checkOut: Date) => {
+export const assertMinimumStay = (checkIn: Date, checkOut: Date, minimum = MIN_STAY_NIGHTS) => {
   const nights = getNightCount(checkIn, checkOut);
-  if (nights < MIN_STAY_NIGHTS) throw new BookingOperationError(400, 'MINIMUM_STAY', 'Minimum stay is 2 nights');
+  if (nights < minimum) throw new BookingOperationError(400, 'MINIMUM_STAY', `Minimum stay is ${minimum} nights`);
   return nights;
 };
 
@@ -58,6 +58,15 @@ export const pickSeasonForDate = (seasons: PricingSeason[], date: Date) => {
   const season = matching.find(isHolidaySeason) ?? matching[0];
   if (!season) throw new BookingOperationError(400, 'NO_PRICING', `No pricing season found for ${toIsoDate(date)}`);
   return season;
+};
+
+export const assertSeasonalMinimumStay = async (prisma: Prisma.TransactionClient, checkIn: Date, checkOut: Date) => {
+  assertMinimumStay(checkIn, checkOut);
+  const seasons = await prisma.pricingSeason.findMany({ orderBy: { dateFrom: 'asc' } });
+  const minimum = getNightDates(checkIn, checkOut).reduce(
+    (current, date) => Math.max(current, pickSeasonForDate(seasons, date).minNights), MIN_STAY_NIGHTS
+  );
+  return assertMinimumStay(checkIn, checkOut, minimum);
 };
 
 export const assertDatesAvailable = async (prisma: Prisma.TransactionClient, checkIn: Date, checkOut: Date, options: { now?: Date; excludeBookingId?: string } = {}) => {

@@ -2,6 +2,7 @@ import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Booking from './Booking';
+import { MemoryRouter } from 'react-router-dom';
 import * as bookingsApi from '../api/bookings';
 import * as pricingApi from '../api/pricing';
 import { vi } from 'vitest';
@@ -10,7 +11,7 @@ import i18n from '../i18n';
 
 vi.spyOn(bookingsApi, 'getAvailability').mockResolvedValue({ blockedDates: [] });
 vi.spyOn(pricingApi, 'getPricingSeasons').mockResolvedValue([
-  { id: 's1', namePl: 'Sezon wysoki', nameEn: 'High season', pricePerNight: '1200', dateFrom: '2020-01-01', dateTo: '2099-12-31', isFeatured: true }
+  { id: 's1', namePl: 'Sezon wysoki', nameEn: 'High season', pricePerNight: '1200', minNights: 2, dateFrom: '2020-01-01', dateTo: '2099-12-31', isFeatured: true }
 ]);
 vi.spyOn(bookingsApi, 'createBooking').mockResolvedValue({
   id: 'booking-1', reference: 'LM-20260101-ANN1A2B', status: 'PENDING',
@@ -24,7 +25,7 @@ describe('booking wizard', () => {
     const client = new QueryClient();
     render(
       <QueryClientProvider client={client}>
-        <Booking />
+        <MemoryRouter><Booking /></MemoryRouter>
       </QueryClientProvider>
     );
     
@@ -60,15 +61,15 @@ describe('booking wizard', () => {
     expect(screen.getByText(/Termin zablokowany do:/)).toHaveTextContent(
       new Date('2030-01-02T10:15:00Z').toLocaleString('pl-PL'));
     expect(screen.getByText(/3\s?450.*PLN/)).toBeInTheDocument();
-    expect(screen.getByText(/wysłane lub oczekuje w kolejce.*Nie musisz/)).toBeInTheDocument();
+    expect(screen.getByText(/wysłane lub oczekuje w kolejce.*Na tym etapie nie musisz nic płacić ani potwierdzać/)).toBeInTheDocument();
     expect(screen.queryByText(/15 minut|Sprawdź swoją pocztę|Potwierdź adres e-mail/)).not.toBeInTheDocument();
     await waitFor(() => expect(vi.mocked(bookingsApi.getAvailability).mock.calls.length).toBeGreaterThan(availabilityCalls));
     await waitFor(() => expect(client.getQueryData(['availability', next.getMonth() + 1, next.getFullYear()]))
       .toMatchObject({ pendingDates: [`${month}-12`] }));
     await act(async () => { await i18n.changeLanguage('en'); });
     expect(screen.getByRole('heading', { name: 'Provisional booking' })).toBeInTheDocument();
-    expect(screen.getByText(/24 hours.*owner/)).toBeInTheDocument();
-    expect(screen.getByText(/sent or queued.*No action/)).toBeInTheDocument();
+    expect(screen.getByText(/held immediately.*24 hours.*owner's decision/)).toBeInTheDocument();
+    expect(screen.getByText(/sent or queued.*No payment or email verification is required at this stage/)).toBeInTheDocument();
     await act(async () => { await i18n.changeLanguage('pl'); });
   });
 });

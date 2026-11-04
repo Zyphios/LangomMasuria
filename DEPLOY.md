@@ -32,6 +32,38 @@ Publiczny cennik i kalkulator pobierają te same zapisane dane, odświeżane co 
 
 Ten etap zmienia frontend oraz walidację i wybór stawek w backendzie, ale nie dodaje osobnej migracji cennika. Opublikowano go razem z aktualizacją rezerwacji opisaną powyżej, nie procedurą „tylko frontend”.
 
+### Minimum pobytu według sezonu — lokalna zmiana 03.11.2026, niewdrożona
+
+W panelu `/admin/pricing` każdy istniejący sezon ma pole **Minimalna liczba nocy**, zapisywane razem z ceną i datami przez **Zapisz zmiany**. Początkowo wszystkie sezony nadal wymagają 2 nocy; liczba musi być całkowita i nie mniejsza niż 2. Zmiana dotyczy nowych zgłoszeń ze strony, nie skraca ani nie anuluje istniejących blokad i nie ogranicza indywidualnych rezerwacji wpisywanych ręcznie przez właściciela.
+
+Kalendarz pokazuje minimum dla wybranego pobytu, a formularz i backend odrzucają krótsze zgłoszenia. Każda noc jest przypisywana do sezonu tak samo jak przy naliczaniu ceny, z pierwszeństwem świąt. Na przełomie sezonów obowiązuje najwyższe minimum z zajmowanych nocy; dnia wyjazdu nie uwzględniamy. Cennik jest odświeżany co 30 sekund i po powrocie do okna, a serwer sprawdza aktualne ustawienia ponownie przy wysłaniu.
+
+Poniżej sezonów znajduje się osobny edytor **Opis minimalnego pobytu** z polami PL/EN i przyciskiem **Zapisz opis**. Ten tekst jest wyświetlany na stronie Cennik, ale sam nie zmienia zasad rezerwacji. Najpierw ustaw liczby przy odpowiednich sezonach, potem dopasuj oba opisy do ich rzeczywistych dat. Przykład: minimum 5 w sezonie wysokim i 2 w pozostałych; daty „maj–sierpień” można wpisać w opisie tylko wtedy, gdy odpowiadają faktycznej konfiguracji. Każdy opis musi mieć 1–2000 znaków.
+
+Wymagana będzie wspólna aktualizacja backendu i frontendu oraz migracja `20261103140000_seasonal_minimum_stay`: dodaje `PricingSeason.minNights` z wartością 2 i pojedynczy wiersz `PricingSettings` z dotychczasowym opisem PL/EN. Nie zmienia cen ani danych rezerwacji. `GET /api/pricing` nadal zwraca tablicę sezonów; opisy pochodzą z `GET /api/pricing/settings` i są zapisywane przez chroniony `PATCH /api/admin/pricing-settings`. Seed tworzy brakujące ustawienia, ale nie nadpisuje zapisanych opisów.
+
+Nie wdrażaj tego etapu procedurą „tylko frontend”. Po osobnej zgodzie na publikację wykonaj świeże kopie i próbę migracji na odtworzonej, oddzielnej bazie, jak przy aktualizacji rezerwacji; następnie zaktualizuj oba obrazy i sprawdź zapis ustawień oraz odrzucenie zbyt krótkiego pobytu. Godziny przyjazdu/wyjazdu, zaliczka i zasady balii nie są zmieniane w tej partii.
+
+### Zasady pobytu i płatności — lokalna zmiana 03.11.2026, niewdrożona
+
+Publiczny Cennik ma nagłówek „Cennik i zasady rezerwacji” oraz informacje o balii (200 zł za pierwsze przygotowanie, kolejne we własnym zakresie), przyjeździe od 15:00 i wyjeździe do 11:00. Inne godziny są możliwe po wcześniejszym uzgodnieniu, w miarę dostępności. Treści PL/EN są w `pricing.terms` w plikach tłumaczeń; opłata za przygotowanie balii jest informacją o dodatkowej usłudze i nie jest automatycznie doliczana do wyceny noclegów.
+
+Właściciel zatwierdził **zaliczkę, nie zadatek: 30% w ciągu 24 godzin od zatwierdzenia rezerwacji przez właściciela**, płatne BLIK-iem na telefon lub przelewem tradycyjnym. Pozostałą kwotę można wpłacić przelewem przed przyjazdem albo rozliczyć gotówką/BLIK-iem na miejscu. To informacyjne zasady płatności — nie dodano automatycznych wpłat, rozliczeń ani anulowania po terminie płatności. Dotychczasowa 24-godzinna blokada oczekująca na decyzję nadal zaczyna się przy wysłaniu formularza; nie jest to termin wpłaty zaliczki.
+
+Godziny i zasady płatności są w Cenniku, do którego prowadzi odnośnik z formularza rezerwacji (po ostatniej partii Kontakt/Dojazd). Mail oczekujący informuje, aby z wpłatą poczekać na decyzję właściciela; potwierdzenie podaje nowe godziny oraz warunki płatności PL/EN. Podsumowanie w panelu i mailu używa neutralnego „Pozostało do zapłaty”, ponieważ rozliczenie jest możliwe także przed przyjazdem. Wyliczenia ceny, faktycznie zapisanej zaliczki, salda i nadpłaty pozostają bez zmian.
+
+Ta partia nie dodaje migracji, ale zmienia także `backend/src/services/email.ts`: przyszła publikacja wymaga obu aplikacji, nie samego frontendu. Przy publikacji wszystkich lokalnych zmian nadal obowiązuje migracja sezonowego minimum opisana powyżej. Opis minimum i liczby nocy pozostają sterowane panelem, bez automatycznego ustawiania 5 nocy w wakacje.
+
+### Kontakt, dojazd i sociale — lokalna zmiana 03.11.2026, niewdrożona
+
+Menu i stopka prowadzą do osobnych stron `/contact` i `/directions`; przycisk Rezerwuj nadal otwiera `/booking`. Dojazd zawiera adres Mazurska 31G, wskazówki od Ośrodka Terapii, parking, PKP (2,2 km / około 30 minut pieszo), PKS (1,6 km / plac 500-lecia) oraz dotychczasowe współrzędne mapy. Wszystkie nowe treści mają wersje PL/EN. Rozbudowane menu jest zwijane także na tabletach, aby pomieścić nowe pozycje i sociale.
+
+Kontakt zachowuje `domeknamazurskiej@gmail.com`; zamiast przykładowego telefonu pokazuje „Numer telefonu podamy wkrótce”. Formularz wymaga imienia, e-maila i wiadomości. Telefon oraz obie daty pobytu są opcjonalne; jeśli podano termin, wymagane są dwie daty z wyjazdem po przyjeździe. Telefon i daty trafiają do treści istniejącej wiadomości w panelu oraz mailu właściciela przez dotychczasowe `POST /api/contact`. Zapytanie nie tworzy rezerwacji ani blokady i nie zmienia minimum pobytu. Błędy wysyłki są pokazywane bez utraty wpisanej treści. Formularz kontaktowy i mapa zostały usunięte z rezerwacji, a zasady domu przeniesione do Cennika; w rezerwacji są odnośniki do tych stron.
+
+Linki Facebook/Instagram edytuje się w **Ustawienia strony** (`/admin/settings`) przyciskiem **Zapisz linki**. Są wspólne dla nagłówka i Kontaktu, odświeżane co 30 sekund i po powrocie do okna. Puste pole celowo daje oznaczony „wkrótce” odnośnik do strony głównej; błąd pobierania ustawień nie jest traktowany jako puste pole. Pełne adresy HTTPS mają limit 2048 znaków; inne schematy są odrzucane również przez backend. Docelowe profile otwierają się w nowej karcie. Do wpisania prawdziwych linków po wdrożeniu nie będzie potrzebna przebudowa ani publikacja kodu.
+
+Wymagana jest migracja `20261103160000_social_links`, która dodaje osobną tabelę `SiteSettings` z pojedynczym wierszem i pustymi linkami. Seed nie nadpisuje zapisanych linków. Publiczny odczyt to `GET /api/site-settings`, a zapis wymaga uwierzytelnienia przez `PATCH /api/admin/site-settings`. Migracja nie dotyka rezerwacji, cen ani wiadomości. Przy publikacji wszystkich listopadowych poprawek trzeba wdrożyć obie aplikacje i obie nowe migracje, łącznie z minimum sezonowym — po osobnej zgodzie oraz świeżej kopii i próbie migracji na odtworzonej, oddzielnej bazie. Nie przesyłaj danych podglądu na produkcję.
+
 ### Indywidualna cena rezerwacji — wdrożona 30.10.2026
 
 Nowy edytor aktywnej rezerwacji oczekującej pozwala zapisać końcową kwotę lub rabat 0–100% od pierwotnej ceny. Nie zmienia zaliczki, cennika, terminu ani deadline. Panel wymaga zapisania zmian ceny i zaliczki przed potwierdzeniem; backend odrzuca zmianę po zatwierdzeniu lub wygaśnięciu. Mail PL/EN podaje cenę końcową, wpłaconą zaliczkę, dopłatę na miejscu i ewentualną nadpłatę, bez automatycznych zwrotów.
@@ -94,10 +126,18 @@ Po przebudowie odśwież przeglądarkę przez Ctrl+F5. Samo przesłanie plików 
 
 ### Ręczna podmiana zdjęć
 
-Zdjęcia strony startowej i podstrony „Dom” są plikami w `frontend/public`, wskazywanymi w kodzie; panel admina nie podmienia tych obrazów. Nowy kadr `glowne-foto kadr.jpg` jest wskazany w `frontend/src/pages/Home.tsx` i `House.tsx`. Galeria nadal wskazuje `glowne-foto.jpg`. Zmiana jednego wspólnego pliku zmienia wszystkie miejsca, które go używają.
+Zdjęcia strony startowej i podstrony „Dom” są plikami w `frontend/public`, wskazywanymi w kodzie; panel admina nie podmienia tych obrazów. W kodzie `frontend/src/pages/Home.tsx` baner wskazuje `Baner2.png` (podmiana zatwierdzona 04.11.2026), a `House.tsx` nadal używa `glowne-foto kadr.jpg`. Układ, przyciemnienie i sposób kadrowania banera nie zmieniły się; nowa nazwa zapobiega użyciu starego pliku z pamięci podręcznej. `Baner.jpg` to przemianowany `shared image (19).jpg`; pozostaje w domyślnej galerii z dotychczasowym podpisem. Zachowano identyczną kopię pod dawną nazwą dla istniejących wpisów galerii z bazy i danych startowych, bez modyfikowania bazy. Nowe zdjęcia kafelków na stronie głównej to `ognisko.jpg`, `bramka.jpg` i `parking.jpg`. Zachowuj wielkość liter nazw także w adresach, ponieważ VPS rozróżnia `Baner2.png` i `baner2.png`. Zmiana jednego wspólnego pliku zmienia wszystkie miejsca, które go używają; przy przemianowaniu wyszukaj i popraw wszystkie odwołania.
+
+W lokalnej partii poprawek ognisko i lokalizacja wypełniają szerokość kafelków przez `object-cover`. Ramka o proporcjach 9:8 pokazuje w spoczynku środkowe 50% zdjęć 900 × 1600, obcinając po 25% od góry i dołu bez zmiany oryginalnych plików. Wszystkie sześć zdjęć kafelków rozwija się po najechaniu myszą, odsłaniając więcej zdjęcia bez zasłaniania opisu. Efekt nie jest uruchamiany przez dotyk, a przy ograniczeniu animacji zmiana rozmiaru nie jest animowana. Ognisko dodatkowo rozwija się po uzyskaniu widocznego fokusu i otwiera pełny podgląd po kliknięciu, wspólny z galerią. Podgląd działa też na telefonie i zamyka się przyciskiem lub Escape.
+
+Podstrona „Atrakcje” ma panoramę nad dziesięcioma kartami. Kadr (`object-position: center 38%`) pokazuje pagórki i horyzont, z wąskim pasem nieba u góry (około 10% na szerokim ekranie). Tymczasowe zdjęcia miejsc to `gora piachu.jpg`, `wieza stare juchy.jpg`, `elk.jpg` i `gizycko.jpg`; plaża, sprzęt wodny, otoczenie lasu i panorama korzystają z `garbas.jpg`, `supy.jpg`, `otoczenie.jpg` i `pagorki.jpg`. Trasy rowerowe, miejscowość i lokalna kuchnia mają ikony do czasu wskazania pasujących fotografii. Podpisy są w plikach tłumaczeń, a źródła w `Attractions.tsx`. Centrum i Dino opisano jako oddalone o 1,3 km, około 18 minut pieszo. Te zmiany pozostają lokalne do osobnego zatwierdzenia publikacji.
+
+Galeria ma nowy nagłówek i krótki wstęp w PL/EN, bez numeru adresowego w nazwie. Zatwierdzony zakres nie obejmuje kategorii: dotychczasowe zdjęcia, kolejność i podgląd pozostają bez zmian. Teksty są zapisane pod `gallery.title` i `gallery.subtitle` w plikach tłumaczeń. Także ta partia pozostaje lokalna do osobnego zatwierdzenia publikacji.
+
+Ikonka karty przeglądarki to `frontend/public/favicon.png` (64 × 64), wskazana przez `rel="icon"` w `frontend/index.html`. Powstała z centralnego drzewka istniejącego `logo-mazurska.jpg`, z podbitym kontrastem w kolorach strony i zaokrąglonym tłem z przezroczystymi narożnikami; oryginalnego logo nie zmieniono. Można podmienić sam PNG lub wskazać nową nazwę w HTML, jeśli przeglądarka przechowuje starą ikonkę w pamięci podręcznej.
 
 1. Zapisz nowe zdjęcie w `frontend\public`. Najlepiej nadaj nową nazwę, np. `glowne-foto-kadr-v2.jpg`, aby przeglądarki nie korzystały ze starej wersji pod tym samym adresem.
-2. W wybranych komponentach zmień `src`, np. na `/glowne-foto-kadr-v2.jpg` (bez `frontend/public` w adresie). Dla obecnego zdjęcia są to `Home.tsx` i `House.tsx`; nie zmieniaj `Gallery.tsx`, jeżeli galeria ma zachować stary kadr. Zaktualizuj odpowiednie oczekiwania testów. Układ używa `object-cover`, więc na różnych ekranach może dodatkowo przycinać krawędzie.
+2. W wybranych komponentach zmień `src`, np. na `/glowne-foto-kadr-v2.jpg` (bez `frontend/public` w adresie): baner w `Home.tsx` lub zdjęcie domu w `House.tsx`. Nie zmieniaj `Gallery.tsx`, jeżeli galeria ma zachować stary kadr. Zaktualizuj odpowiednie oczekiwania testów. `object-cover` może dodatkowo przycinać krawędzie na różnych ekranach, a `object-contain` zachowuje cały obraz kosztem pustej przestrzeni wokół.
 3. Sprawdź podgląd lokalny na komputerze i telefonie, uruchom testy obu stron oraz build. Zapisz wyłącznie powiązane pliki przez `git add`, `git commit` i `git push`. Sam push nie wdraża strony na VPS.
 4. Przed przesłaniem wykonaj na VPS kopię zmienianych plików i zachowaj poprzedni obraz frontendu. Następnie prześlij zdjęcie i oba komponenty z lokalnego PowerShella:
 
@@ -149,7 +189,7 @@ scp "frontend\src\i18n\pl.json" "frontend\src\i18n\en.json" ubuntu@57.128.219.94
 
 Wymagane są także pliki galerii i nagłówka z poprzednich sekcji, jeżeli nie były jeszcze wdrożone. Potem przebuduj frontend w SSH komendą z sekcji aktualizacji; backend i baza pozostają bez zmian.
 
-Dom korzysta z istniejących zdjęć `glowne-foto.jpg`, `otoczenie.jpg`, `pagorki.jpg` i `IMG_20260705_162852.jpg`. Fotografie konkretnych dodatków można później podmienić, aktualizując źródło i opis zdjęcia bez zmiany warunków: pierwszy worek drewna w cenie, następne płatne, rowery i SUP po uzgodnieniu. Widok pagórków jest zdjęciem otoczenia, nie zdjęciem sprzętu.
+Kod podstrony „Dom” korzysta ze zdjęć `glowne-foto kadr.jpg`, `shared image (7).jpg` (salon i antresola), `shared image (13).jpg` (taras z balią) oraz `bramka.jpg`. Domek ma 42 m²; opis rozróżnia sypialnię, antresolę i rozkładaną kanapę dla 4–6 osób. Trzy strefy poprzedzają pełną listę wyposażenia w czterech grupach. SUP i łódka są dostępne po uzgodnieniu, a łóżeczko i krzesełko na życzenie. Zmiana treści nie zmienia rezerwacji ani opłat; zachowano warunek pierwszego worka drewna w cenie i kolejnych płatnych. Przy podmianie zdjęć aktualizuj też ich opisy, bez przedstawiania krajobrazu jako zdjęcia sprzętu.
 
 ### Paczka frontendu z 28.10.2026
 

@@ -5,6 +5,8 @@ import { PrismaClient, Prisma } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.pricingSettings.upsert({ where: { id: 1 }, create: { id: 1 }, update: {} });
+  await prisma.siteSettings.upsert({ where: { id: 1 }, create: { id: 1 }, update: {} });
   const passwordHash = await bcrypt.hash(process.env.ADMIN_PASSWORD || 'Lagom123!', 10);
 
   const existingSeasons = await prisma.pricingSeason.count();

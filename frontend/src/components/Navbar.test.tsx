@@ -1,13 +1,21 @@
-import { cleanup, render, screen, within } from '@testing-library/react';
+import { cleanup, render as renderPage, screen, within } from '@testing-library/react';
+import type { ReactNode } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import Layout from './Layout';
 import Navbar from './Navbar';
 import i18n from '../i18n';
+import * as siteSettingsApi from '../api/siteSettings';
+
+function render(ui: ReactNode) {
+  return renderPage(<QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>{ui}</QueryClientProvider>);
+}
 
 beforeEach(async () => {
   await i18n.changeLanguage('pl');
   vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+  vi.spyOn(siteSettingsApi, 'getSiteSettings').mockResolvedValue({ facebookUrl: '', instagramUrl: '' });
 });
 
 afterEach(() => {
@@ -74,7 +82,8 @@ describe('mobile navigation', () => {
       ['Atrakcje', '/attractions'],
       ['Galeria', '/gallery'],
       ['Cennik', '/pricing'],
-      ['Kontakt', '/booking']
+      ['Jak dojechać?', '/directions'],
+      ['Kontakt', '/contact']
     ]) {
       expect(navigation.getByRole('link', { name })).toHaveAttribute('href', href);
     }

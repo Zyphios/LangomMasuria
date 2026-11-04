@@ -1,5 +1,7 @@
 import type { PricingSeason } from '../types';
 
+export const MIN_STAY_NIGHTS = 2;
+
 export const getSeasonKind = (season: PricingSeason): 'low' | 'high' | 'holidays' =>
   season.namePl.includes('Święta') ? 'holidays' : season.isFeatured ? 'high' : 'low';
 
@@ -18,17 +20,33 @@ export const formatPrice = (amount: number | string, language: string) => {
   });
 };
 
-export function estimateStayPrice(seasons: PricingSeason[], checkIn: string, checkOut: string): number | null {
-  if (!checkIn || !checkOut) return 0;
+function resolveStaySeasons(seasons: PricingSeason[], checkIn: string, checkOut: string): PricingSeason[] | null {
+  if (!checkIn || !checkOut) return [];
   const start = new Date(checkIn).getTime();
   const nights = (new Date(checkOut).getTime() - start) / 86400000;
   if (!Number.isInteger(nights) || nights < 1) return null;
-  let totalCents = 0;
+  const selected: PricingSeason[] = [];
   for (let index = 0; index < nights; index += 1) {
     const date = new Date(start + index * 86400000).toISOString().slice(0, 10);
     const matching = seasons.filter((season) => season.dateFrom.slice(0, 10) <= date && season.dateTo.slice(0, 10) >= date);
     const season = matching.find((entry) => getSeasonKind(entry) === 'holidays') ?? matching[0];
     if (!season) return null;
+    selected.push(season);
+  }
+  return selected;
+}
+
+export function getMinimumStay(seasons: PricingSeason[], checkIn: string, checkOut: string): number | null {
+  const selected = resolveStaySeasons(seasons, checkIn, checkOut);
+  if (!selected || selected.some((season) => !Number.isInteger(season.minNights) || season.minNights < MIN_STAY_NIGHTS)) return null;
+  return selected.reduce((minimum, season) => Math.max(minimum, season.minNights), MIN_STAY_NIGHTS);
+}
+
+export function estimateStayPrice(seasons: PricingSeason[], checkIn: string, checkOut: string): number | null {
+  const selected = resolveStaySeasons(seasons, checkIn, checkOut);
+  if (!selected) return null;
+  let totalCents = 0;
+  for (const season of selected) {
     const amount = Number(season.pricePerNight);
     if (!Number.isFinite(amount) || amount <= 0) return null;
     totalCents += Math.round(amount * 100);

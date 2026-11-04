@@ -49,10 +49,14 @@ export type PricingSeason = {
   namePl: string;
   nameEn: string;
   pricePerNight: string;
+  minNights: number;
   dateFrom: string;
   dateTo: string;
   isFeatured: boolean;
 };
+
+export type PricingSettings = { minStayTextPl: string; minStayTextEn: string };
+export type SiteSettings = { facebookUrl: string; instagramUrl: string };
 
 export type BookingPayload = {
   guestName: string;

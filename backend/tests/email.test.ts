@@ -98,7 +98,24 @@ describe('email templates', () => {
       totalPrice: new Prisma.Decimal(750), depositAmount: new Prisma.Decimal(200) }, 'CONFIRMED');
     expect(message.text).toContain('Łącznie: 750.00 PLN');
     expect(message.text).toContain('Wpłacona zaliczka: 200.00 PLN');
-    expect(message.text).toContain('Do dopłaty na miejscu: 550.00 PLN');
+    expect(message.text).toContain('Pozostało do zapłaty: 550.00 PLN');
+  });
+  it.each(['pl', 'en'] as const)('states agreed hours and post-approval advance-payment terms in %s confirmations', (locale) => {
+    const message = buildGuestConfirmationEmail({ ...booking, guestEmail: 'test@example.invalid', locale });
+    expect(message.text).toContain('15:00');
+    expect(message.text).toContain('11:00');
+    expect(message.text).not.toContain('16:00');
+    expect(message.text).toContain('30%');
+    expect(message.text).toContain(locale === 'pl' ? '24 godzin od zatwierdzenia rezerwacji przez właściciela' : "24 hours of the owner's approval");
+    expect(message.text).toContain(locale === 'pl' ? 'przelewem przed przyjazdem' : 'bank transfer before arrival');
+    expect(message.text).toContain('BLIK');
+  });
+  it.each(['pl', 'en'] as const)('does not request the advance before approval in a %s pending notice', (locale) => {
+    const message = buildGuestBookingEmail({ ...booking, guestEmail: 'test@example.invalid', locale }, 'PENDING');
+    expect(message.text).toContain(locale === 'pl'
+      ? 'Na wpłatę zaliczki poczekaj do zatwierdzenia rezerwacji przez właściciela.'
+      : "Wait for the owner's approval before paying the advance.");
+    expect(message.text).toContain(locale === 'pl' ? 'do 24 godzin' : 'up to 24 hours');
   });
   it.each(['pl', 'en'] as const)('builds a %s verification email without promising a hold', (locale) => {
     const message = buildBookingVerificationEmail({ guestName: 'Test', guestEmail: ' TEST@example.invalid ', guestPhone: '0',
@@ -124,8 +141,8 @@ describe('email templates', () => {
   });
 
   it.each([
-    ['pl', 'Wpłacona zaliczka: 600.00 PLN', 'Do dopłaty na miejscu: 2100.00 PLN'],
-    ['en', 'Deposit paid: 600.00 PLN', 'Remaining on arrival: 2100.00 PLN']
+    ['pl', 'Wpłacona zaliczka: 600.00 PLN', 'Pozostało do zapłaty: 2100.00 PLN'],
+    ['en', 'Deposit paid: 600.00 PLN', 'Remaining balance: 2100.00 PLN']
   ])('includes paid deposit and remaining balance in %s confirmations', (locale, deposit, balance) => {
     const message = buildGuestConfirmationEmail({ ...booking, guestEmail: 'test@example.invalid', locale,
       totalPrice: new Prisma.Decimal(2700), depositAmount: new Prisma.Decimal(600) });
@@ -134,8 +151,8 @@ describe('email templates', () => {
   });
 
   it.each([
-    ['pl', 'Do dopłaty na miejscu: 0.00 PLN', 'Nadpłata: 100.00 PLN'],
-    ['en', 'Remaining on arrival: 0.00 PLN', 'Overpayment: 100.00 PLN']
+    ['pl', 'Pozostało do zapłaty: 0.00 PLN', 'Nadpłata: 100.00 PLN'],
+    ['en', 'Remaining balance: 0.00 PLN', 'Overpayment: 100.00 PLN']
   ])('shows overpayment without a negative balance in %s confirmations', (locale, balance, overpayment) => {
     const message = buildGuestConfirmationEmail({ ...booking, guestEmail: 'test@example.invalid', locale,
       totalPrice: new Prisma.Decimal(500), depositAmount: new Prisma.Decimal(600) });

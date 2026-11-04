@@ -74,10 +74,43 @@ describe('gallery page', () => {
     expect(document.body.style.overflow).not.toBe('hidden');
   });
 
-  it('renders photos without the old pricing section', async () => {
+  it('introduces the gallery without address suffixes or the old pricing section', async () => {
     renderGallery();
-    expect(screen.getByRole('heading', { name: 'Galeria' })).toBeInTheDocument();
+    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
+    expect(screen.getByRole('heading', {
+      level: 1, name: 'Rozgość się w Domku na Mazurskiej'
+    })).toBeInTheDocument();
+    expect(screen.getByText('Przejrzyj zdjęcia i przekonaj się, jak przyjemnie można spędzić czas w naszym mazurskim domku :)'))
+      .toBeInTheDocument();
     expect(await screen.findByRole('button', { name: 'Powiększ zdjęcie: Salon' })).toBeInTheDocument();
-    expect(screen.queryByRole('heading', { name: 'Cennik' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'Cennik i zasady rezerwacji' })).not.toBeInTheDocument();
+  });
+
+  it('provides the new introduction and the unchanged photo preview in English', async () => {
+    await i18n.changeLanguage('en');
+    const user = userEvent.setup();
+    renderGallery();
+    expect(screen.getByRole('heading', {
+      level: 1, name: 'Make yourself at home at Domek na Mazurskiej'
+    })).toBeInTheDocument();
+    expect(screen.getByText('Browse the photos and discover how lovely a stay in our Masurian cottage can be :)'))
+      .toBeInTheDocument();
+    await user.click(await screen.findByRole('button', { name: 'Enlarge photo: Living room' }));
+    const preview = within(screen.getByRole('dialog', { name: 'Photo viewer' }));
+    expect(preview.getByRole('img', { name: 'Living room' })).toHaveAttribute('src', '/two.jpg');
+    expect(preview.getByText('2 / 2')).toBeInTheDocument();
+  });
+
+  it('keeps the renamed night photo and its caption available in the default gallery and viewer', async () => {
+    vi.mocked(galleryApi.getGalleryImages).mockResolvedValueOnce([]);
+    const user = userEvent.setup();
+    renderGallery();
+    const caption = 'Dom nocą, w świetle latarni';
+    await waitFor(() => {
+      expect(screen.getByRole('img', { name: caption })).toHaveAttribute('src', '/Baner.jpg');
+    });
+    await user.click(screen.getByRole('button', { name: `Powiększ zdjęcie: ${caption}` }));
+    expect(within(screen.getByRole('dialog')).getByRole('img', { name: caption }))
+      .toHaveAttribute('src', '/Baner.jpg');
   });
 });

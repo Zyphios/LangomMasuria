@@ -6,6 +6,8 @@ import Gallery from './pages/Gallery';
 import Attractions from './pages/Attractions';
 import Pricing from './pages/Pricing';
 import Booking from './pages/Booking';
+import Contact from './pages/Contact';
+import Directions from './pages/Directions';
 import Login from './pages/admin/Login';
 import AdminLayout from './pages/admin/AdminLayout';
 import AdminBookings from './pages/admin/AdminBookings';
@@ -13,6 +15,7 @@ import AdminCalendar from './pages/admin/AdminCalendar';
 import AdminMessages from './pages/admin/AdminMessages';
 import AdminGallery from './pages/admin/AdminGallery';
 import AdminPricing from './pages/admin/AdminPricing';
+import AdminSettings from './pages/admin/AdminSettings';
 import BookingLink from './pages/BookingLink';
 
 export default function App() {
@@ -27,6 +30,8 @@ export default function App() {
         <Route path='/attractions' element={<Attractions />} />
         <Route path='/pricing' element={<Pricing />} />
         <Route path='/booking' element={<Booking />} />
+        <Route path='/contact' element={<Contact />} />
+        <Route path='/directions' element={<Directions />} />
       </Route>
       <Route path='/admin/login' element={<Login />} />
       <Route path='/admin' element={<AdminLayout />}>
@@ -36,6 +41,7 @@ export default function App() {
         <Route path='messages' element={<AdminMessages />} />
         <Route path='gallery' element={<AdminGallery />} />
         <Route path='pricing' element={<AdminPricing />} />
+        <Route path='settings' element={<AdminSettings />} />
       </Route>
     </Routes>
   );

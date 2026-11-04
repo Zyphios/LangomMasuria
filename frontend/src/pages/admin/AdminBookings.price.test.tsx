@@ -43,7 +43,7 @@ describe('pending booking price editor', () => {
     fireEvent.click(screen.getByLabelText('Rabat procentowy'));
     fireEvent.change(screen.getByLabelText('Rabat (%)'), { target: { value: '10' } });
     expect(screen.getByText('Cena końcowa: 2700 PLN')).toBeInTheDocument();
-    expect(screen.getByText('Do dopłaty na miejscu: 2100 PLN')).toBeInTheDocument();
+    expect(screen.getByText('Pozostało do zapłaty: 2100 PLN')).toBeInTheDocument();
     expect(screen.getByLabelText('Zaliczka Anna')).toHaveValue('600');
     expect(screen.getByRole('button', { name: 'Potwierdź' })).toBeDisabled();
     fireEvent.click(screen.getByRole('button', { name: 'Zapisz cenę' }));
@@ -56,7 +56,7 @@ describe('pending booking price editor', () => {
     response = { totalPrice: '500.5', originalTotalPrice: '3000', discountPercent: null };
     await openEditor();
     fireEvent.change(screen.getByLabelText('Cena końcowa (PLN)'), { target: { value: '500,50' } });
-    expect(screen.getByText('Do dopłaty na miejscu: 0 PLN')).toBeInTheDocument();
+    expect(screen.getByText('Pozostało do zapłaty: 0 PLN')).toBeInTheDocument();
     expect(screen.getByText('Nadpłata: 99,50 PLN')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Zapisz cenę' }));
     await screen.findByText('Zapisano cenę');
@@ -147,6 +147,6 @@ describe('pending booking price editor', () => {
     await show();
     fireEvent.click(screen.getByRole('button', { name: 'Edit price' }));
     expect(screen.getByText('Final total: 3000 PLN')).toBeInTheDocument();
-    expect(screen.getByText('Remaining on arrival: 2400 PLN')).toBeInTheDocument();
+    expect(screen.getByText('Remaining balance: 2400 PLN')).toBeInTheDocument();
   });
 });
