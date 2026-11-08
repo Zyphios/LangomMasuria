@@ -48,8 +48,8 @@ describe('attractions page', () => {
     await i18n.changeLanguage('pl');
     render(<Attractions />);
     for (const [heading, source] of [
-      ['Góra Piaskowa nad jeziorem Jędzelewo', '/gora piachu.jpg'],
-      ['Wieża widokowa w Starych Juchach', '/wieza stare juchy.jpg'],
+      ['Góra Piaskowa nad jeziorem Jędzelewo',       '/gora piachu.png'],
+            ['Wieża widokowa w Starych Juchach', '/wieza stare juchy.png'],
       ['Wypad do Ełku (ok. 20 km)', '/elk.jpg'],
       ['Wypad do Giżycka – porty i żeglowanie (32 km)', '/gizycko.jpg']
     ]) {
@@ -70,7 +70,7 @@ describe('attractions page', () => {
     })).toBeInTheDocument();
     expect(screen.getAllByRole('heading', { level: 2 })).toHaveLength(11);
     expect(screen.getByRole('img', { name: 'Viewing tower in Stare Juchy' }))
-      .toHaveAttribute('src', '/wieza stare juchy.jpg');
+      .toHaveAttribute('src', '/wieza stare juchy.png');
     expect(screen.getByText(/The centre of Stare Juchy and the Dino supermarket/))
       .toHaveTextContent('1.3 km (approximately 18 minutes on foot)');
     expect(screen.getByText(/Lakes Jędzelewo, Garbas and Rekąty/)).toHaveTextContent('by prior arrangement');

@@ -2,10 +2,10 @@ import { useTranslation } from 'react-i18next';
 
 const attractions = [
   { id: 'beach', image: '/garbas.jpg', icon: 'beach_access' },
-  { id: 'sandHill', image: '/gora piachu.jpg', icon: 'landscape' },
+  { id: 'sandHill', image: '/gora piachu.png', icon: 'landscape' },
   { id: 'lakes', image: '/supy.jpg', icon: 'rowing' },
   { id: 'forest', image: '/otoczenie.jpg', icon: 'forest' },
-  { id: 'tower', image: '/wieza stare juchy.jpg', icon: 'visibility' },
+  { id: 'tower', image: '/wieza stare juchy.png', icon: 'visibility' },
   { id: 'bike', image: '', icon: 'pedal_bike' },
   { id: 'elk', image: '/elk.jpg', icon: 'location_city' },
   { id: 'village', image: '', icon: 'storefront' },

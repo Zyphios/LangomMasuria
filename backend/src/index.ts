@@ -15,6 +15,7 @@ import { bookingLinksRouter } from './routes/bookingLinks';
 import { BookingOperationError } from './services/bookingTransaction';
 import { bookingConfig } from './services/bookingLinks';
 import { startBookingJobs } from './services/bookingJobs';
+import { uploadDir } from './services/galleryUploads';
 
 export const prisma = new PrismaClient();
 
@@ -32,6 +33,13 @@ export const createApp = () => {
   });
 
   app.use(cors());
+  app.use('/api/uploads', express.static(uploadDir(), {
+    index: false,
+    setHeaders: (res) => {
+      res.set('Cache-Control', 'public, max-age=31536000, immutable');
+      res.set('X-Content-Type-Options', 'nosniff');
+    }
+  }));
   app.use(express.json());
   app.use('/api/availability', availabilityRouter);
   app.use('/api/bookings', bookingsRouter);
@@ -51,6 +59,8 @@ export const createApp = () => {
     if (error instanceof BookingOperationError) {
       if (error.retryAfter) res.set('Retry-After', String(error.retryAfter));
       res.status(error.status).json({ message: error.message, code: error.code, retryAfter: error.retryAfter });
+    } else if ((error as { type?: string }).type === 'entity.too.large') {
+      res.status(413).json({ message: 'Plik jest za duży (maksymalnie 10 MB)' });
     } else if (error instanceof z.ZodError) {
       res.status(400).json({ message: 'Invalid input', issues: error.issues });
     } else {

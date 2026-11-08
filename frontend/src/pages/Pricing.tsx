@@ -71,10 +71,7 @@ export default function Pricing() {
               <div className="mt-8 grid gap-8 lg:grid-cols-3">
                 <section aria-labelledby="pricing-hot-tub-heading" className="min-w-0">
                   <h3 id="pricing-hot-tub-heading" className="text-body-lg font-semibold text-on-surface">{t('pricing.terms.hotTub.title')}</h3>
-                  <dl className="mt-4 text-body-md text-on-surface-variant">
-                    <dt>{t('pricing.terms.hotTub.first')}</dt>
-                    <dd className="mt-1 font-semibold text-on-surface">{t('pricing.terms.hotTub.price')}</dd>
-                  </dl>
+                  <p className="mt-4 text-body-md font-semibold text-on-surface">{t('pricing.terms.hotTub.first')}</p>
                   <p className="mt-4 text-body-md text-on-surface-variant">{t('pricing.terms.hotTub.selfService')}</p>
                 </section>
                 <section aria-labelledby="pricing-hours-heading" className="min-w-0">

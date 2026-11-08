@@ -70,8 +70,7 @@
         "firepitTitle": "Ognisko i grill",
         "firepitDesc": "Wyznaczone miejsce na wieczorne ognisko oraz grill gazowy do dyspozycji na posesji (drewno na miejscu).",
         "parkingTitle": "Parking",
-        "parkingDesc": "Bezpłatne miejsca parkingowe tuż przy domku.",
-        "woodTerms": "Pierwszy worek drewna w cenie pobytu. Kolejne worki dodatkowo p\u0142atne \u2014 cen\u0119 ustalimy przed przyjazdem."
+        "parkingDesc": "Bezpłatne miejsca parkingowe tuż przy domku."
       },
       "family": {
         "title": "Aktywnie i rodzinnie",
@@ -243,8 +242,7 @@
       "title": "Zasady pobytu i rezerwacji",
       "hotTub": {
         "title": "Gorąca balia z hydromasażem",
-        "first": "Pierwsze przygotowanie",
-        "price": "200 zł",
+        "first": "Pierwsze przygotowanie na czas przyjazdu.",
         "selfService": "Kolejne przygotowania we własnym zakresie."
       },
       "hours": {

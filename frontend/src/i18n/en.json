@@ -70,8 +70,7 @@
         "firepitTitle": "Campfire and barbecue",
         "firepitDesc": "A dedicated spot for evening campfires and a gas barbecue on the property, with firewood available on site.",
         "parkingTitle": "Parking",
-        "parkingDesc": "Free parking spaces right by the cottage.",
-        "woodTerms": "The first bag of firewood is included in your stay. Additional bags cost extra \u2014 we will agree the price before arrival."
+        "parkingDesc": "Free parking spaces right by the cottage."
       },
       "family": {
         "title": "Active days for the family",
@@ -243,7 +242,7 @@
       "title": "Stay and booking terms",
       "hotTub": {
         "title": "Hot tub with hydromassage",
-        "first": "First preparation",
+        "first": "The first preparation is done for your arrival.",
         "price": "200 PLN",
         "selfService": "Prepare the hot tub yourself for subsequent uses."
       },

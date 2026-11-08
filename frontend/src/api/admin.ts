@@ -70,6 +70,16 @@ export const createGalleryImage = (token: string, payload: Partial<GalleryImage>
     body: JSON.stringify(payload)
   });
 
+export const uploadGalleryImage = (token: string, file: File, captionPl: string, captionEn: string) =>
+  apiClient<GalleryImage>(`/api/admin/gallery/upload?${new URLSearchParams({ captionPl, captionEn })}`, {
+    method: 'POST',
+    headers: { ...withAuth(token), 'Content-Type': file.type },
+    body: file
+  });
+
+export const deleteGalleryImage = (token: string, id: string) =>
+  apiClient<void>(`/api/admin/gallery/${id}`, { method: 'DELETE', headers: withAuth(token) });
+
 export const updatePricingSeason = (token: string, pricing: PricingSeason) =>
   apiClient<PricingSeason>(`/api/admin/pricing/${pricing.id}`, {
     method: 'PATCH',

@@ -24,7 +24,7 @@ const zones = [
     ]
   },
   {
-    id: 'outdoor', image: '/shared image (13).jpg', imageClassName: 'h-80 lg:h-[420px]', noteKey: 'woodTerms',
+    id: 'outdoor', image: '/shared image (13).jpg', imageClassName: 'h-80 lg:h-[420px]', noteKey: '',
     groups: [{
       titleKey: 'subtitle',
       items: [

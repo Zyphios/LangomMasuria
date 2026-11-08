@@ -45,6 +45,9 @@ services:
       OWNER_EMAIL: ${OWNER_EMAIL:-domeknamazurskiej@gmail.com}
       PAYU_MERCHANT_ID: stub
       PAYU_SECRET_KEY: stub
+      UPLOAD_DIR: /app/uploads
+    volumes:
+      - uploads_data:/app/uploads
     depends_on:
       db:
         condition: service_healthy
@@ -79,3 +82,4 @@ services:
 
 volumes:
   postgres_data:
+  uploads_data:

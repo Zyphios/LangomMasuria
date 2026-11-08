@@ -1,5 +1,6 @@
 
 .worktrees/
+backend/uploads/
 
 # Dependencies and build output
 node_modules/

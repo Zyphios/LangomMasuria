@@ -96,11 +96,11 @@ describe('pricing page', () => {
   });
 
   it.each([
-    { locale: 'pl', tub: 'Gorąca balia z hydromasażem', price: '200 zł', self: 'Kolejne przygotowania we własnym zakresie.',
+    { locale: 'pl', tub: 'Gorąca balia z hydromasażem', price: 'Pierwsze przygotowanie na czas przyjazdu.', self: 'Kolejne przygotowania we własnym zakresie.',
       hours: 'Doba hotelowa', arrival: 'od 15:00', departure: 'do 11:00', payment: 'Rezerwacja i płatności',
       advance: /Zaliczka 30%.*24 godzin.*zatwierdzenia rezerwacji przez właściciela/,
       balance: /przelewem przed przyjazdem.*gotówką.*BLIK/ },
-    { locale: 'en', tub: 'Hot tub with hydromassage', price: '200 PLN', self: 'Prepare the hot tub yourself for subsequent uses.',
+    { locale: 'en', tub: 'Hot tub with hydromassage', price: 'The first preparation is done for your arrival.', self: 'Prepare the hot tub yourself for subsequent uses.',
       hours: 'Check-in and check-out', arrival: 'from 3:00 PM', departure: 'by 11:00 AM', payment: 'Booking and payments',
       advance: /30% advance payment.*24 hours.*owner.*approval/,
       balance: /bank transfer before arrival.*cash.*BLIK/ }

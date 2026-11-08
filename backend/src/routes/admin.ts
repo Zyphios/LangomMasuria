@@ -1,4 +1,5 @@
-import { Router } from 'express';
+import express, { Router } from 'express';
+import { MAX_UPLOAD_BYTES, removeUploadedImage, saveUploadedImage } from '../services/galleryUploads';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Prisma } from '@prisma/client';
@@ -136,7 +137,28 @@ adminRouter.delete('/blocked-dates/:id', async (req, res, next) => {
   catch (error) { next(error); }
 });
 adminRouter.post('/gallery', validate(gallerySchema), async (req, res) => res.status(201).json(await prisma.galleryImage.create({ data: gallerySchema.parse(req.body) })));
-adminRouter.delete('/gallery/:id', async (req, res) => { await prisma.galleryImage.delete({ where: { id: req.params.id as string } }); res.status(204).send(); });
+adminRouter.post('/gallery/upload', express.raw({ type: 'image/*', limit: MAX_UPLOAD_BYTES }), async (req, res, next) => {
+  try {
+    if (!Buffer.isBuffer(req.body) || req.body.length === 0) return res.status(400).json({ message: 'Nie wybrano pliku obrazu' });
+    const url = await saveUploadedImage(req.body);
+    if (!url) return res.status(400).json({ message: 'Dozwolone formaty: JPG, PNG, WebP' });
+    const captionPl = typeof req.query.captionPl === 'string' ? req.query.captionPl.trim().slice(0, 300) : '';
+    const captionEn = typeof req.query.captionEn === 'string' ? req.query.captionEn.trim().slice(0, 300) : '';
+    const last = await prisma.galleryImage.aggregate({ _max: { sortOrder: true } });
+    return res.status(201).json(await prisma.galleryImage.create({
+      data: { url, captionPl: captionPl || null, captionEn: captionEn || null, sortOrder: (last._max.sortOrder ?? 0) + 1 }
+    }));
+  } catch (error) { return next(error); }
+});
+adminRouter.delete('/gallery/:id', async (req, res, next) => {
+  try {
+    const image = await prisma.galleryImage.findUnique({ where: { id: req.params.id as string } });
+    if (!image) return res.status(404).json({ message: 'Not found' });
+    await prisma.galleryImage.delete({ where: { id: image.id } });
+    await removeUploadedImage(image.url);
+    return res.status(204).send();
+  } catch (error) { return next(error); }
+});
 adminRouter.patch('/pricing/:id', validate(pricingSchema), async (req, res, next) => {
   try {
     const payload = pricingSchema.parse(req.body);

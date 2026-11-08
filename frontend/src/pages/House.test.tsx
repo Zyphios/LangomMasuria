@@ -49,9 +49,9 @@ describe('house page', () => {
     expect(indoor.getByText(/Bezpłatne Wi-Fi oraz TV/)).toBeInTheDocument();
   });
 
-  it('keeps the existing firewood terms and makes equipment and baby facilities conditional', () => {
+  it('does not show firewood terms and makes equipment and baby facilities conditional', () => {
     render(<House />);
-    expect(screen.getByText('Pierwszy worek drewna w cenie pobytu. Kolejne worki dodatkowo płatne — cenę ustalimy przed przyjazdem.')).toBeInTheDocument();
+    expect(screen.queryByText(/Pierwszy worek drewna/)).not.toBeInTheDocument();
     const outdoor = within(screen.getByRole('region', { name: 'Na świeżym powietrzu' }));
     expect(outdoor.getByText(/grill gazowy/)).toBeInTheDocument();
     expect(outdoor.getByText(/Bezpłatne miejsca parkingowe/)).toBeInTheDocument();
@@ -107,7 +107,7 @@ describe('house page', () => {
     expect(inventory.getByText('Underfloor heating in the bedroom and bathroom')).toBeInTheDocument();
     expect(inventory.getByText('Drip coffee maker')).toBeInTheDocument();
     expect(inventory.getByText('Air conditioning')).toBeInTheDocument();
-    expect(screen.getByText('The first bag of firewood is included in your stay. Additional bags cost extra — we will agree the price before arrival.')).toBeInTheDocument();
+    expect(screen.queryByText(/first bag of firewood/)).not.toBeInTheDocument();
     expect(screen.queryByText(/house\.(stats|amenities|inventory)\./)).not.toBeInTheDocument();
   });
 });
