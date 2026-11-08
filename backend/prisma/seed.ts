@@ -31,7 +31,7 @@ async function main() {
         { url: '/IMG_20260705_162852.jpg', captionPl: 'Kuchnia', captionEn: 'Kitchen', sortOrder: 5 },
         { url: '/IMG-20260705-WA0003.jpg', captionPl: 'Detale kuchni', captionEn: 'Kitchen details', sortOrder: 6 },
         { url: '/shared image (5).jpg', captionPl: 'Kuchnia i jadalnia', captionEn: 'Kitchen and dining nook', sortOrder: 7 },
-        { url: '/IMG_20260705_163047.jpg', captionPl: 'Salon z widokiem na taras', captionEn: 'Living room with terrace view', sortOrder: 8 },
+        { url: '/IMG_20260705_163047.png', captionPl: 'Salon z widokiem na taras', captionEn: 'Living room with terrace view', sortOrder: 8 },
         { url: '/shared image (7).jpg', captionPl: 'Salon z antresolą', captionEn: 'Living room with mezzanine view', sortOrder: 9 },
         { url: '/shared image (6).jpg', captionPl: 'Sypialnia z widokiem na łąki', captionEn: 'Bedroom with meadow view', sortOrder: 10 },
         { url: '/shared image (20).jpg', captionPl: 'Antresola sypialniana', captionEn: 'Loft bedroom', sortOrder: 11 },

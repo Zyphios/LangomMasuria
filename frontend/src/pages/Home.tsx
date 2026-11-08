@@ -95,7 +95,7 @@ export default function Home() {
             </div>
             <div className="relative h-[500px] overflow-hidden rounded-xl">
               <img
-                src="/IMG_20260705_163047.jpg"
+                src="/IMG_20260705_163047.png"
                 alt="Domek na Mazurskiej - wnętrze salonu"
                 className="h-full w-full object-cover"
               />

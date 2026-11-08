@@ -88,7 +88,7 @@ describe('home page', () => {
       ['Ognisko, taras & biesiadowanie', '/ognisko.jpg'],
       ['Plac zabaw i bramka', '/bramka.jpg'],
       ['Wygodna lokalizacja i parking', '/parking.jpg'],
-      ['Domek na Mazurskiej - wnętrze salonu', '/IMG_20260705_163047.jpg']
+      ['Domek na Mazurskiej - wnętrze salonu', '/IMG_20260705_163047.png']
     ]) {
       expect(screen.getByRole('img', { name })).toHaveAttribute('src', source);
     }
