@@ -71,7 +71,7 @@ export default function House() {
                 {[
                   { icon: 'home', value: '42 m²', label: t('house.stats.space') },
                   { icon: 'bed', value: '1 + 1', label: t('house.stats.bedrooms') },
-                  { icon: 'groups', value: '4–6', label: t('house.stats.guests') }
+                  { icon: 'groups', value: '2–6', label: t('house.stats.guests') }
                 ].map(({ icon, value, label }) => (
                   <div key={icon} className="flex flex-col gap-2">
                     <span aria-hidden="true" className="material-symbols-outlined text-3xl text-primary">{icon}</span>

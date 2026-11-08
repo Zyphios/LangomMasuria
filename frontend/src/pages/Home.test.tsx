@@ -61,11 +61,12 @@ describe('home page', () => {
       '500 m do leśnego jeziora & sprzęt wodny',
       'Tuż przy lesie Natura 2000, staw i widok na łąki',
       'Ognisko, taras & biesiadowanie',
-      'Plac zabaw, bramka & raj dla psa',
+      'Plac zabaw i bramka',
       'Wygodna lokalizacja i parking'
     ]);
     expect(screen.getByText(/małą łódkę wiosłową \(po wcześniejszym ustaleniu\)/)).toBeInTheDocument();
-    expect(screen.getByText(/Twój pies też jest u nas bardzo mile widziany/)).toBeInTheDocument();
+    expect(screen.getByText(/Przestrzeń wokół domku to idealny teren do biegania/)).toBeInTheDocument();
+    expect(screen.queryByText(/pies/)).not.toBeInTheDocument();
   });
 
   it('uses the agreed distance and walking time for both the village centre and Dino', () => {
@@ -85,7 +86,7 @@ describe('home page', () => {
       ['500 m do leśnego jeziora & sprzęt wodny', '/garbas.jpg'],
       ['Tuż przy lesie Natura 2000, staw i widok na łąki', '/otoczenie.jpg'],
       ['Ognisko, taras & biesiadowanie', '/ognisko.jpg'],
-      ['Plac zabaw, bramka & raj dla psa', '/bramka.jpg'],
+      ['Plac zabaw i bramka', '/bramka.jpg'],
       ['Wygodna lokalizacja i parking', '/parking.jpg'],
       ['Domek na Mazurskiej - wnętrze salonu', '/IMG_20260705_163047.jpg']
     ]) {
@@ -134,7 +135,7 @@ describe('home page', () => {
       '500 m to a forest lake & water sports',
       'Natura 2000 forest, pond and meadow views',
       'Campfire, terrace & outdoor dining',
-      'Playground, football goal & a dog-friendly stay',
+      'Playground & football goal',
       'Convenient location and parking'
     ]);
     expect(screen.getByText(/The centre of Stare Juchy and the Dino supermarket/))

@@ -34,13 +34,13 @@
       "forest": "Natura 2000 forest, pond and meadow views",
       "lake": "500 m to a forest lake & water sports",
       "terrace": "Campfire, terrace & outdoor dining",
-      "family": "Playground, football goal & a dog-friendly stay",
+      "family": "Playground & football goal",
       "location": "Convenient location and parking",
       "jacuzziDesc": "Enjoy a private soak in the bubbles under the open sky. Perfect for cooler evenings, unwinding after a walk and watching the stars.",
       "forestDesc": "The cottage stands right beside the forest. Large windows and the mezzanine overlook a pond, meadows and the rolling Masurian Hills. With no fences, the surrounding space stays open and natural.",
       "lakeDesc": "A short walk through the forest takes you to a peaceful, secluded beach. Three lakes are nearby: Jędzelewo, Garbas and Rekąty. SUP boards and a small rowing boat are available on site by prior arrangement.",
       "terraceDesc": "Gather around the campfire for an evening of roasting sausages and conversation by the crackling flames, or enjoy morning coffee and lazy afternoons on a lounger on the spacious terrace.",
-      "familyDesc": "Children can enjoy a playground, trampoline and football goal on the grass. Your dog is very welcome too – the open space around the cottage is a wonderful place to run and play!",
+      "familyDesc": "Children can enjoy a playground, trampoline and football goal on the grass. The open space around the cottage is a wonderful place to run and play!",
       "locationDesc": "Close to nature, with everyday essentials nearby. The centre of Stare Juchy and the Dino supermarket are both 1.3 km from the cottage, an approximately 18-minute walk. A viewing tower is nearby, and free parking is available right by the property."
     },
     "interior": {
@@ -88,7 +88,7 @@
       "indoor": {
         "title": "Comfort indoors",
         "imageAlt": "Living room and the view from the mezzanine at Domek na Mazurskiej",
-        "sleepingTitle": "Comfortable sleeping spaces (4–6 guests)",
+        "sleepingTitle": "Comfortable sleeping spaces (2–6 guests)",
         "bedroomTitle": "Downstairs bedroom",
         "bedroomDesc": "A cosy, enclosed room with a double bed and underfloor heating.",
         "loftTitle": "Cosy mezzanine",

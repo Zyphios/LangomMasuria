@@ -34,13 +34,13 @@
       "forest": "Tuż przy lesie Natura 2000, staw i widok na łąki",
       "lake": "500 m do leśnego jeziora & sprzęt wodny",
       "terrace": "Ognisko, taras & biesiadowanie",
-      "family": "Plac zabaw, bramka & raj dla psa",
+      "family": "Plac zabaw i bramka",
       "location": "Wygodna lokalizacja i parking",
       "jacuzziDesc": "Prywatny relaks w bąbelkach pod gołym niebem. Idealna opcja na chłodniejsze wieczory, regenerację po spacerach i obserwację gwiazd.",
       "forestDesc": "Domek stoi przy samym lesie, a z wielkich okien i antresoli rozpościera się panorama na staw, łąki i falujące pagórki Mazur Garbatych. Brak ogrodzeń sprawia, że przestrzeń pozostaje otwarta i naturalna.",
       "lakeDesc": "Zaledwie kilkuminutowy spacer przez las dzieli Cię od urokliwej, kameralnej plaży. W sąsiedztwie masz 3 jeziora (Jędzelewo, Garbas, Rekąty), a na miejscu udostępniamy deski SUP oraz małą łódkę wiosłową (po wcześniejszym ustaleniu).",
       "terraceDesc": "Klimatyczne miejsce na ognisko na wieczorne pieczenie kiełbasek i rozmowy przy trzaskającym ogniu, a także przestronny taras na poranną kawę i popołudniowe leniuchowanie na leżaku.",
-      "familyDesc": "Dla dzieci przygotowaliśmy plac zabaw, trampolinę i bramkę do piłki nożnej na zielonej trawie. Twój pies też jest u nas bardzo mile widziany – przestrzeń wokół domku to dla niego idealny teren do biegania!",
+      "familyDesc": "Dla dzieci przygotowaliśmy plac zabaw, trampolinę i bramkę do piłki nożnej na zielonej trawie. Przestrzeń wokół domku to idealny teren do biegania!",
       "locationDesc": "Blisko natury, ale z szybkim dostępem do wszystkiego. Centrum Starych Juch i sklep Dino dzieli od domku 1,3 km – około 18 minut spacerem. W pobliżu znajduje się wieża widokowa. Bezpłatny parking tuż przy obiekcie."
     },
     "interior": {
@@ -88,7 +88,7 @@
       "indoor": {
         "title": "Komfort wewn\u0105trz",
         "imageAlt": "Salon i widok z antresoli w Domku na Mazurskiej",
-        "sleepingTitle": "Wygodne miejsca do spania (4–6 osób)",
+        "sleepingTitle": "Wygodne miejsca do spania (2–6 osób)",
         "bedroomTitle": "Sypialnia na dole",
         "bedroomDesc": "Zamknięty, przytulny pokój z podwójnym łóżkiem małżeńskim oraz ogrzewaniem podłogowym.",
         "loftTitle": "Klimatyczna antresola",

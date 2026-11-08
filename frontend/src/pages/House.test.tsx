@@ -22,7 +22,7 @@ describe('house page', () => {
     expect(screen.getByText('42 m²')).toBeInTheDocument();
     expect(screen.getByText('1 + 1')).toBeInTheDocument();
     expect(screen.getByText('Sypialnia + antresola')).toBeInTheDocument();
-    expect(screen.getByText('4–6')).toBeInTheDocument();
+    expect(screen.getByText('2–6')).toBeInTheDocument();
     expect(screen.getByRole('img', { name: 'Domek na Mazurskiej' }))
       .toHaveAttribute('src', '/glowne-foto kadr.jpg');
   });
@@ -37,7 +37,7 @@ describe('house page', () => {
   it('describes all three sleeping spaces and the detailed indoor facilities', () => {
     render(<House />);
     const indoor = within(screen.getByRole('region', { name: 'Komfort wewnątrz' }));
-    expect(indoor.getByRole('heading', { name: 'Wygodne miejsca do spania (4–6 osób)' })).toBeInTheDocument();
+    expect(indoor.getByRole('heading', { name: 'Wygodne miejsca do spania (2–6 osób)' })).toBeInTheDocument();
     for (const title of ['Sypialnia na dole', 'Klimatyczna antresola', 'Salon na dole']) {
       expect(indoor.getByText(title)).toBeInTheDocument();
     }
@@ -95,7 +95,7 @@ describe('house page', () => {
       level: 1, name: 'About Domek na Mazurskiej – Discover the interiors and surroundings'
     })).toBeInTheDocument();
     expect(screen.getByText('Bedroom + mezzanine')).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Comfortable sleeping spaces (4–6 guests)' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Comfortable sleeping spaces (2–6 guests)' })).toBeInTheDocument();
     expect(screen.getByText('Downstairs bedroom')).toBeInTheDocument();
     expect(screen.getByText('Cosy mezzanine')).toBeInTheDocument();
     expect(screen.getByText(/double sofa bed/)).toBeInTheDocument();
