@@ -4,10 +4,12 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import ScrollToTop from './ScrollToTop';
 import LegacySectionRedirect from './LegacySectionRedirect';
+import Seo from './Seo';
 
 export default function Layout({ children }: PropsWithChildren) {
   return (
     <div className='min-h-screen bg-background font-sans text-on-background'>
+      <Seo />
       <ScrollToTop />
       <LegacySectionRedirect />
       <Navbar />

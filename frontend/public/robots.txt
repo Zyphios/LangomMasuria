@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /verify-booking
+Disallow: /booking-decision
+
+Sitemap: https://domeknamazurskiej.pl/sitemap.xml

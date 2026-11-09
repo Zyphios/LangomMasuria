@@ -48,7 +48,7 @@ describe('app shell', () => {
     renderRoute('/');
     expect(screen.getByRole('heading', {
       level: 1,
-      name: 'Domek do wynajęcia na Mazurach Stare Juchy k. Ełku'
+      name: 'Domek z balią i jacuzzi na Mazurach Stare Juchy k. Ełku'
     })).toBeInTheDocument();
   });
 

@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender.mjs",
+    "optimize-images": "node scripts/optimize-images.mjs",
     "preview": "vite preview --host 0.0.0.0 --port 3000",
     "test": "vitest run"
   },
@@ -28,6 +29,7 @@
     "autoprefixer": "^10.4.19",
     "jsdom": "^24.1.0",
     "postcss": "^8.4.39",
+    "sharp": "^0.35.5",
     "tailwindcss": "^3.4.4",
     "typescript": "^5.5.2",
     "vite": "^5.3.1",

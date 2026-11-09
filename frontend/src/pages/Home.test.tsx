@@ -32,9 +32,9 @@ describe('home page', () => {
     expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
     expect(screen.getByRole('heading', {
       level: 1,
-      name: 'Domek do wynajęcia na Mazurach Stare Juchy k. Ełku'
+      name: 'Domek z balią i jacuzzi na Mazurach Stare Juchy k. Ełku'
     })).toBeInTheDocument();
-    expect(screen.getByText('Domek do wynajęcia na Mazurach')).toBeInTheDocument();
+    expect(screen.getByText('Domek z balią i jacuzzi na Mazurach')).toBeInTheDocument();
     expect(screen.getByText('Stare Juchy k. Ełku')).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 1 })).not.toHaveTextContent(/Domek na Mazurskiej|\|/);
     expect(screen.getByText(/Gorąca balia pod gwiazdami/)).toBeInTheDocument();
@@ -139,7 +139,7 @@ describe('home page', () => {
     renderHome();
     expect(screen.getByRole('heading', {
       level: 1,
-      name: 'Holiday cottage in Masuria Stare Juchy near Ełk'
+      name: 'Holiday cabin with a hot tub in Masuria Stare Juchy near Ełk'
     })).toBeInTheDocument();
     expect(screen.getAllByRole('heading', { level: 3 }).map((heading) => heading.textContent)).toEqual([
       'Private hot tub with hydromassage',
