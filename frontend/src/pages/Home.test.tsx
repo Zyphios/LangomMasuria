@@ -77,11 +77,22 @@ describe('home page', () => {
     expect(location).not.toHaveTextContent(/1,5 km|19 minut|20 minut/);
   });
 
-  it('uses the new banner and matches all six feature photos to their cards', () => {
+  it('shows the terrace view as the hero and the house photo below the intro', () => {
+    const { container } = renderHome();
+    expect(screen.getAllByRole('img')).toHaveLength(9);
+    const hero = screen.getByRole('img', { name: /Widok z tarasu/ });
+    expect(hero).toHaveAttribute('src', '/shared image (16).jpg');
+    expect(hero.closest('picture')?.querySelector('source')).toHaveAttribute('srcset', '/panorama-hero.jpg');
+    const house = screen.getByRole('img', { name: 'Domek na Mazurskiej - dom na Mazurach' });
+    expect(house).toHaveAttribute('src', '/Baner2.png');
+    const heading =  screen.getByRole('heading', { level: 2, name: 'Udogodnienia i atrakcje na miejscu' });
+    expect(house.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(container.querySelector('section')?.contains(house)).toBe(false);
+  });
+
+  it('matches all six feature photos to their cards', () => {
     renderHome();
-    expect(screen.getAllByRole('img')).toHaveLength(8);
     for (const [name, source] of [
-      ['Domek na Mazurskiej - dom na Mazurach', '/Baner2.png'],
       ['Gorąca balia z hydromasażem', '/dodaj4.jpg'],
       ['500 m do leśnego jeziora & sprzęt wodny', '/garbas.jpg'],
       ['Tuż przy lesie Natura 2000, staw i widok na łąki', '/otoczenie.jpg'],

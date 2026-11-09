@@ -11,11 +11,14 @@ export default function Home() {
     <div className="bg-background">
       <section className="relative flex min-h-[819px] items-center justify-center overflow-hidden pb-16 pt-[calc(var(--site-header-height)+3rem)]">
         <div className="absolute inset-0 z-0">
-          <img
-            src="/Baner2.png"
-            alt="Domek na Mazurskiej - dom na Mazurach"
-            className="h-full w-full object-cover"
-          />
+          <picture>
+            <source media="(min-width: 768px)" srcSet="/panorama-hero.jpg" />
+            <img
+              src="/shared image (16).jpg"
+              alt="Widok z tarasu domku na mazurskie łąki, jezioro i mgłę o świcie"
+              className="h-full w-full object-cover"
+            />
+          </picture>
           <div className="absolute inset-0 bg-black/40" />
         </div>
         <div className="relative z-10 mx-auto flex max-w-container-max flex-col items-center px-8 text-center md:px-margin-desktop">
@@ -33,11 +36,23 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-container-max px-8 py-section-gap md:px-margin-desktop">
-        <div className="mx-auto mb-20 max-w-3xl space-y-6 text-center text-body-lg text-on-surface-variant">
+      <section className="mx-auto max-w-container-max px-8 pt-section-gap md:px-margin-desktop">
+        <div className="mx-auto max-w-3xl space-y-6 text-center text-body-lg text-on-surface-variant">
           <p>{t('home.intro.description')}</p>
           <p>{t('home.intro.invitation')}</p>
         </div>
+      </section>
+
+      <section className="mt-20 h-[280px] w-full overflow-hidden sm:h-[380px] lg:h-[480px]">
+        <img
+          src="/Baner2.png"
+          alt="Domek na Mazurskiej - dom na Mazurach"
+          loading="lazy"
+          className="h-full w-full object-cover"
+        />
+      </section>
+
+      <section className="mx-auto max-w-container-max px-8 py-section-gap md:px-margin-desktop">
         <div className="mb-16 text-center">
           <h2 className="mb-4 text-headline-md text-primary">{t('home.amenities.title')}</h2>
           <p className="mx-auto max-w-xl text-body-md text-on-surface-variant">{t('home.amenities.subtitle')}</p>
