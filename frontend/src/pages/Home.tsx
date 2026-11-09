@@ -16,7 +16,7 @@ export default function Home() {
             <img
               src="/shared image (16).jpg"
               alt="Widok z tarasu domku na mazurskie łąki, jezioro i mgłę o świcie"
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover md:object-[50%_36%]"
             />
           </picture>
           <div className="absolute inset-0 bg-black/40" />
@@ -36,14 +36,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-container-max px-8 pt-section-gap md:px-margin-desktop">
+      <section className="mx-auto max-w-container-max px-8 pt-12 md:px-margin-desktop md:pt-16">
         <div className="mx-auto max-w-3xl space-y-6 text-center text-body-lg text-on-surface-variant">
           <p>{t('home.intro.description')}</p>
           <p>{t('home.intro.invitation')}</p>
         </div>
       </section>
 
-      <section className="mt-20 h-[280px] w-full overflow-hidden sm:h-[380px] lg:h-[480px]">
+      <section className="mt-12 h-[480px] w-full overflow-hidden sm:h-[640px] lg:h-[819px]">
         <img
           src="/Baner2.png"
           alt="Domek na Mazurskiej - dom na Mazurach"
